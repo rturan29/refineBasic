@@ -18,7 +18,7 @@ const labelProps: {
 export default function UpdateUserData(props: IRegisterProps) {
     const reCaptchaContainer = useRef<HTMLDivElement | null>(null);
     const reCaptcha = useRef<RecaptchaVerifier | null>(null);
-    const [hideUpdatePassword, setHideUpdatePassword] = useState<boolean>(true);
+    const [hideUpdatePassword] = useState<boolean>(true);
 
     const currentUser = useGetIdentity<IUser>()?.data;
 
@@ -37,8 +37,6 @@ export default function UpdateUserData(props: IRegisterProps) {
             reCaptcha.current?.render();
         }
     }, []);
-
-    console.log(currentUser);
 
     function onSubmit(args: IRegisterArgs) {
         if (reCaptcha.current) {
