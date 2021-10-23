@@ -1,4 +1,5 @@
 import { Table, TextField, EmailField, Space, ShowButton, DeleteButton, List, useTable, BooleanField, useDelete, useUpdate, RefreshButton, CreateButton, NumberField } from '@pankod/refine';
+import { arrayRemove } from 'firebase/firestore';
 import React from 'react';
 import { isNullOrUndefined } from 'util';
 
@@ -31,10 +32,11 @@ export default function UserTable(props: UserTableProps) {
         if (props.isSessionUsers && props.sessionId && props.participants) {
             const participants = props.participants.filter(participant => participant.participantId !== record.id);
             updateData({ resource: `sessions`, id: props.sessionId, values: { participants } });
+            updateData({ resource: `users`, id: record.id, values: { courses: arrayRemove(props.sessionId) } });
             setTimeout(() => {
                 props.resetSessionData?.();
             }, 1000);
-            props.resetSessionData?.();
+
         } else {
             deleteData({ resource: "users", id: record.id, });
             setTimeout(() => {

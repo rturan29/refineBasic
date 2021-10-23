@@ -1,3 +1,4 @@
+import { arrayUnion } from "@firebase/firestore";
 import {
     List,
     Table,
@@ -68,11 +69,11 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                 const formContent: IParticipant = form.getFieldsValue() as any;
 
                 mutate({
-                    resource: `sessions`, id: currentRow?.id, values: { participants: { isArrayItem: true, data: formContent } }
+                    resource: `sessions`, id: currentRow?.id, values: { participants: arrayUnion(formContent) }
                 });
 
                 mutate({
-                    resource: "users", id: formContent.participantId, values: { courses: { isArrayItem: true, data: currentRow.id } }
+                    resource: "users", id: formContent.participantId, values: { courses: arrayUnion(currentRow.id) }
                 });
 
                 form.resetFields();

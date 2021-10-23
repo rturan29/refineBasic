@@ -23,6 +23,7 @@ export class FirebaseAuth {
         this.getUserIdentity = this.getUserIdentity.bind(this);
         this.handleCheckAuth = this.handleCheckAuth.bind(this);
         this.createRecaptcha = this.createRecaptcha.bind(this);
+        this.getPermissions = this.getPermissions.bind(this)
     }
 
     async handleLogOut() {
@@ -133,6 +134,18 @@ export class FirebaseAuth {
         }
     }
 
+    async getPermissions(): Promise<any> {
+        if (this.auth) {
+            if (this.auth.currentUser?.email === process.env.REACT_APP_ADMIN_USER) {
+                Promise.resolve("admin");
+            } else {
+                Promise.resolve("participant");
+            }
+        } else {
+            Promise.reject();
+        }
+    }
+
     createRecaptcha(containerOrId: string | HTMLDivElement, parameters: RecaptchaParameters) {
         const recaptchaVerifier = new RecaptchaVerifier(containerOrId, parameters, this.auth);
         return recaptchaVerifier;
@@ -144,7 +157,7 @@ export class FirebaseAuth {
             logout: this.handleLogOut,
             checkAuth: this.handleCheckAuth,
             checkError: () => Promise.resolve(),
-            getPermissions: () => Promise.resolve(),
+            getPermissions: this.getPermissions,
             getUserIdentity: this.getUserIdentity,
         };
     }

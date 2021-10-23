@@ -1,4 +1,4 @@
-import { Firestore, getDocs, getFirestore, collection, addDoc, doc, getDoc, updateDoc, deleteDoc, where, query, CollectionReference, DocumentData, Query, orderBy, arrayUnion } from "firebase/firestore";
+import { Firestore, getDocs, getFirestore, collection, addDoc, doc, getDoc, updateDoc, deleteDoc, where, query, CollectionReference, DocumentData, Query, orderBy, arrayUnion, arrayRemove } from "firebase/firestore";
 import { ICreateData, IDeleteData, IDeleteManyData, IGetList, IGetMany, IGetOne, IUpdateData, IUpdateManyData } from "interfaces/IDataBase";
 import { BaseDatabase } from "./Database";
 import { requestPayloadFactory } from "./requestPayloadFactory";
@@ -41,13 +41,17 @@ export class FirestoreDatabase extends BaseDatabase {
         }
     }
 
-    async controlAdditionalProcess(resource: string, id: string): Promise<any> {
-        if (resource === "sessions") {
-            const docRef = doc(this.database, "courses", id);
+    async controlAdditionalProcess({ resource, variables, id, action }: { resource: string, variables?: any, id: string, action: string; }): Promise<any> {
 
-            await updateDoc(docRef, { courses: arrayUnion(id) });
+        if (resource === "sessions" && variables.courseId) {
+            const courseRef = doc(this.database, "courses", variables.courseId);
+
+            if (action === "create") {
+                await updateDoc(courseRef, { courses: arrayUnion(id) });
+            } else if (action === "delete") {
+                await updateDoc(courseRef, { courses: arrayRemove(id) });
+            }
         }
-
     }
 
     async createData<TVariables = {}>(args: ICreateData<TVariables>): Promise<any> {
@@ -65,7 +69,7 @@ export class FirestoreDatabase extends BaseDatabase {
                 ...payload
             };
 
-            await this.controlAdditionalProcess(args.resource, data.id);
+            await this.controlAdditionalProcess({ resource: args.resource, variables: args.variables, id: data.id, action: "create" });
 
             return { data };
         } catch (error) {
@@ -96,7 +100,12 @@ export class FirestoreDatabase extends BaseDatabase {
 
     async deleteData(args: IDeleteData): Promise<any> {
         try {
+            var { data } = await this.getOne(args);
+
+            await this.controlAdditionalProcess({ resource: args.resource, id: args.id, variables: data, action: "delete" })
+
             const ref = doc(this.database, args.resource, args.id);
+
             await deleteDoc(ref);
         } catch (error) {
             Promise.reject(error);
@@ -160,12 +169,13 @@ export class FirestoreDatabase extends BaseDatabase {
 
     async getOne(args: IGetOne): Promise<any> {
         try {
+            if (args.resource && args.id) {
             const docRef = doc(this.database, args.resource, args.id);
 
-            const docSnap = await getDoc(docRef);
+                const docSnap = await getDoc(docRef);
 
-            return { data: docSnap.data };
-
+                return { data: docSnap.data() };
+            }
 
         } catch (error: any) {
             Promise.reject(error);
@@ -178,14 +188,14 @@ export class FirestoreDatabase extends BaseDatabase {
                 var payload: any = {};
                 var ref = doc(this.database, args.resource, args.id);
 
-                for (const [key, value] of Object.entries(args.variables)) {
-                    payload = {
-                        ...payload,
-                        [key]: value.isArrayItem ? arrayUnion(value.data) : value
-                    };
-                }
+                // for (const [key, value] of Object.entries(args.variables)) {
+                //     payload = {
+                //         ...payload,
+                //         [key]: value.isArrayItem ? arrayUnion(value.data) : value
+                //     };
+                // }
 
-                await updateDoc(ref, payload);
+                await updateDoc(ref, args.variables);
             }
 
             return { data: args.variables };
