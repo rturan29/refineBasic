@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Login from 'components/Login/Login';
-import { AntdLayout, Row, Col, Form, Card, Link, useLogin, useAuthenticated, useNavigation } from '@pankod/refine';
+import { AntdLayout, Row, Col, Form, Card, Link, useLogin, useNavigation } from '@pankod/refine';
 import ForgotPassword from 'components/Login/ForgotPassword';
 import { firebaseAuth } from 'helpers/firebaseAuth';
 import Register from 'components/Login/Register';
@@ -98,7 +98,7 @@ export default function Authentication() {
                     <Form onFinish={onSubmit}>
                         <Card
                             style={{
-                                maxWidth: location == "register" ? "700px" : "500px",
+                                maxWidth: location === "register" ? "700px" : "500px",
                                 margin: "auto",
                             }}
                             title={CardTitle}>

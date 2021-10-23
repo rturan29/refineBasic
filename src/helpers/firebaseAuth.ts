@@ -97,7 +97,7 @@ export class FirebaseAuth {
 
         try {
             if (this.auth.currentUser) {
-                const { email, password, nameSurname, } = args;
+                const { nameSurname, } = args;
                 // if (password) {
                 //     await handleUpdatePassword(this.auth.currentUser, password);
                 // }

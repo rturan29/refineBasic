@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Form, Input, Checkbox, Button, Select } from "@pankod/refine";
 import { IRegisterProps } from 'interfaces/ILogin';
 

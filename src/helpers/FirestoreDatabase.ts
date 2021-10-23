@@ -185,7 +185,7 @@ export class FirestoreDatabase extends BaseDatabase {
     async updateData<TVariables = {}>(args: IUpdateData<TVariables>): Promise<any> {
         try {
             if (args.id && args.resource) {
-                var payload: any = {};
+                // var payload: any = {};
                 var ref = doc(this.database, args.resource, args.id);
 
                 // for (const [key, value] of Object.entries(args.variables)) {
