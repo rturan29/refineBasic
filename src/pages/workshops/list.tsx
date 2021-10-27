@@ -17,10 +17,10 @@ import {
     Form,
     Modal,
 } from "@pankod/refine";
-import { CourseCreate } from ".";
+import { WorkshopCreate } from ".";
 
-export const CourseList: React.FC<IResourceComponentsProps> = () => {
-    const { tableProps, sorter } = useTable<ICourse>();
+export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
+    const { tableProps, sorter } = useTable<IWorkshop>();
 
     const { modalProps, formProps, show } = useModalForm<ISession>({ action: "create", redirect: "list" });
 
@@ -49,10 +49,25 @@ export const CourseList: React.FC<IResourceComponentsProps> = () => {
                         sorter
                     />
                     <Table.Column
+                        dataIndex="type"
+                        title="Type"
+                        render={(value) => <TagField value={value} />}
+                        defaultSortOrder={getDefaultSortOrder("type", sorter)}
+                        sorter
+                        filterDropdown={(props) => (
+                            <FilterDropdown {...props}>
+                                <Radio.Group>
+                                    <Radio value="private">Private</Radio>
+                                    <Radio value="group">Group</Radio>
+                                </Radio.Group>
+                            </FilterDropdown>
+                        )}
+                    />
+                    <Table.Column
                         dataIndex="status"
                         key="status"
                         title="Status"
-                        render={(value) => <TagField value={value} />}
+                        render={(value: string) => <TagField value={value} />}
                         defaultSortOrder={getDefaultSortOrder("status", sorter)}
                         sorter
                         filterDropdown={(props) => (
@@ -86,7 +101,7 @@ export const CourseList: React.FC<IResourceComponentsProps> = () => {
             </List>
             <Modal {...modalProps}>
                 <Form {...formProps} layout="vertical">
-                    <CourseCreate />
+                    <WorkshopCreate />
                 </Form>
             </Modal>
         </>

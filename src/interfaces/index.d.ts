@@ -17,13 +17,14 @@ interface ICustomComponentProperties {
   route: string;
 }
 
-interface ICourse {
+interface IWorkshop {
   id: string;
   title: string;
   category: string;
   description: string;
   status: "published" | "draft";
   sessions: Array<string>;
+  type: "private " | "group"
 }
 
 interface ICategory {
@@ -37,15 +38,15 @@ interface IParticipant {
 }
 interface ISession {
   id: string;
-  courseId: string;
+  workshopId: string;
   status: "published" | "draft";
   teacher: string;
-  startDate: string | Date;
-  endDate: string | Date;
   quota: number;
   participants: IParticipant[];
   paymentAmount: number;
   description?: string;
+  period: [string, string] | [Date, | Date];
+  dayTime?: { day: number, time: [any, any]; }
 }
 
 interface IUser {
@@ -53,6 +54,6 @@ interface IUser {
   nameSurname: string;
   email: string;
   phone: string;
-  courses: Array<string>;
+  workshops: Array<string>;
   gender: "male" | "female" | "other";
 }

@@ -11,7 +11,7 @@ import ReactMde from "react-mde";
 
 import "react-mde/lib/styles/css/react-mde-all.css";
 
-export const CourseCreate: React.FC<IResourceComponentsProps> = () => {
+export const WorkshopCreate: React.FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
 
     return (
@@ -27,6 +27,7 @@ export const CourseCreate: React.FC<IResourceComponentsProps> = () => {
             >
                 <Input />
             </Form.Item>
+
             <Form.Item
                 label="Category"
                 name="category"
@@ -53,6 +54,30 @@ export const CourseCreate: React.FC<IResourceComponentsProps> = () => {
                     ]}
                 />
             </Form.Item>
+
+            <Form.Item
+                label="Type"
+                name="type"
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+            >
+                <Select
+                    options={[
+                        {
+                            label: "Private",
+                            value: "private",
+                        },
+                        {
+                            label: "Group",
+                            value: "group",
+                        }
+                    ]}
+                />
+            </Form.Item>
+
             <Form.Item
                 label="Status"
                 name="status"

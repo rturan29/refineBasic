@@ -10,8 +10,8 @@ import {
 
 const { Title, Text } = Typography;
 
-export const CourseShow: React.FC<IResourceComponentsProps> = () => {
-    const { queryResult } = useShow<ICourse>();
+export const WorkshopShow: React.FC<IResourceComponentsProps> = () => {
+    const { queryResult } = useShow<IWorkshop>();
     const { data, isLoading } = queryResult;
     const record = data?.data;
 
@@ -19,6 +19,11 @@ export const CourseShow: React.FC<IResourceComponentsProps> = () => {
         <Show isLoading={isLoading}>
             <Title level={5}>Title</Title>
             <Text>{record?.title}</Text>
+
+            <Title level={5}>Type</Title>
+            <Text>
+                <Tag>{record?.type}</Tag>
+            </Text>
 
             <Title level={5}>Status</Title>
             <Text>

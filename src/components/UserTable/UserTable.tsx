@@ -7,7 +7,7 @@ type UserTableProps = React.PropsWithChildren<{
     participants?: IParticipant[];
     isSessionUsers?: boolean;
     sessionId?: string;
-    showCourses?: (id?: string | undefined) => void;
+    showWorkshops?: (id?: string | undefined) => void;
     setUserCurrentRow?: (value: IUser) => void;
     resetSessionData?: () => void;
 }>;
@@ -32,7 +32,7 @@ export default function UserTable(props: UserTableProps) {
         if (props.isSessionUsers && props.sessionId && props.participants) {
             const participants = props.participants.filter(participant => participant.participantId !== record.id);
             updateData({ resource: `sessions`, id: props.sessionId, values: { participants } });
-            updateData({ resource: `users`, id: record.id, values: { courses: arrayRemove(props.sessionId) } });
+            updateData({ resource: `users`, id: record.id, values: { workshops: arrayRemove(props.sessionId) } });
             setTimeout(() => {
                 props.resetSessionData?.();
             }, 1000);
@@ -47,7 +47,7 @@ export default function UserTable(props: UserTableProps) {
 
     function handleShowModal(record: IUser, modalRole: "show" | "create") {
         props.setUserCurrentRow?.(record);
-        props.showCourses?.();
+        props.showWorkshops?.();
     }
 
     return (
@@ -83,8 +83,8 @@ export default function UserTable(props: UserTableProps) {
                         sorter
                     />
                     : <Table.Column<IUser>
-                        dataIndex="courses"
-                        title="Courses"
+                        dataIndex="workshops"
+                        title="Workshops"
                         render={(value, record) => (
                             <Space>
                                 <NumberField value={value?.length || 0} />

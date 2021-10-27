@@ -12,10 +12,10 @@ import ReactMde from "react-mde";
 
 import "react-mde/lib/styles/css/react-mde-all.css";
 
-export const CourseEdit: React.FC<IResourceComponentsProps> = () => {
+export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
 
-    const { formProps, saveButtonProps, queryResult } = useForm<ICourse>();
+    const { formProps, saveButtonProps, queryResult } = useForm<IWorkshop>();
 
     console.log(queryResult);
 
@@ -33,9 +33,10 @@ export const CourseEdit: React.FC<IResourceComponentsProps> = () => {
                 >
                     <Input />
                 </Form.Item>
+
                 <Form.Item
-                    label="Status"
-                    name="status"
+                    label="Type"
+                    name="type"
                     rules={[
                         {
                             required: true,
@@ -45,12 +46,12 @@ export const CourseEdit: React.FC<IResourceComponentsProps> = () => {
                     <Select
                         options={[
                             {
-                                label: "published",
-                                value: "published",
+                                label: "Private",
+                                value: "private",
                             },
                             {
-                                label: "draft",
-                                value: "draft",
+                                label: "Group",
+                                value: "group",
                             }
                         ]}
                     />
@@ -82,6 +83,30 @@ export const CourseEdit: React.FC<IResourceComponentsProps> = () => {
                         ]}
                     />
                 </Form.Item>
+
+                <Form.Item
+                    label="Status"
+                    name="status"
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Select
+                        options={[
+                            {
+                                label: "published",
+                                value: "published",
+                            },
+                            {
+                                label: "draft",
+                                value: "draft",
+                            }
+                        ]}
+                    />
+                </Form.Item>
+
                 <Form.Item
                     label="Description"
                     name="description"

@@ -1,9 +1,10 @@
 import dayjs from "dayjs";
+import moment from "moment";
 
 export function responsePayloadFactory(resource: string, payload: any) {
     switch (resource) {
-        case "courses":
-            return getCourseDataFactory(payload);
+        case "workshops":
+            return getWorkshopDataFactory(payload);
 
         case "sessions":
             return getSessionDataFactory(payload);
@@ -21,11 +22,11 @@ export function getUserDataFactory(data: IUser) {
         ...data,
         phone: data.phone || "",
         gender: data.gender || "other",
-        courses: data.courses || [],
+        workshops: data.workshops || [],
     };
 }
 
-export function getCourseDataFactory(data: ICourse) {
+export function getWorkshopDataFactory(data: IWorkshop) {
     return {
         id: data.id,
         title: data.title,
@@ -33,14 +34,20 @@ export function getCourseDataFactory(data: ICourse) {
         description: data.description,
         status: data.status,
         sessions: data.sessions || [],
+        type: data.type,
     };
 }
 
 export function getSessionDataFactory(data: ISession) {
+    const time = data.dayTime?.time?.map(time => {
+        let timeList = time.split(":");
+        return moment().hour(timeList?.[0])?.minutes(timeList?.[1]);
+    });
+
     return {
         ...data,
-        startDate: dayjs(data.startDate),
-        endDate: dayjs(data.endDate),
+        period: data.period?.map(date => dayjs(date)),
+        dayTime: { day: data.dayTime?.day, time },
         participants: data.participants || [],
         description: data.description || "",
     };

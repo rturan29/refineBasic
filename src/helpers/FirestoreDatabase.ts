@@ -43,13 +43,13 @@ export class FirestoreDatabase extends BaseDatabase {
 
     async controlAdditionalProcess({ resource, variables, id, action }: { resource: string, variables?: any, id: string, action: string; }): Promise<any> {
 
-        if (resource === "sessions" && variables.courseId) {
-            const courseRef = doc(this.database, "courses", variables.courseId);
+        if (resource === "sessions" && variables.workshopId) {
+            const workshopRef = doc(this.database, "workshops", variables.workshopId);
 
             if (action === "create") {
-                await updateDoc(courseRef, { courses: arrayUnion(id) });
+                await updateDoc(workshopRef, { workshops: arrayUnion(id) });
             } else if (action === "delete") {
-                await updateDoc(courseRef, { courses: arrayRemove(id) });
+                await updateDoc(workshopRef, { workshops: arrayRemove(id) });
             }
         }
     }
@@ -59,6 +59,8 @@ export class FirestoreDatabase extends BaseDatabase {
             const ref = this.getCollectionRef(args.resource);
 
             const payload = requestPayloadFactory(args.resource, args.variables);
+
+            console.log(args.variables)
 
             const docRef = await addDoc(ref, payload);
 

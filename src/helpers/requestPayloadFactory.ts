@@ -1,7 +1,9 @@
+import moment from "moment";
+
 export function requestPayloadFactory(resource: string, payload: any) {
     switch (resource) {
-        case "courses":
-            return createCourseDataFactory(payload);
+        case "workshops":
+            return createWorkshopDataFactory(payload);
 
         case "sessions":
             return createSessionDataFactory(payload);
@@ -21,11 +23,11 @@ export function createUserDataFactory(data: IUser) {
         email: data.email,
         phone: data.phone || "",
         gender: data.gender || "other",
-        courses: data.courses || []
+        workshops: data.workshops || []
     };
 }
 
-export function createCourseDataFactory(data: ICourse) {
+export function createWorkshopDataFactory(data: IWorkshop) {
 
     return {
         ...data,
@@ -36,16 +38,21 @@ export function createCourseDataFactory(data: ICourse) {
 export function createSessionDataFactory(data: ISession) {
     let result: any = {};
 
-    // if (data.participants?.length) {
-    //     result.participants = {};
-    //     data.participants.forEach(user => result.participants[user.participantId] = user);
-    // }
-
-    if (data.startDate) {
-        result.startDate = typeof data.startDate == "object" ? data.startDate.toISOString() : data.startDate;
+    if (data.participants?.length) {
+        result.participants = {};
+        data.participants.forEach(user => result.participants[user.participantId] = user);
     }
-    if (data.endDate) {
-        result.endDate = typeof data.endDate == "object" ? data.endDate.toISOString() : data.endDate;
+
+    console.log(data)
+
+    if (data.period) {
+        result.period = data.period.map(date => typeof date == "object" ? date.toISOString() : date)
+    }
+    if (data.dayTime) {
+        result.dayTime = {
+            day: data.dayTime.day,
+            time: data.dayTime.time?.map(time => moment(time).format("HH:mm"))
+        }
     }
 
     return {

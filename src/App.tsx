@@ -5,7 +5,7 @@ import { firebaseAuth } from "helpers/firebaseAuth";
 import Authentication from "./pages/login/Authentication";
 import UpdateUserData from "pages/login/UpdateUserData";
 import { SiderMenu } from "components/SiderMenu";
-import { CourseList, CourseShow, CourseEdit } from "pages/courses";
+import { WorkshopList, WorkshopShow, WorkshopEdit } from "pages/workshops";
 import { SessionCreate, SessionEdit, SessionList, SessionShow } from "pages/sessions";
 import { UserCreate, UsersList } from "pages/users";
 import { firestoreDatabase } from "helpers/FirestoreDatabase";
@@ -28,10 +28,10 @@ function App() {
       ]}
     >
       <Resource
-        name="courses"
-        list={CourseList}
-        show={CourseShow}
-        edit={CourseEdit}
+        name="workshops"
+        list={WorkshopList}
+        show={WorkshopShow}
+        edit={WorkshopEdit}
       />
       <Resource
         name="sessions"

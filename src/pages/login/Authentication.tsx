@@ -20,7 +20,7 @@ export default function Authentication() {
     useEffect(() => {
         firebaseAuth.auth.onAuthStateChanged(user => {
             if (user?.uid) {
-                push("/courses");
+                push("/workshops");
             }
         });
 

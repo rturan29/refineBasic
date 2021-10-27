@@ -8,7 +8,6 @@ import {
     TagField,
     FilterDropdown,
     Radio,
-    MarkdownField,
     Space,
     EditButton,
     ShowButton,
@@ -26,6 +25,8 @@ import {
 } from "@pankod/refine";
 import AddUserToSession from "components/UserTable/AddUserToSession";
 import UserTable from "components/UserTable/UserTable";
+import { weekDays } from "interfaces/lists";
+import moment from "moment";
 import { useState } from "react";
 
 export const SessionList: React.FC<IResourceComponentsProps> = () => {
@@ -37,13 +38,13 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
     const { form, formProps } = useForm();
     const { mutate } = useUpdate();
 
-    let courseIds = tableProps?.dataSource?.map((item) => item.courseId) ?? [];
-    courseIds = courseIds.filter((item, i) => courseIds.indexOf(item) === i);
-    const { data: coursesData, isLoading } = useMany<ICourse>({
-        resource: "courses",
-        ids: courseIds,
+    let workshopIds = tableProps?.dataSource?.map((item) => item.workshopId) ?? [];
+    workshopIds = workshopIds.filter((item, i) => workshopIds.indexOf(item) === i);
+    const { data: workshopsData, isLoading } = useMany<IWorkshop>({
+        resource: "workshops",
+        ids: workshopIds,
         queryOptions: {
-            enabled: courseIds.length > 0,
+            enabled: workshopIds.length > 0,
         },
     });
 
@@ -73,7 +74,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                 });
 
                 mutate({
-                    resource: "users", id: formContent.participantId, values: { courses: arrayUnion(currentRow.id) }
+                    resource: "users", id: formContent.participantId, values: { workshops: arrayUnion(currentRow.id) }
                 });
 
                 form.resetFields();
@@ -91,11 +92,11 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
             >
                 <Table {...tableProps} rowKey="id">
                     <Table.Column
-                        dataIndex="courseId"
-                        title="Course Name"
+                        dataIndex="workshopId"
+                        title="Workshop Name"
                         render={value => isLoading
                             ? <TextField value="Loading..." />
-                            : <TextField value={coursesData?.data?.find((item) => item.id === value)?.title} />}
+                            : <TextField value={workshopsData?.data?.find((item) => item.id === value)?.title} />}
                         sorter
                     />
                     <Table.Column
@@ -120,15 +121,15 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                         sorter
                     />
                     <Table.Column
-                        dataIndex="startDate"
-                        title="Start Date"
-                        render={(value) => <DateField format="DD-MM-YYYY" value={value} />}
+                        dataIndex="period"
+                        title="Period"
+                        render={(value) => <> <DateField format="DD-MM-YYYY" value={value?.[0]} /> - <DateField format="DD-MM-YYYY" value={value?.[1]} /></>}
                         sorter
                     />
                     <Table.Column
-                        dataIndex="endDate"
-                        title="End Date"
-                        render={(value) => <DateField format="DD-MM-YYYY" value={value} />}
+                        dataIndex="dayTime"
+                        title="Day Time"
+                        render={(value) => <><TextField value={weekDays[value.day as number]} /> <TextField value={moment(value?.time?.[0])?.format("HH:mm")} /> - <TextField value={moment(value?.time?.[1])?.format("HH:mm")} /></>}
                         sorter
                     />
 
@@ -145,11 +146,6 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                         sorter
                     />
 
-                    <Table.Column
-                        dataIndex="description"
-                        title="Description"
-                        render={(value) => <MarkdownField value={value} />}
-                    />
                     <Table.Column<ISession>
                         title="Participants"
                         dataIndex="participants"

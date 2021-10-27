@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 import {
     Edit,
     Form,
@@ -9,19 +9,22 @@ import {
     DatePicker,
     InputNumber,
     useSelect,
+    Col,
+    Row,
 } from "@pankod/refine";
-import ReactMarkdown from "react-markdown";
-import ReactMde from "react-mde";
-
+import { TimePicker } from "antd";
 import "react-mde/lib/styles/css/react-mde-all.css";
+import { weekDays } from "interfaces/lists";
+const { RangePicker: DateRangePicker } = DatePicker;
+const { RangePicker: TimeRangePicker } = TimePicker;
+
 
 export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
-    const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
 
     const { formProps, saveButtonProps } = useForm<ISession>();
 
-    const { selectProps: courseSelectProps } = useSelect<ICourse>({
-        resource: "courses", optionLabel: "title",
+    const { selectProps: workshopSelectProps } = useSelect<IWorkshop>({
+        resource: "workshops", optionLabel: "title",
         optionValue: "id",
     });
 
@@ -29,15 +32,15 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
         <Edit saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout="vertical">
                 <Form.Item
-                    label="Course Name"
-                    name="courseId"
+                    label="Workshop Name"
+                    name="workshopId"
                     rules={[
                         {
                             required: true,
                         },
                     ]}
                 >
-                    <Select {...courseSelectProps} />
+                    <Select {...workshopSelectProps} />
                 </Form.Item>
 
                 <Form.Item
@@ -74,26 +77,32 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Start Date"
-                    name="startDate"
+                    label="Period"
+                    name="period"
                     rules={[
                         {
                             required: true,
                         },
                     ]}
                 >
-                    <DatePicker format="DD-MM-YYYY" />
+                    <DateRangePicker format="DD-MM-YYYY" />
                 </Form.Item>
                 <Form.Item
-                    label="End Date"
-                    name="endDate"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
+                    label="Day Time"
                 >
-                    <DatePicker format="DD-MM-YYYY" />
+                    <Row>
+                        <Col span="3">
+                            <Form.Item name={["dayTime", "day"]}>
+                                <Select options={weekDays.map((label, value) => ({ label, value }))} />
+                            </Form.Item>
+                        </Col>
+                        <Col offset={1} >
+                            <Form.Item name={["dayTime", "time"]}>
+                                <TimeRangePicker format="HH:mm" />
+                            </Form.Item>
+
+                        </Col>
+                    </Row>
                 </Form.Item>
 
                 <Form.Item
@@ -118,19 +127,6 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                     ]}
                 >
                     <Input addonBefore={<>&#8378;</>} type="number" min="0" step="0.01" data-type="currency" />
-                </Form.Item>
-
-                <Form.Item
-                    label="Description"
-                    name="description"
-                >
-                    <ReactMde
-                        selectedTab={selectedTab}
-                        onTabChange={setSelectedTab}
-                        generateMarkdownPreview={(markdown) =>
-                            Promise.resolve(<ReactMarkdown>{markdown}</ReactMarkdown>)
-                        }
-                    />
                 </Form.Item>
             </Form>
         </Edit>

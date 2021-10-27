@@ -12,33 +12,33 @@ export default function UserTable(props: UserTableProps) {
             permanentFilter: [{
                 field: "id",
                 operator: "in",
-                value: props.user?.courses
+                value: props.user?.workshops
             }]
         });
 
-    let courseIds = tableProps?.dataSource?.map((item) => item.courseId) ?? [];
-    courseIds = courseIds.filter((item, i) => courseIds.indexOf(item) === i);
-    const { data: coursesData, isLoading } = useMany<ICourse>({
-        resource: "courses",
-        ids: courseIds,
+    let workshopIds = tableProps?.dataSource?.map((item) => item.workshopId) ?? [];
+    workshopIds = workshopIds.filter((item, i) => workshopIds.indexOf(item) === i);
+    const { data: workshopsData, isLoading } = useMany<IWorkshop>({
+        resource: "workshops",
+        ids: workshopIds,
         queryOptions: {
-            enabled: courseIds.length > 0,
+            enabled: workshopIds.length > 0,
         },
     });
 
     return (
         <List
             canCreate={false}
-            title={"Courses"}
+            title={"Workshops"}
             pageHeaderProps={{ extra: <RefreshButton /> }}
         >
             <Table {...tableProps} rowKey="id">
                 <Table.Column
-                    dataIndex="courseId"
-                    title="Course Name"
+                    dataIndex="workshopId"
+                    title="Workshop Name"
                     render={value => isLoading
                         ? <TextField value="Loading..." />
-                        : <TextField value={coursesData?.data?.find((item) => item.id === value)?.title} />}
+                        : <TextField value={workshopsData?.data?.find((item) => item.id === value)?.title} />}
                     sorter
                 />
 
