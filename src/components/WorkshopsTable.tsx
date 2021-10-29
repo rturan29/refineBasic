@@ -1,4 +1,4 @@
-import { Table, TextField, List, useTable, RefreshButton, DateField, useMany } from '@pankod/refine';
+import { Table, TextField, List, useTable, RefreshButton, useMany } from '@pankod/refine';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
 import React from 'react';
 

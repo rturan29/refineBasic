@@ -4,7 +4,7 @@ function getWeekDays() {
     let textKey = 4;
     let result = [];
 
-    for (let day of new Array(6)) {
+    for (let i = 0; i < 7; i++) {
         result.push(MLTextHelper("0003" + textKey++));
     }
 
