@@ -11,6 +11,7 @@ import ReactMarkdown from "react-markdown";
 import ReactMde from "react-mde";
 
 import "react-mde/lib/styles/css/react-mde-all.css";
+import MLTextHelper from "helpers/MLHelper/MLHelper";
 
 export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
@@ -23,7 +24,7 @@ export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
         <Edit saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout="vertical">
                 <Form.Item
-                    label="Title"
+                    label={MLTextHelper("00006")}
                     name="title"
                     rules={[
                         {
@@ -35,30 +36,7 @@ export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Type"
-                    name="type"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                >
-                    <Select
-                        options={[
-                            {
-                                label: "Private",
-                                value: "private",
-                            },
-                            {
-                                label: "Group",
-                                value: "group",
-                            }
-                        ]}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    label="Category"
+                    label={MLTextHelper("00007")}
                     name="category"
                     rules={[
                         {
@@ -85,7 +63,30 @@ export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Status"
+                    label={MLTextHelper("00008")}
+                    name="type"
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Select
+                        options={[
+                            {
+                                label: "Private",
+                                value: "private",
+                            },
+                            {
+                                label: "Group",
+                                value: "group",
+                            }
+                        ]}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    label={MLTextHelper("00009")}
                     name="status"
                     rules={[
                         {
@@ -108,7 +109,7 @@ export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Description"
+                    label={MLTextHelper("00010")}
                     name="description"
                     rules={[
                         {

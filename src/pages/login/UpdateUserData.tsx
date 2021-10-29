@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Form, Input, Button, Select, LayoutWrapper, Row, Col, Card, useGetIdentity, Authenticated } from "@pankod/refine";
 import { RecaptchaVerifier } from 'firebase/auth';
-import { firebaseAuth } from 'helpers/firebaseAuth';
+import { firebaseAuth } from 'helpers/firebase/firebaseAuth';
 import { IRegisterArgs, IRegisterProps, IUser } from 'interfaces/ILogin';
+import MLTextHelper from 'helpers/MLHelper/MLHelper';
 
 const { createRecaptcha, onUpdateUserData } = firebaseAuth;
 const { Option } = Select;
@@ -48,7 +49,7 @@ export default function UpdateUserData(props: IRegisterProps) {
         return (<>
             <Form.Item
                 {...labelProps}
-                label="Email"
+                label={MLTextHelper("00019")}
                 name="username"
                 rules={[
                     { type: 'email', message: 'The input is not valid E-mail!' },
@@ -60,7 +61,7 @@ export default function UpdateUserData(props: IRegisterProps) {
             </Form.Item>
             <Form.Item
                 {...labelProps}
-                label="Password"
+                label={MLTextHelper("00021")}
                 name="password"
                 rules={[{ required: true, message: 'Please input your password!' }]}
                 initialValue={hideUpdatePassword ? "********" : ""}
@@ -70,7 +71,7 @@ export default function UpdateUserData(props: IRegisterProps) {
 
             <Form.Item
                 {...labelProps}
-                label="Confirm Password"
+                label={MLTextHelper("00027")}
                 name="confirm"
                 dependencies={["password"]}
                 hasFeedback
@@ -97,7 +98,7 @@ export default function UpdateUserData(props: IRegisterProps) {
             <Form.Item
                 {...labelProps}
                 name="nameSurname"
-                label="Name Surname"
+                label={MLTextHelper("00018")}
                 rules={[
                     {
                         required: true,
@@ -113,7 +114,7 @@ export default function UpdateUserData(props: IRegisterProps) {
             <Form.Item
                 {...labelProps}
                 name="phone"
-                label="Phone Number"
+                label={MLTextHelper("00028")}
             // rules={[
             //     {
             //         required: true,
@@ -131,7 +132,7 @@ export default function UpdateUserData(props: IRegisterProps) {
             <Form.Item
                 {...labelProps}
                 name="gender"
-                label="Gender"
+                label={MLTextHelper("00022")}
             >
                 <Select placeholder="select your gender">
                     <Option value="male">Male</Option>
@@ -142,7 +143,7 @@ export default function UpdateUserData(props: IRegisterProps) {
 
             <Form.Item
                 {...labelProps}
-                label="Captcha"
+                label={MLTextHelper("00023")}
                 extra="We must make sure that your are a human.">
                 <div ref={reCaptchaContainer} >
                 </div>

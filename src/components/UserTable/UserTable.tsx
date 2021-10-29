@@ -79,7 +79,7 @@ export default function UserTable(props: UserTableProps) {
                     ? <Table.Column<IUser>
                         dataIndex="paymentCompleted"
                         title="Payment Completed"
-                        render={(_, record) => <BooleanField value={props.participants?.find(user => user.participantId === record.id)} />}
+                        render={(_, record) => <BooleanField value={props.participants?.find(user => user.participantId === record.id)?.isPaymentCompleted} />}
                         sorter
                     />
                     : <Table.Column<IUser>

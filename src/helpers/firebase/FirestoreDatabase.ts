@@ -50,6 +50,11 @@ export class FirestoreDatabase extends BaseDatabase {
                 await updateDoc(workshopRef, { workshops: arrayUnion(id) });
             } else if (action === "delete") {
                 await updateDoc(workshopRef, { workshops: arrayRemove(id) });
+                variables?.participants?.forEach(({ participantId }: any) => {
+                    const userRef = doc(this.database, "users", participantId);
+
+                    updateDoc(userRef, { workshops: arrayRemove(variables.id) });
+                });
             }
         }
     }
@@ -60,7 +65,7 @@ export class FirestoreDatabase extends BaseDatabase {
 
             const payload = requestPayloadFactory(args.resource, args.variables);
 
-            console.log(args.variables)
+            console.log(args.variables);
 
             const docRef = await addDoc(ref, payload);
 
@@ -104,7 +109,7 @@ export class FirestoreDatabase extends BaseDatabase {
         try {
             var { data } = await this.getOne(args);
 
-            await this.controlAdditionalProcess({ resource: args.resource, id: args.id, variables: data, action: "delete" })
+            await this.controlAdditionalProcess({ resource: args.resource, id: args.id, variables: data, action: "delete" });
 
             const ref = doc(this.database, args.resource, args.id);
 
@@ -172,7 +177,7 @@ export class FirestoreDatabase extends BaseDatabase {
     async getOne(args: IGetOne): Promise<any> {
         try {
             if (args.resource && args.id) {
-            const docRef = doc(this.database, args.resource, args.id);
+                const docRef = doc(this.database, args.resource, args.id);
 
                 const docSnap = await getDoc(docRef);
 

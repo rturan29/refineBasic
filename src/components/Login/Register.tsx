@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Checkbox, Button, Select } from "@pankod/refine";
 import { IRegisterProps } from 'interfaces/ILogin';
+import MLTextHelper from 'helpers/MLHelper/MLHelper';
 
 const { Option } = Select;
 
@@ -41,7 +42,7 @@ export default function Register(props: IRegisterProps) {
         <>
             <Form.Item
                 {...labelProps}
-                label="Email"
+                label={MLTextHelper("00019")}
                 name="email"
                 rules={[
                     { type: 'email', message: 'The input is not valid E-mail!' },
@@ -53,7 +54,7 @@ export default function Register(props: IRegisterProps) {
 
             <Form.Item
                 {...labelProps}
-                label="Password"
+                label={MLTextHelper("00021")}
                 name="password"
                 rules={[{ required: true, message: 'Please input your password!' }]}
             >
@@ -61,7 +62,7 @@ export default function Register(props: IRegisterProps) {
             </Form.Item>
             <Form.Item
                 {...labelProps}
-                label="Confirm Password"
+                label={MLTextHelper("00027")}
                 name="confirm"
                 dependencies={["password"]}
                 hasFeedback
@@ -87,7 +88,7 @@ export default function Register(props: IRegisterProps) {
             <Form.Item
                 {...labelProps}
                 name="nameSurname"
-                label="Name Surname"
+                label={MLTextHelper("00018")}
                 rules={[
                     {
                         required: true,
@@ -102,7 +103,7 @@ export default function Register(props: IRegisterProps) {
             <Form.Item
                 {...labelProps}
                 name="phone"
-                label="Phone Number"
+                label={MLTextHelper("00028")}
             // rules={[
             //     {
             //         required: true,
@@ -121,7 +122,7 @@ export default function Register(props: IRegisterProps) {
             <Form.Item
                 {...labelProps}
                 name="gender"
-                label="Gender"
+                label={MLTextHelper("00022")}
             >
                 <Select placeholder="select your gender">
                     <Option value="male">Male</Option>
@@ -132,7 +133,7 @@ export default function Register(props: IRegisterProps) {
 
             <Form.Item
                 {...labelProps}
-                label="Captcha"
+                label={MLTextHelper("00023")}
                 extra="We must make sure that your are a human.">
                 <div ref={props.setReCaptchaContainer} >
                 </div>
@@ -161,7 +162,7 @@ export default function Register(props: IRegisterProps) {
 
             <Form.Item wrapperCol={{ offset: 7, span: 16 }}>
                 <Button style={{ marginRight: "100px" }} type="primary" htmlType="submit">
-                    Register
+                    {MLTextHelper("00032")}
                 </Button>
             </Form.Item>
         </>

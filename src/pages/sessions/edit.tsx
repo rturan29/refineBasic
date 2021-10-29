@@ -15,6 +15,7 @@ import {
 import { TimePicker } from "antd";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { weekDays } from "interfaces/lists";
+import MLTextHelper from "helpers/MLHelper/MLHelper";
 const { RangePicker: DateRangePicker } = DatePicker;
 const { RangePicker: TimeRangePicker } = TimePicker;
 
@@ -32,7 +33,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
         <Edit saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout="vertical">
                 <Form.Item
-                    label="Workshop Name"
+                    label={MLTextHelper("00012")}
                     name="workshopId"
                     rules={[
                         {
@@ -44,7 +45,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Status"
+                    label={MLTextHelper("00009")}
                     name="status"
                     rules={[
                         {
@@ -70,14 +71,14 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                     />
                 </Form.Item>
                 <Form.Item
-                    label="Teacher"
+                    label={MLTextHelper("00013")}
                     name="teacher"
                 >
                     <Input />
                 </Form.Item>
 
                 <Form.Item
-                    label="Period"
+                    label={MLTextHelper("00014")}
                     name="period"
                     rules={[
                         {
@@ -88,16 +89,16 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                     <DateRangePicker format="DD-MM-YYYY" />
                 </Form.Item>
                 <Form.Item
-                    label="Day Time"
+                    noStyle
                 >
                     <Row>
                         <Col span="3">
-                            <Form.Item name={["dayTime", "day"]}>
+                            <Form.Item label={MLTextHelper("00025")} name={["dayTime", "day"]}>
                                 <Select options={weekDays.map((label, value) => ({ label, value }))} />
                             </Form.Item>
                         </Col>
                         <Col offset={1} >
-                            <Form.Item name={["dayTime", "time"]}>
+                            <Form.Item label={MLTextHelper("00026")} name={["dayTime", "time"]}>
                                 <TimeRangePicker format="HH:mm" />
                             </Form.Item>
 
@@ -106,7 +107,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Quota"
+                    label={MLTextHelper("00016")}
                     name="quota"
                     rules={[
                         {
@@ -118,7 +119,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Payment Amount"
+                    label={MLTextHelper("00017")}
                     name="paymentAmount"
                     rules={[
                         {

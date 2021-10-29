@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Login from 'components/Login/Login';
 import { AntdLayout, Row, Col, Form, Card, Link, useLogin, useNavigation } from '@pankod/refine';
 import ForgotPassword from 'components/Login/ForgotPassword';
-import { firebaseAuth } from 'helpers/firebaseAuth';
+import { firebaseAuth } from 'helpers/firebase/firebaseAuth';
 import Register from 'components/Login/Register';
 import { RecaptchaVerifier } from '@firebase/auth';
 import { ILoginArgs, LoginLocationTypes, IRegisterArgs } from 'interfaces/ILogin';

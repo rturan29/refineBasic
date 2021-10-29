@@ -1,4 +1,5 @@
 import { Table, TextField, List, useTable, RefreshButton, DateField, useMany } from '@pankod/refine';
+import MLTextHelper from 'helpers/MLHelper/MLHelper';
 import React from 'react';
 
 type UserTableProps = React.PropsWithChildren<{ user?: IUser; }>;
@@ -29,13 +30,13 @@ export default function UserTable(props: UserTableProps) {
     return (
         <List
             canCreate={false}
-            title={"Workshops"}
+            title={MLTextHelper("00001")}
             pageHeaderProps={{ extra: <RefreshButton /> }}
         >
             <Table {...tableProps} rowKey="id">
                 <Table.Column
                     dataIndex="workshopId"
-                    title="Workshop Name"
+                    title={MLTextHelper("00012")}
                     render={value => isLoading
                         ? <TextField value="Loading..." />
                         : <TextField value={workshopsData?.data?.find((item) => item.id === value)?.title} />}
@@ -44,13 +45,13 @@ export default function UserTable(props: UserTableProps) {
 
                 <Table.Column
                     dataIndex="teacher"
-                    title="Teacher"
+                    title={MLTextHelper("00013")}
                     render={(value) => <TextField value={value} />}
                     sorter
                 />
-                <Table.Column
+                {/* <Table.Column
                     dataIndex="startDate"
-                    title="Start Date"
+                    title="Period"
                     render={(value) => <DateField format="DD-MM-YYYY" value={value} />}
                     sorter
                 />
@@ -59,7 +60,7 @@ export default function UserTable(props: UserTableProps) {
                     title="End Date"
                     render={(value) => <DateField format="DD-MM-YYYY" value={value} />}
                     sorter
-                />
+                /> */}
             </Table>
         </List>
     );

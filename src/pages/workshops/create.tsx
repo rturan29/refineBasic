@@ -10,6 +10,7 @@ import ReactMarkdown from "react-markdown";
 import ReactMde from "react-mde";
 
 import "react-mde/lib/styles/css/react-mde-all.css";
+import MLTextHelper from "helpers/MLHelper/MLHelper";
 
 export const WorkshopCreate: React.FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
@@ -17,7 +18,7 @@ export const WorkshopCreate: React.FC<IResourceComponentsProps> = () => {
     return (
         <>
             <Form.Item
-                label="Title"
+                label={MLTextHelper("00006")}
                 name="title"
                 rules={[
                     {
@@ -29,7 +30,7 @@ export const WorkshopCreate: React.FC<IResourceComponentsProps> = () => {
             </Form.Item>
 
             <Form.Item
-                label="Category"
+                label={MLTextHelper("00007")}
                 name="category"
                 rules={[
                     {
@@ -56,7 +57,7 @@ export const WorkshopCreate: React.FC<IResourceComponentsProps> = () => {
             </Form.Item>
 
             <Form.Item
-                label="Type"
+                label={MLTextHelper("00008")}
                 name="type"
                 rules={[
                     {
@@ -79,7 +80,7 @@ export const WorkshopCreate: React.FC<IResourceComponentsProps> = () => {
             </Form.Item>
 
             <Form.Item
-                label="Status"
+                label={MLTextHelper("00009")}
                 name="status"
                 rules={[
                     {
@@ -102,7 +103,7 @@ export const WorkshopCreate: React.FC<IResourceComponentsProps> = () => {
             </Form.Item>
 
             <Form.Item
-                label="Description"
+                label={MLTextHelper("00010")}
                 name="description"
                 rules={[
                     {

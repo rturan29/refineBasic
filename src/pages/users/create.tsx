@@ -7,6 +7,7 @@ import {
     Create,
     useForm
 } from "@pankod/refine";
+import MLTextHelper from "helpers/MLHelper/MLHelper";
 
 const { Option } = Select;
 
@@ -18,7 +19,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
         <Create saveButtonProps={saveButtonProps}>
             <Form {...formProps} layout="vertical">
                 <Form.Item
-                    label="Name Surname"
+                    label={MLTextHelper("00018")}
                     name="nameSurname"
                     rules={[
                         {
@@ -29,7 +30,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
                     <Input />
                 </Form.Item>
                 <Form.Item
-                    label="Email"
+                    label={MLTextHelper("00019")}
                     name="email"
                     rules={[
                         { type: 'email', message: 'The input is not valid E-mail!' },
@@ -41,7 +42,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
                 <Form.Item
 
                     name="phone"
-                    label="Phone Number"
+                    label={MLTextHelper("00020")}
                     rules={[
                         {
                             required: true,
@@ -58,7 +59,7 @@ export const UserCreate: React.FC<IResourceComponentsProps> = () => {
 
                 <Form.Item
                     name="gender"
-                    label="Gender"
+                    label={MLTextHelper("00022")}
                 >
                     <Select placeholder="select your gender">
                         <Option value="male">Male</Option>

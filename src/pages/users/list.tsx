@@ -7,6 +7,7 @@ import {
 import WorkshopsTable from "components/WorkshopsTable";
 import UserTable from "components/UserTable/UserTable";
 import { useState } from "react";
+import MLTextHelper from "helpers/MLHelper/MLHelper";
 
 export const UsersList: React.FC<IResourceComponentsProps> = () => {
     const [currentRow, setCurrentRow] = useState<IUser>();
@@ -17,7 +18,7 @@ export const UsersList: React.FC<IResourceComponentsProps> = () => {
     return (
         <>
             {<UserTable showWorkshops={show} setUserCurrentRow={setCurrentRow} />}
-            <Modal {...modalProps} title="Show Workshops" footer={null}>
+            <Modal {...modalProps} title={MLTextHelper("00033")} footer={null}>
                 <Form {...formProps} layout="vertical">
                     <WorkshopsTable user={currentRow} />
                 </Form>

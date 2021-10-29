@@ -1,4 +1,5 @@
 import { Form, Select, useSelect, Switch } from '@pankod/refine';
+import MLTextHelper from 'helpers/MLHelper/MLHelper';
 import React from 'react';
 
 type AddUserToSessionProps = React.PropsWithChildren<{ participants?: IParticipant[]; }>;
@@ -16,7 +17,7 @@ export default function AddUserToSession(props: AddUserToSessionProps) {
     return (
         <>
             <Form.Item
-                label="Participant"
+                label={MLTextHelper("00029")}
                 name="participantId"
                 rules={[
                     {
@@ -28,7 +29,7 @@ export default function AddUserToSession(props: AddUserToSessionProps) {
             </Form.Item>
 
             <Form.Item
-                label="Payment Completed"
+                label={MLTextHelper("00024")}
                 name="paymentCompleted"
                 rules={[
                     {

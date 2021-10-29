@@ -24,7 +24,7 @@ interface IWorkshop {
   description: string;
   status: "published" | "draft";
   sessions: Array<string>;
-  type: "private " | "group"
+  type: "private" | "group"
 }
 
 interface ICategory {

@@ -25,6 +25,7 @@ import {
 } from "@pankod/refine";
 import AddUserToSession from "components/UserTable/AddUserToSession";
 import UserTable from "components/UserTable/UserTable";
+import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { weekDays } from "interfaces/lists";
 import moment from "moment";
 import { useState } from "react";
@@ -93,7 +94,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                 <Table {...tableProps} rowKey="id">
                     <Table.Column
                         dataIndex="workshopId"
-                        title="Workshop Name"
+                        title={MLTextHelper("00012")}
                         render={value => isLoading
                             ? <TextField value="Loading..." />
                             : <TextField value={workshopsData?.data?.find((item) => item.id === value)?.title} />}
@@ -101,7 +102,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                     />
                     <Table.Column
                         dataIndex="status"
-                        title="Status"
+                        title={MLTextHelper("00009")}
                         render={value => <TagField value={value} />}
                         sorter
                         filterDropdown={(props) => (
@@ -116,49 +117,55 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                     />
                     <Table.Column
                         dataIndex="teacher"
-                        title="Teacher"
+                        title={MLTextHelper("00013")}
                         render={(value) => <TextField value={value} />}
                         sorter
                     />
                     <Table.Column
                         dataIndex="period"
-                        title="Period"
+                        title={MLTextHelper("00014")}
                         render={(value) => <> <DateField format="DD-MM-YYYY" value={value?.[0]} /> - <DateField format="DD-MM-YYYY" value={value?.[1]} /></>}
                         sorter
                     />
                     <Table.Column
                         dataIndex="dayTime"
-                        title="Day Time"
-                        render={(value) => <><TextField value={weekDays[value.day as number]} /> <TextField value={moment(value?.time?.[0])?.format("HH:mm")} /> - <TextField value={moment(value?.time?.[1])?.format("HH:mm")} /></>}
+                        title={MLTextHelper("00015")}
+                        render={(value) =>
+                            <>
+                                <TextField value={`${weekDays[value.day as number]} `} />
+                                <TextField value={moment(value?.time?.[0])?.format("HH:mm")} />
+                                {" - "}
+                                <TextField value={moment(value?.time?.[1])?.format("HH:mm")} />
+                            </>}
                         sorter
                     />
 
                     <Table.Column
                         dataIndex="quota"
-                        title="Quata"
+                        title={MLTextHelper("00016")}
                         render={(value) => <NumberField value={value} />}
                         sorter
                     />
                     <Table.Column
                         dataIndex="paymentAmount"
-                        title="PaymentAmount"
+                        title={MLTextHelper("00017")}
                         render={(value) => <NumberField locale="tr" options={{ style: 'currency', currency: 'TRY' }} value={value} />}
                         sorter
                     />
 
                     <Table.Column<ISession>
-                        title="Participants"
+                        title={MLTextHelper("00004")}
                         dataIndex="participants"
                         render={(value, record) => (
                             <Space>
                                 <NumberField value={value?.length || 0} />
                                 {value?.length ? <ShowButton hideText size="small" onClick={() => handleShowModal(record, "show")} /> : null}
-                                <CreateButton hideText size="small" onClick={() => handleShowModal(record, "create")} />
+                                {value?.length < record.quota ? <CreateButton hideText size="small" onClick={() => handleShowModal(record, "create")} /> : null}
                             </Space>
                         )}
                     />
                     <Table.Column<ISession>
-                        title="Actions"
+                        title={MLTextHelper("00011")}
                         dataIndex="actions"
                         render={(_, record) => (
                             <Space>
@@ -173,7 +180,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
             <Modal {...customModalprops} >
                 {modalRole === "show"
                     ? <UserTable participants={currentRow?.participants} isSessionUsers sessionId={currentRow?.id} resetSessionData={tableQueryResult.refetch} />
-                    : (<Form {...formProps} onFinish={(values) => console.log(values)}>
+                    : (<Form {...formProps}>
                         <AddUserToSession participants={currentRow?.participants} />
                     </Form>)
                 }

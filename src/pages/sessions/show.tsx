@@ -7,6 +7,7 @@ import {
     useOne,
     DateField,
 } from "@pankod/refine";
+import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { weekDays } from "interfaces/lists";
 
 
@@ -25,27 +26,27 @@ export const SessionShow: React.FC<IResourceComponentsProps> = () => {
 
     return (
         <Show isLoading={isLoading}>
-            <Title level={5}>Workshop Name</Title>
+            <Title level={5}>{MLTextHelper("00012")}</Title>
             <Text>{workshopData?.data.title}</Text>
 
-            <Title level={5}>Status</Title>
+            <Title level={5}>{MLTextHelper("00009")}</Title>
             <Text>
                 <Tag>{record?.status}</Tag>
             </Text>
 
-            <Title level={5}>Teacher</Title>
+            <Title level={5}>{MLTextHelper("00013")}</Title>
             <Text>{record?.teacher}</Text>
 
-            <Title level={5}>Period</Title>
+            <Title level={5}>{MLTextHelper("00014")}</Title>
             <DateField value={record?.period[0]} /> - <DateField value={record?.period[1]} />
 
-            <Title level={5}>Day Time</Title>
+            <Title level={5}>{MLTextHelper("00015")}</Title>
             <Text>{weekDays[record?.dayTime?.day as number]}</Text> <Text>{record?.dayTime?.time?.[0]}</Text> - <Text>{record?.dayTime?.time?.[1]}</Text>
 
-            <Title level={5}>Quota</Title>
+            <Title level={5}>{MLTextHelper("00016")}</Title>
             <Text>{record?.quota}</Text>
 
-            <Title level={5}>Payment Amount</Title>
+            <Title level={5}>{MLTextHelper("00017")}</Title>
             <Text>{record?.paymentAmount}&#8378;</Text>
 
         </Show>

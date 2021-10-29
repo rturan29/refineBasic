@@ -17,6 +17,7 @@ import {
     Form,
     Modal,
 } from "@pankod/refine";
+import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { WorkshopCreate } from ".";
 
 export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
@@ -34,23 +35,21 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                 <Table {...tableProps} rowKey="id">
                     <Table.Column
                         dataIndex="title"
-                        key="title"
-                        title="Title"
+                        title={MLTextHelper("00006")}
                         render={(value) => <TextField value={value} />}
                         defaultSortOrder={getDefaultSortOrder("title", sorter)}
                         sorter
                     />
                     <Table.Column
                         dataIndex="category"
-                        key="category"
-                        title="Category"
+                        title={MLTextHelper("00007")}
                         render={(value) => <TextField value={value} />}
                         defaultSortOrder={getDefaultSortOrder("createdAt", sorter)}
                         sorter
                     />
                     <Table.Column
                         dataIndex="type"
-                        title="Type"
+                        title={MLTextHelper("00008")}
                         render={(value) => <TagField value={value} />}
                         defaultSortOrder={getDefaultSortOrder("type", sorter)}
                         sorter
@@ -65,8 +64,7 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                     />
                     <Table.Column
                         dataIndex="status"
-                        key="status"
-                        title="Status"
+                        title={MLTextHelper("00009")}
                         render={(value: string) => <TagField value={value} />}
                         defaultSortOrder={getDefaultSortOrder("status", sorter)}
                         sorter
@@ -82,12 +80,11 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                     />
                     <Table.Column
                         dataIndex="description"
-                        key="description"
-                        title="Description"
+                        title={MLTextHelper("00010")}
                         render={(value) => <MarkdownField value={value} />}
                     />
                     <Table.Column<IPost>
-                        title="Actions"
+                        title={MLTextHelper("00011")}
                         dataIndex="actions"
                         render={(_, record) => (
                             <Space>
