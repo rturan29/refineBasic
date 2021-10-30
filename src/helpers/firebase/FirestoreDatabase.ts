@@ -1,4 +1,4 @@
-import { Firestore, getDocs, getFirestore, collection, addDoc, doc, getDoc, updateDoc, deleteDoc, where, query, CollectionReference, DocumentData, Query, orderBy, arrayUnion, arrayRemove } from "firebase/firestore";
+import { Firestore, getDocs, getFirestore, collection, addDoc, doc, getDoc, updateDoc, deleteDoc, where, query, CollectionReference, DocumentData, Query, orderBy } from "firebase/firestore";
 import { ICreateData, IDeleteData, IDeleteManyData, IGetList, IGetMany, IGetOne, IUpdateData, IUpdateManyData } from "interfaces/IDataBase";
 import { BaseDatabase } from "./Database";
 import { requestPayloadFactory } from "./requestPayloadFactory";
@@ -14,7 +14,6 @@ export class FirestoreDatabase extends BaseDatabase {
 
         this.getCollectionRef = this.getCollectionRef.bind(this);
         this.getFilterQuery = this.getFilterQuery.bind(this);
-        this.controlAdditionalProcess = this.controlAdditionalProcess.bind(this);
     }
 
     getCollectionRef(resource: string) {
@@ -41,42 +40,18 @@ export class FirestoreDatabase extends BaseDatabase {
         }
     }
 
-    async controlAdditionalProcess({ resource, variables, id, action }: { resource: string, variables?: any, id: string, action: string; }): Promise<any> {
-
-        if (resource === "sessions" && variables.workshopId) {
-            const workshopRef = doc(this.database, "workshops", variables.workshopId);
-
-            if (action === "create") {
-                await updateDoc(workshopRef, { workshops: arrayUnion(id) });
-            } else if (action === "delete") {
-                await updateDoc(workshopRef, { workshops: arrayRemove(id) });
-                variables?.participants?.forEach(({ participantId }: any) => {
-                    const userRef = doc(this.database, "users", participantId);
-
-                    updateDoc(userRef, { workshops: arrayRemove(variables.id) });
-                });
-            }
-        }
-    }
-
     async createData<TVariables = {}>(args: ICreateData<TVariables>): Promise<any> {
         try {
             const ref = this.getCollectionRef(args.resource);
 
             const payload = requestPayloadFactory(args.resource, args.variables);
 
-            console.log(args.variables);
-
             const docRef = await addDoc(ref, payload);
-
-            await updateDoc(doc(this.database, args.resource, docRef.id), { id: docRef.id });
 
             let data = {
                 id: docRef.id,
                 ...payload
             };
-
-            await this.controlAdditionalProcess({ resource: args.resource, variables: args.variables, id: data.id, action: "create" });
 
             return { data };
         } catch (error) {
@@ -107,9 +82,6 @@ export class FirestoreDatabase extends BaseDatabase {
 
     async deleteData(args: IDeleteData): Promise<any> {
         try {
-            var { data } = await this.getOne(args);
-
-            await this.controlAdditionalProcess({ resource: args.resource, id: args.id, variables: data, action: "delete" });
 
             const ref = doc(this.database, args.resource, args.id);
 
@@ -181,7 +153,9 @@ export class FirestoreDatabase extends BaseDatabase {
 
                 const docSnap = await getDoc(docRef);
 
-                return { data: docSnap.data() };
+                const data = { ...responsePayloadFactory(args.resource, docSnap.data()), id: docSnap.id };
+
+                return { data };
             }
 
         } catch (error: any) {

@@ -1,0 +1,18 @@
+[debug] [2021-10-30T15:41:08.818Z] ----------------------------------------------------------------------
+[debug] [2021-10-30T15:41:08.822Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2021-10-30T15:41:08.822Z] CLI Version:   9.21.0
+[debug] [2021-10-30T15:41:08.822Z] Platform:      win32
+[debug] [2021-10-30T15:41:08.822Z] Node Version:  v12.16.2
+[debug] [2021-10-30T15:41:08.826Z] Time:          Sat Oct 30 2021 18:41:08 GMT+0300 (GMT+03:00)
+[debug] [2021-10-30T15:41:08.827Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-10-30T15:41:08.836Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2021-10-30T15:41:08.966Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-10-30T15:41:08.966Z] > authorizing via signed-in user (rturan29@gmail.com)
+[debug] [2021-10-30T15:41:08.966Z] [iam] checking project react-auth-2d103 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2021-10-30T15:41:08.968Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-10-30T15:41:08.969Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-10-30T15:41:09.819Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Sat, 30 Oct 2021 15:41:08 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-10-30T15:41:09.855Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/react-auth-2d103:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
