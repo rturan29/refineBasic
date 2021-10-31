@@ -32,7 +32,14 @@ const textListEN: { [key: string]: string; } = {
     "00031": "Submit",
     "00032": "Register",
     "00033": "Show Workshops",
-
+    "00034": "Monday",
+    "00035": "Tuesday",
+    "00036": "wednesday",
+    "00037": "Thursday",
+    "00038": "Friday",
+    "00039": "Saturday",
+    "00040": "Sunday",
+    "00041": "Logout",
 };
 
 export default textListEN;

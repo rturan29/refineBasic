@@ -39,6 +39,7 @@ const textListTR: { [key: string]: string; } = {
     "00038": "Cuma",
     "00039": "Cumartesi",
     "00040": "Pazar",
+    "00041": "Çıkış Yap",
 };
 
 export default textListTR;

@@ -1,5 +1,7 @@
-import { Table, TextField, List, useTable, RefreshButton, useMany } from '@pankod/refine';
+import { Table, TextField, List, useTable, RefreshButton, useMany, DateField } from '@pankod/refine';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
+import { weekDays } from 'interfaces/lists';
+import moment from 'moment';
 import React from 'react';
 
 type UserTableProps = React.PropsWithChildren<{ user?: IUser; }>;
@@ -49,18 +51,24 @@ export default function UserTable(props: UserTableProps) {
                     render={(value) => <TextField value={value} />}
                     sorter
                 />
-                {/* <Table.Column
-                    dataIndex="startDate"
-                    title="Period"
-                    render={(value) => <DateField format="DD-MM-YYYY" value={value} />}
+                <Table.Column
+                    dataIndex="period"
+                    title={MLTextHelper("00014")}
+                    render={(value) => <> <DateField format="DD-MM-YYYY" value={value?.[0]} /> - <DateField format="DD-MM-YYYY" value={value?.[1]} /></>}
                     sorter
                 />
                 <Table.Column
-                    dataIndex="endDate"
-                    title="End Date"
-                    render={(value) => <DateField format="DD-MM-YYYY" value={value} />}
+                    dataIndex="dayTime"
+                    title={MLTextHelper("00015")}
+                    render={(value) =>
+                        <>
+                            <TextField value={`${weekDays[value.day as number]} `} />
+                            <TextField value={moment(value?.time?.[0])?.format("HH:mm")} />
+                            {" - "}
+                            <TextField value={moment(value?.time?.[1])?.format("HH:mm")} />
+                        </>}
                     sorter
-                /> */}
+                />
             </Table>
         </List>
     );

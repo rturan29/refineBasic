@@ -9,6 +9,7 @@ import {
 } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { weekDays } from "interfaces/lists";
+import moment from "moment";
 
 
 const { Title, Text } = Typography;
@@ -41,7 +42,10 @@ export const SessionShow: React.FC<IResourceComponentsProps> = () => {
             <DateField value={record?.period[0]} /> - <DateField value={record?.period[1]} />
 
             <Title level={5}>{MLTextHelper("00015")}</Title>
-            <Text>{weekDays[record?.dayTime?.day as number]}</Text> <Text>{record?.dayTime?.time?.[0]}</Text> - <Text>{record?.dayTime?.time?.[1]}</Text>
+            <Text>{`${weekDays[record?.dayTime?.day as number]}  `}</Text>
+            <Text>{moment(record?.dayTime?.time?.[0])?.format("HH:mm")}</Text>
+            {" - "}
+            <Text>{moment(record?.dayTime?.time?.[1])?.format("HH:mm")}</Text>
 
             <Title level={5}>{MLTextHelper("00016")}</Title>
             <Text>{record?.quota}</Text>

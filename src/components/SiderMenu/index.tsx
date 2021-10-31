@@ -12,6 +12,8 @@ import {
     useLogout,
 } from "@pankod/refine";
 import { customComponentList } from './customComponentList';
+import MLTextHelper from 'helpers/MLHelper/MLHelper';
+import { IMenuItem } from '@pankod/refine/dist/interfaces';
 
 export const SiderMenu: React.FC = () => {
     const Title = useTitle();
@@ -30,11 +32,12 @@ export const SiderMenu: React.FC = () => {
         push("./login");
     }
 
+
     return (
         <AntdLayout.Sider
             collapsible
             collapsed={collapsed}
-            onCollapse={(collapsed: boolean): void => setCollapsed(collapsed)}
+            onCollapse={(isCollapsed: boolean) => setCollapsed(isCollapsed)}
             collapsedWidth={isMobile ? 0 : 80}
             breakpoint="lg"
             style={isMobile ? antLayoutSiderMobile : antLayoutSider}
@@ -44,26 +47,26 @@ export const SiderMenu: React.FC = () => {
                 selectedKeys={[selectedKey]}
                 mode="inline"
             >
-                {menuItems.map(({ icon, route, label }) => (
-                    <Menu.Item key={route} icon={icon}>
-                        <Link to={route}>{label}</Link>
-                    </Menu.Item>
-                ))}
+                {menuItems.map(getMenuItem)}
 
-                {customComponentList.map(({ icon, route, label }) => (
-                    <Menu.Item key={route} icon={icon}>
-                        <Link to={route}>{label}</Link>
-                    </Menu.Item>
-                ))}
+                {customComponentList.map(getMenuItem)}
 
                 <Menu.Item onClick={onLogOut} key="logout" icon={<Icons.LogoutOutlined />}>
-                    Logout
+                    {MLTextHelper("00041")}
                 </Menu.Item>
 
             </Menu>
         </AntdLayout.Sider>
     );
 };
+
+function getMenuItem({ icon, route, label }: IMenuItem) {
+    return (
+        <Menu.Item key={route} icon={icon}>
+            <Link to={route}>{label}</Link>
+        </Menu.Item>
+    );
+}
 
 const antLayoutSider: CSSProperties = {
     position: "relative",

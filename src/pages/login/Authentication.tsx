@@ -64,9 +64,9 @@ export default function Authentication() {
         }
     }
 
-    function onRegister(values: ILoginArgs | IRegisterArgs) {
+    async function onRegister(values: ILoginArgs | IRegisterArgs) {
         if (reCaptcha.current) {
-            handleRegister(values, reCaptcha.current, setLocation);
+            await handleRegister(values, reCaptcha.current, setLocation);
             createData({ resource: "users", values: _.omit(values, ["password", "rememberme"]) });
         }
     }

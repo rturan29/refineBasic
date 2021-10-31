@@ -58,9 +58,9 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
         footer: modalRole === "show" ? null : undefined
     };
 
-    function handleShowModal(record: ISession, modalRole: "show" | "create") {
+    function handleShowModal(record: ISession, newModalRole: "show" | "create") {
         setCurrentRow(record);
-        setModalRole(modalRole);
+        setModalRole(newModalRole);
         show();
     }
 
@@ -132,7 +132,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                         title={MLTextHelper("00015")}
                         render={(value) =>
                             <>
-                                <TextField value={`${weekDays[value.day as number]} `} />
+                                <TextField value={`${weekDays[value.day as number]}  `} />
                                 <TextField value={moment(value?.time?.[0])?.format("HH:mm")} />
                                 {" - "}
                                 <TextField value={moment(value?.time?.[1])?.format("HH:mm")} />

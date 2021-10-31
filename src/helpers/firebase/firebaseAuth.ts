@@ -116,11 +116,13 @@ export class FirebaseAuth {
 
     async getPermissions(): Promise<any> {
         if (this.auth) {
-            if (this.auth.currentUser?.email === process.env.REACT_APP_ADMIN_USER) {
+
+            const tokenResult = await this.auth.currentUser?.getIdTokenResult();
+
+            if (tokenResult?.claims?.admin) {
                 Promise.resolve("admin");
-            } else {
-                Promise.resolve("participant");
-            }
+            } else { Promise.resolve("participant"); }
+
         } else {
             Promise.reject();
         }

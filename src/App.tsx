@@ -5,13 +5,29 @@ import firebaseAuth from "helpers/firebase/firebaseAuth";
 import Authentication from "./pages/login/Authentication";
 import UpdateUserData from "pages/login/UpdateUserData";
 import { SiderMenu } from "components/SiderMenu";
-import { WorkshopList, WorkshopShow, WorkshopEdit } from "pages/workshops";
-import { SessionCreate, SessionEdit, SessionList, SessionShow } from "pages/sessions";
-import { UserCreate, UsersList } from "pages/users";
+import { WorkshopList, WorkshopShow, WorkshopEdit } from "pages/AdminPages/workshops";
+import { SessionCreate, SessionEdit, SessionList, SessionShow } from "pages/AdminPages/sessions";
+import { UserCreate, UsersList } from "pages/AdminPages/users";
 import { firestoreDatabase } from "helpers/firebase/FirestoreDatabase";
+import { useEffect, useState } from "react";
 
 
 function App() {
+
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    getUserStatus();
+  }, []);
+
+  async function getUserStatus() {
+    const role = await firebaseAuth.getPermissions();
+    if (role === "admin") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }
 
   return (
     <Refine
