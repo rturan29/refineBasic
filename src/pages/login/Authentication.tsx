@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Login from 'components/Login/Login';
-import { AntdLayout, Row, Col, Form, Card, Link, useLogin, useNavigation } from '@pankod/refine';
-import ForgotPassword from 'components/Login/ForgotPassword';
-import { firebaseAuth } from 'helpers/firebase/firebaseAuth';
-import Register from 'components/Login/Register';
+import { AntdLayout, Row, Col, Form, Card, useLogin, useNavigation, useCreate } from '@pankod/refine';
 import { RecaptchaVerifier } from '@firebase/auth';
+import _ from "lodash";
+import Login from 'components/Login/Login';
+import Register from 'components/Login/Register';
+import ForgotPassword from 'components/Login/ForgotPassword';
+import firebaseAuth from 'helpers/firebase/firebaseAuth';
 import { ILoginArgs, LoginLocationTypes, IRegisterArgs } from 'interfaces/ILogin';
 
 const { createRecaptcha, handleResetPassword, handleRegister } = firebaseAuth;
@@ -12,6 +13,7 @@ const { createRecaptcha, handleResetPassword, handleRegister } = firebaseAuth;
 
 export default function Authentication() {
     const { mutate: login } = useLogin<ILoginArgs>();
+    const { mutate: createData } = useCreate<IUser>();
     const [location, setLocation] = useState<LoginLocationTypes>("login");
     const reCaptchaContainer = useRef<HTMLDivElement | null>(null);
     const reCaptcha = useRef<RecaptchaVerifier | null>(null);
@@ -53,18 +55,19 @@ export default function Authentication() {
     function renderAuthContent() {
         switch (location) {
             case "register":
-                return <Register setReCaptchaContainer={setReCaptchaContainer} />;
+                return <Register setLocation={setLocation} setReCaptchaContainer={setReCaptchaContainer} />;
             case "forgotPassword":
-                return <ForgotPassword />;
+                return <ForgotPassword setLocation={setLocation} />;
             case "login":
             default:
-                return <Login />;
+                return <Login setLocation={setLocation} />;
         }
     }
 
     function onRegister(values: ILoginArgs | IRegisterArgs) {
         if (reCaptcha.current) {
             handleRegister(values, reCaptcha.current, setLocation);
+            createData({ resource: "users", values: _.omit(values, ["password", "rememberme"]) });
         }
     }
 
@@ -81,10 +84,7 @@ export default function Authentication() {
                 login(values);
                 break;
         }
-
     }
-
-
 
     return (
         <AntdLayout>
@@ -103,7 +103,6 @@ export default function Authentication() {
                             }}
                             title={CardTitle}>
                             {renderAuthContent()}
-                            {getLoginHelperLinks(location, setLocation)}
                         </Card>
                     </Form>
                 </Col>
@@ -112,62 +111,3 @@ export default function Authentication() {
     );
 }
 
-function getLoginHelperLinks(loginLocation: LoginLocationTypes, setLocation: (location: LoginLocationTypes) => void) {
-    const onForgotPassword = () => setLocation("forgotPassword");
-
-    function onRegister() {
-        setLocation("register");
-    }
-
-    function onReturnLogin() {
-        setLocation("login");
-    }
-
-    function getForgotPasswordLink() {
-        return (<Link to="/login" onClick={onForgotPassword}>Forgot password</Link>);
-    }
-
-    function getGoBackToLoginLink() {
-        return (<Link to="/login" onClick={onReturnLogin}>Go back to Login</Link>);
-    }
-
-    function getRegisterLink() {
-        return (<Link to="/login" onClick={onRegister}>Register now</Link>);
-    }
-
-    function getLeftLink() {
-        switch (loginLocation) {
-            case "forgotPassword":
-                return getGoBackToLoginLink();
-            case "register":
-            case "login":
-                return getForgotPasswordLink();
-        }
-    }
-
-    function getRightLink() {
-        switch (loginLocation) {
-            case "register":
-                return getGoBackToLoginLink();
-            case "forgotPassword":
-            case "login":
-                return getRegisterLink();
-        }
-    }
-
-    function getLoginLinks() {
-        return <>
-            <Row>
-                <Col span={7}>
-                    {getLeftLink()}
-                </Col>
-                <Col>
-                    {getRightLink()}
-                </Col>
-            </Row>
-        </>;
-    }
-
-
-    return getLoginLinks();
-}

@@ -1,7 +1,7 @@
 import { Refine, Resource } from "@pankod/refine";
 
 import "@pankod/refine/dist/styles.min.css";
-import { firebaseAuth } from "helpers/firebase/firebaseAuth";
+import firebaseAuth from "helpers/firebase/firebaseAuth";
 import Authentication from "./pages/login/Authentication";
 import UpdateUserData from "pages/login/UpdateUserData";
 import { SiderMenu } from "components/SiderMenu";

@@ -12,11 +12,13 @@ export interface ILoginProps {
 
 export interface IRegisterProps {
     setReCaptchaContainer: (ref: RefObject<HTMLDivElement>) => void;
+    setLocation: (location: LoginLocationTypes) => void;
 }
 
 export interface IRegisterArgs extends ILoginArgs {
     phone?: string;
     nameSurname?: string;
+    gender?: string
 }
 
 export interface IUser extends Partial<User> {

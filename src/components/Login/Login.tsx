@@ -1,10 +1,11 @@
 import React from 'react';
-import { Form, Input, Checkbox, Button } from "@pankod/refine";
+import { Form, Input, Checkbox, Button, Col, Row, Link } from "@pankod/refine";
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
+import { LoginLocationTypes } from 'interfaces/ILogin';
 
 
 
-export default function Login() {
+export default function Login(props: { setLocation: (location: LoginLocationTypes) => void; }) {
 
     return (
         <>
@@ -36,8 +37,15 @@ export default function Login() {
                 <Button style={{ marginRight: "100px" }} type="primary" htmlType="submit">
                     {MLTextHelper("00031")}
                 </Button>
-
             </Form.Item>
+            <Row>
+                <Col span={7}>
+                    <Link to="/login" onClick={() => props.setLocation("forgotPassword")}>Forgot password</Link>
+                </Col>
+                <Col offset={1}>
+                    <Link to="/login" onClick={() => props.setLocation("register")}>Register now</Link>
+                </Col>
+            </Row>
         </>
     );
 }

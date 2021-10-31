@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Checkbox, Button, Select } from "@pankod/refine";
+import { Form, Input, Checkbox, Button, Select, Col, Link, Row } from "@pankod/refine";
 import { IRegisterProps } from 'interfaces/ILogin';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
 
@@ -28,15 +28,6 @@ const labelProps: {
 };
 
 export default function Register(props: IRegisterProps) {
-
-
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-            <Select style={{ width: 70 }}>
-                <Option selected value="86">+90</Option>
-            </Select>
-        </Form.Item>
-    );
 
     return (
         <>
@@ -104,15 +95,14 @@ export default function Register(props: IRegisterProps) {
                 {...labelProps}
                 name="phone"
                 label={MLTextHelper("00028")}
-            // rules={[
-            //     {
-            //         required: true,
-            //         message: "Please input your phone number!",
-            //     },
-            // ]}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input your phone number!",
+                    },
+                ]}
             >
                 <Input
-                    addonBefore={prefixSelector}
                     style={{
                         width: "100%",
                     }}
@@ -165,6 +155,14 @@ export default function Register(props: IRegisterProps) {
                     {MLTextHelper("00032")}
                 </Button>
             </Form.Item>
+            <Row>
+                <Col span={7}>
+                    <Link to="/login" onClick={() => props.setLocation("forgotPassword")}>Forgot password</Link>
+                </Col>
+                <Col>
+                    <Link to="/login" onClick={() => props.setLocation("login")}>Go back to Login</Link>
+                </Col>
+            </Row>
         </>
     );
 }

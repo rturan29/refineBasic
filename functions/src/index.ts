@@ -30,3 +30,7 @@ export const onDeleteSession = functions.firestore.document("sessions/{sessionId
         });
     });
 });
+
+export const onRegisterNewUser = functions.auth.user().onCreate(async user => {
+    admin.auth().setCustomUserClaims(user.uid, { role: "participant" });
+});

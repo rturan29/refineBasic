@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Form, Input, Button, Select, LayoutWrapper, Row, Col, Card, useGetIdentity, Authenticated } from "@pankod/refine";
 import { RecaptchaVerifier } from 'firebase/auth';
-import { firebaseAuth } from 'helpers/firebase/firebaseAuth';
+import firebaseAuth from 'helpers/firebase/firebaseAuth';
 import { IRegisterArgs, IRegisterProps, IUser } from 'interfaces/ILogin';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
 
@@ -23,15 +23,6 @@ export default function UpdateUserData(props: IRegisterProps) {
 
     const currentUser = useGetIdentity<IUser>()?.data;
 
-    // const prefixSelector = (
-    //     <Form.Item name="prefix" noStyle>
-    //         <Select style={{ width: 70 }}>
-    //             <Option selected value="86">+90</Option>
-    //         </Select>
-    //     </Form.Item>
-    // );
-
-
     useEffect(() => {
         if (reCaptchaContainer.current && !reCaptcha.current) {
             reCaptcha.current = createRecaptcha(reCaptchaContainer.current, {});
@@ -41,7 +32,7 @@ export default function UpdateUserData(props: IRegisterProps) {
 
     function onSubmit(args: IRegisterArgs) {
         if (reCaptcha.current) {
-            onUpdateUserData(args, reCaptcha.current);
+            onUpdateUserData(args);
         }
     }
 
@@ -115,12 +106,12 @@ export default function UpdateUserData(props: IRegisterProps) {
                 {...labelProps}
                 name="phone"
                 label={MLTextHelper("00028")}
-            // rules={[
-            //     {
-            //         required: true,
-            //         message: "Please input your phone number!",
-            //     },
-            // ]}
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input your phone number!",
+                    },
+                ]}
             >
                 <Input
                     style={{

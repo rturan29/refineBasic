@@ -1,5 +1,5 @@
 import { IAuthContext } from "@pankod/refine/dist/interfaces";
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, User, updateEmail, updatePassword, getAuth, signOut, Auth, RecaptchaVerifier, RecaptchaParameters, updateProfile, sendEmailVerification, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updateEmail, updatePassword, getAuth, signOut, Auth, RecaptchaVerifier, RecaptchaParameters, updateProfile, sendEmailVerification, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
 
 import { IRegisterArgs, LoginLocationTypes, ILoginArgs, IUser } from "interfaces/ILogin";
 import { firebaseDatabase } from "./firebaseDatabase";
@@ -17,21 +17,15 @@ export class FirebaseAuth {
         this.handleRegister = this.handleRegister.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
         this.handleResetPassword = this.handleResetPassword.bind(this);
-        this.handleUpdateEmail = this.handleUpdateEmail.bind(this);
-        this.handleUpdatePassword = this.handleUpdatePassword.bind(this);
         this.onUpdateUserData = this.onUpdateUserData.bind(this);
         this.getUserIdentity = this.getUserIdentity.bind(this);
         this.handleCheckAuth = this.handleCheckAuth.bind(this);
         this.createRecaptcha = this.createRecaptcha.bind(this);
-        this.getPermissions = this.getPermissions.bind(this)
+        this.getPermissions = this.getPermissions.bind(this);
     }
 
     async handleLogOut() {
         await signOut(this.auth);
-    }
-
-    async handleUpdateUserData() {
-
     }
 
     async handleRegister(
@@ -46,12 +40,11 @@ export class FirebaseAuth {
                 const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
                 await sendEmailVerification(userCredential.user);
                 if (userCredential.user) {
-                    firebaseDatabase.createData({ resource: "users", variables: args });
                     if (nameSurname) {
                         await updateProfile(userCredential.user, { displayName: nameSurname });
                     }
                 }
-                await setLocation("login");
+                setLocation("login");
             }
         } catch (err) {
             console.log(err);
@@ -74,7 +67,7 @@ export class FirebaseAuth {
                 await Promise.reject();
             }
         } catch (err) {
-
+            await Promise.reject(err);
         }
 
     }
@@ -83,40 +76,27 @@ export class FirebaseAuth {
         return sendPasswordResetEmail(this.auth, email);
     }
 
-    handleUpdateEmail(currentUser: User, email: string) {
-        return updateEmail(currentUser, email);
-    }
-
-    handleUpdatePassword(currentUser: User, password: string) {
-        return updatePassword(currentUser, password);
-    }
-
-    async onUpdateUserData(
-        args: IRegisterArgs,
-        recaptchaVerifier: RecaptchaVerifier,) {
+    async onUpdateUserData(args: IRegisterArgs) {
 
         try {
             if (this.auth.currentUser) {
-                const { nameSurname, } = args;
-                // if (password) {
-                //     await handleUpdatePassword(this.auth.currentUser, password);
-                // }
+                const { nameSurname, password, email } = args;
+                if (password) {
+                    await updatePassword(this.auth.currentUser, password);
+                }
 
-                // if (email) {
-                //     await handleUpdateEmail(this.auth.currentUser, email);
-                // }
+                if (email) {
+                    await updateEmail(this.auth.currentUser, email);
+                }
 
                 if (nameSurname) {
                     await updateProfile(this.auth.currentUser, { displayName: nameSurname });
                     firebaseDatabase.updateData({ id: "", resource: "users/nameSurname", variables: args.nameSurname });
                 }
-
             }
-
         } catch (error) {
 
         }
-
     }
 
     async getUserIdentity(): Promise<IUser> {
@@ -147,8 +127,7 @@ export class FirebaseAuth {
     }
 
     createRecaptcha(containerOrId: string | HTMLDivElement, parameters: RecaptchaParameters) {
-        const recaptchaVerifier = new RecaptchaVerifier(containerOrId, parameters, this.auth);
-        return recaptchaVerifier;
+        return new RecaptchaVerifier(containerOrId, parameters, this.auth);
     }
 
     getAuthProvider(): IAuthContext {
@@ -164,4 +143,6 @@ export class FirebaseAuth {
 
 }
 
-export const firebaseAuth = new FirebaseAuth();
+const firebaseAuth = new FirebaseAuth();
+
+export default firebaseAuth;

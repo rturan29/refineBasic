@@ -103,17 +103,16 @@ export class FirestoreDatabase extends BaseDatabase {
     }
 
     async getList(args: IGetList): Promise<any> {
-        // const { resource, pagination, sort, filters, metaData } = args;
         try {
             const ref = this.getFilterQuery(args);
             let data: any[] = [];
 
             const querySnapshot = await getDocs(ref);
 
-            querySnapshot.forEach(doc => {
+            querySnapshot.forEach(document => {
                 data.push(responsePayloadFactory(args.resource, {
-                    id: doc.id,
-                    ...doc.data()
+                    id: document.id,
+                    ...document.data()
                 }));
             });
             return { data };
@@ -130,11 +129,11 @@ export class FirestoreDatabase extends BaseDatabase {
 
             const querySnapshot = await getDocs(ref);
 
-            querySnapshot.forEach(doc => {
-                if (args.ids.includes(doc.id)) {
+            querySnapshot.forEach(document => {
+                if (args.ids.includes(document.id)) {
                     data.push({
-                        id: doc.id,
-                        ...doc.data()
+                        id: document.id,
+                        ...document.data()
                     });
                 }
             });
@@ -150,11 +149,8 @@ export class FirestoreDatabase extends BaseDatabase {
         try {
             if (args.resource && args.id) {
                 const docRef = doc(this.database, args.resource, args.id);
-
                 const docSnap = await getDoc(docRef);
-
                 const data = { ...responsePayloadFactory(args.resource, docSnap.data()), id: docSnap.id };
-
                 return { data };
             }
 
@@ -166,19 +162,9 @@ export class FirestoreDatabase extends BaseDatabase {
     async updateData<TVariables = {}>(args: IUpdateData<TVariables>): Promise<any> {
         try {
             if (args.id && args.resource) {
-                // var payload: any = {};
                 var ref = doc(this.database, args.resource, args.id);
-
-                // for (const [key, value] of Object.entries(args.variables)) {
-                //     payload = {
-                //         ...payload,
-                //         [key]: value.isArrayItem ? arrayUnion(value.data) : value
-                //     };
-                // }
-
                 await updateDoc(ref, args.variables);
             }
-
             return { data: args.variables };
         } catch (error) {
             Promise.reject(error);
@@ -187,8 +173,8 @@ export class FirestoreDatabase extends BaseDatabase {
     async updateManyData<TVariables = {}>(args: IUpdateManyData<TVariables>): Promise<any> {
         try {
             args.ids.forEach(async id => {
-
-
+                let ref = doc(this.database, args.resource, id);
+                await updateDoc(ref, args.variables)
             });
 
         } catch (error) {
