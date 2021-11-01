@@ -16,12 +16,14 @@ import {
     useModalForm,
     Form,
     Modal,
+    usePermissions,
 } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { WorkshopCreate } from ".";
 
 export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
     const { tableProps, sorter } = useTable<IWorkshop>();
+    const { data: userRole } = usePermissions()
 
     const { modalProps, formProps, show } = useModalForm<ISession>({ action: "create", redirect: "list" });
 
@@ -31,6 +33,7 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
             <List createButtonProps={{
                 onClick: () => show(),
             }}
+                canCreate={userRole === "admin"}
             >
                 <Table {...tableProps} rowKey="id">
                     <Table.Column

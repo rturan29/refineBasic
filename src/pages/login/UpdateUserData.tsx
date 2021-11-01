@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Form, Input, Button, Select, LayoutWrapper, Row, Col, Card, useGetIdentity, Authenticated } from "@pankod/refine";
-import { RecaptchaVerifier } from 'firebase/auth';
-import firebaseAuth from 'helpers/firebase/firebaseAuth';
+import { firebaseAuth } from 'helpers/firebase/firebaseConfig';
 import { IRegisterArgs, IRegisterProps, IUser } from 'interfaces/ILogin';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
 
@@ -18,14 +17,14 @@ const labelProps: {
 
 export default function UpdateUserData(props: IRegisterProps) {
     const reCaptchaContainer = useRef<HTMLDivElement | null>(null);
-    const reCaptcha = useRef<RecaptchaVerifier | null>(null);
+    const reCaptcha = useRef<any>();
     const [hideUpdatePassword] = useState<boolean>(true);
 
     const currentUser = useGetIdentity<IUser>()?.data;
 
     useEffect(() => {
         if (reCaptchaContainer.current && !reCaptcha.current) {
-            reCaptcha.current = createRecaptcha(reCaptchaContainer.current, {});
+            reCaptcha.current = createRecaptcha(reCaptchaContainer.current);
             reCaptcha.current?.render();
         }
     }, []);

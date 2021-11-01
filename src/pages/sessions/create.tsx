@@ -98,7 +98,7 @@ export const SessionCreate: React.FC<IResourceComponentsProps> = () => {
                 >
                     {workshopType === "private"
                         ? weekDays.map(day =>
-                            <Row>
+                            <Row key={day}>
                                 <Col>
                                     <Form.Item label={day} name={["dayTime", "time"]}>
                                         <TimeRangePicker disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]} hideDisabledOptions minuteStep={30} format="HH:mm" />

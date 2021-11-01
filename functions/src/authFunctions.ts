@@ -2,14 +2,15 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 const onRegisterNewUser = functions.auth.user().onCreate(async user => {
+    const { email, uid } = user;
     const adminsSnapshot = await admin.firestore().collection("admins").doc("1").get();
 
     const adminUsers = adminsSnapshot.data();
 
-    if (adminUsers?.adminList?.includes(user.email)) {
-        await admin.auth().setCustomUserClaims(user.uid, { isAdmin: true });
+    if (adminUsers?.adminList?.includes(email)) {
+        await admin.auth().setCustomUserClaims(uid, { role: "admin" });
     } else {
-        await admin.auth().setCustomUserClaims(user.uid, { isAdmin: false });
+        await admin.auth().setCustomUserClaims(uid, { role: "participant" });
     }
 });
 
@@ -21,7 +22,7 @@ const onDeleteUser = functions.firestore.document("users/{userId}").onDelete(asy
 
     if (authId) {
         const contextUserRecord = await admin.auth().getUser(authId);
-        if (contextUserRecord.customClaims?.admin) {
+        if (contextUserRecord.customClaims?.isAdmin) {
             await admin.auth().deleteUser(userRecord.uid);
         }
     }

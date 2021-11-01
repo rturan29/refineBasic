@@ -1,6 +1,8 @@
-import { initializeApp } from "@firebase/app";
+import { FirebaseAuth, FirestoreDatabase, initializeFirebase } from "refine-firebase";
+import { requestPayloadFactory } from "./requestPayloadFactory";
+import { responsePayloadFactory } from "./responsePayloadFactory";
 
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
     projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
@@ -10,9 +12,13 @@ const firebaseConfig = {
     databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
+export const firebaseApp = initializeFirebase(firebaseConfig);
 
-export default firebaseApp;
+const payloadFactoryMethods = {
+    requestPayloadFactory,
+    responsePayloadFactory
+};
 
+export const firebaseAuth = new FirebaseAuth();
 
-
+export const firestoreDatabase = new FirestoreDatabase(payloadFactoryMethods);

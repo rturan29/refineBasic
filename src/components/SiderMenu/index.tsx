@@ -32,7 +32,6 @@ export const SiderMenu: React.FC = () => {
         push("./login");
     }
 
-
     return (
         <AntdLayout.Sider
             collapsible

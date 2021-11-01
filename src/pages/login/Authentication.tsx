@@ -1,39 +1,37 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AntdLayout, Row, Col, Form, Card, useLogin, useNavigation, useCreate } from '@pankod/refine';
-import { RecaptchaVerifier } from '@firebase/auth';
 import _ from "lodash";
 import Login from 'components/Login/Login';
 import Register from 'components/Login/Register';
 import ForgotPassword from 'components/Login/ForgotPassword';
-import firebaseAuth from 'helpers/firebase/firebaseAuth';
 import { ILoginArgs, LoginLocationTypes, IRegisterArgs } from 'interfaces/ILogin';
-
-const { createRecaptcha, handleResetPassword, handleRegister } = firebaseAuth;
-
+import { firebaseAuth } from 'helpers/firebase/firebaseConfig';
 
 export default function Authentication() {
     const { mutate: login } = useLogin<ILoginArgs>();
     const { mutate: createData } = useCreate<IUser>();
     const [location, setLocation] = useState<LoginLocationTypes>("login");
-    const reCaptchaContainer = useRef<HTMLDivElement | null>(null);
-    const reCaptcha = useRef<RecaptchaVerifier | null>(null);
+    const reCaptchaContainer = useRef<HTMLDivElement>();
+    const reCaptcha = useRef<any>();
     const { push } = useNavigation();
 
+    const { auth, handleResetPassword, handleRegister, createRecaptcha } = firebaseAuth
+
     useEffect(() => {
-        firebaseAuth.auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged(user => {
             if (user?.uid) {
                 push("/workshops");
             }
         });
 
-    }, [push]);
+    }, [push, auth]);
 
     useEffect(() => {
         if (reCaptchaContainer.current && !reCaptcha.current) {
-            reCaptcha.current = createRecaptcha(reCaptchaContainer.current, {});
+            reCaptcha.current = createRecaptcha(reCaptchaContainer.current);
             reCaptcha.current?.render();
         }
-    }, [location]);
+    }, [location, createRecaptcha]);
 
     function setReCaptchaContainer(ref: HTMLDivElement) {
         reCaptchaContainer.current = ref;
@@ -66,7 +64,8 @@ export default function Authentication() {
 
     async function onRegister(values: ILoginArgs | IRegisterArgs) {
         if (reCaptcha.current) {
-            await handleRegister(values, reCaptcha.current, setLocation);
+            await handleRegister(values);
+            setLocation("login")
             createData({ resource: "users", values: _.omit(values, ["password", "rememberme"]) });
         }
     }

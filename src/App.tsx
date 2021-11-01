@@ -1,27 +1,28 @@
 import { Refine, Resource } from "@pankod/refine";
-
 import "@pankod/refine/dist/styles.min.css";
-import firebaseAuth from "helpers/firebase/firebaseAuth";
 import Authentication from "./pages/login/Authentication";
 import UpdateUserData from "pages/login/UpdateUserData";
 import { SiderMenu } from "components/SiderMenu";
-import { WorkshopList, WorkshopShow, WorkshopEdit } from "pages/AdminPages/workshops";
-import { SessionCreate, SessionEdit, SessionList, SessionShow } from "pages/AdminPages/sessions";
+import { WorkshopList, WorkshopShow, WorkshopEdit } from "pages/workshops";
+import { SessionCreate, SessionEdit, SessionList, SessionShow } from "pages/sessions";
 import { UserCreate, UsersList } from "pages/AdminPages/users";
-import { firestoreDatabase } from "helpers/firebase/FirestoreDatabase";
 import { useEffect, useState } from "react";
+import { firebaseAuth, firestoreDatabase } from "helpers/firebase/firebaseConfig";
 
 
 function App() {
 
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const { getAuthProvider, getPermissions } = firebaseAuth
+
   useEffect(() => {
+
     getUserStatus();
   }, []);
 
   async function getUserStatus() {
-    const role = await firebaseAuth.getPermissions();
+    const role = await getPermissions();
     if (role === "admin") {
       setIsAdmin(true);
     } else {
@@ -34,7 +35,7 @@ function App() {
       LoginPage={Authentication}
       Sider={SiderMenu}
       dataProvider={firestoreDatabase.getDataProvider()}
-      authProvider={firebaseAuth.getAuthProvider()}
+      authProvider={getAuthProvider()}
       routes={[
         {
           exact: true,
@@ -55,12 +56,14 @@ function App() {
         show={SessionShow}
         edit={SessionEdit}
         create={SessionCreate}
-      />
-      <Resource
-        name="users"
-        list={UsersList}
-        create={UserCreate}
-      />
+      />{
+        isAdmin
+          ? <Resource
+            name="users"
+            list={UsersList}
+            create={UserCreate}
+          />
+          : null}
     </Refine>
   );
 }
