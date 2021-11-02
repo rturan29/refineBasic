@@ -11104,10 +11104,10 @@ redent@^3.0.0:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
 
-refine-firebase@^1.0.13:
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/refine-firebase/-/refine-firebase-1.0.13.tgz#212555115a3bcdc56bf224ae3b12d2a496cb9a25"
-  integrity sha512-1lZynnJPSY7F7dygCv2SCG3AEn51pPSdfmrt18g3PhlrZVlQJ31AH5ZlAcLuARmo5c8mGyVRJ1+pPQ6iIpE/IA==
+refine-firebase@^1.0.18:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/refine-firebase/-/refine-firebase-1.0.18.tgz#cee9d26c0c6dd9eecf6bfabfa64dc58d6dd2f51d"
+  integrity sha512-3DdXTKOjqhtnfYksgIPPSjnB8AhCbIQD47h59r1VcPICnV7pm1CCwrRoWBnID0S0qOSklM0ygA4VgBTKUYmAfg==
   dependencies:
     firebase "^9.1.3"
     uuid "^8.3.2"
