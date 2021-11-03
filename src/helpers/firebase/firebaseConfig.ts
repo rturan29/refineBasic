@@ -12,8 +12,6 @@ export const firebaseConfig = {
     databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL
 };
 
-console.log(firebaseConfig)
-
 export const firebaseApp = initializeFirebase(firebaseConfig);
 
 const payloadFactoryMethods = {
@@ -21,6 +19,10 @@ const payloadFactoryMethods = {
     responsePayloadFactory
 };
 
+console.log(firebaseApp)
+
 export const firebaseAuth = new FirebaseAuth();
+
+console.log(firebaseAuth)
 
 export const firestoreDatabase = new FirestoreDatabase(payloadFactoryMethods);

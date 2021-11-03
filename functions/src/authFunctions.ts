@@ -7,8 +7,11 @@ const onRegisterNewUser = functions.auth.user().onCreate(async user => {
 
     const adminUsers = adminsSnapshot.data();
 
+    functions.logger.debug(adminUsers)
+
     if (adminUsers?.adminList?.includes(email)) {
         await admin.auth().setCustomUserClaims(uid, { role: "admin" });
+        functions.logger.debug("setAsAdmin")
     } else {
         await admin.auth().setCustomUserClaims(uid, { role: "participant" });
     }
@@ -19,6 +22,7 @@ const onDeleteUser = functions.firestore.document("users/{userId}").onDelete(asy
     const userRecord = await admin.auth().getUserByEmail(email);
 
     const authId = context.auth?.uid;
+
 
     if (authId) {
         const contextUserRecord = await admin.auth().getUser(authId);
