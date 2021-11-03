@@ -38,114 +38,114 @@ export default function UpdateUserData(props: IRegisterProps) {
     function renderContent() {
         return (
             <Authenticated>
-            <Form.Item
-                {...labelProps}
-                label={MLTextHelper("00019")}
-                name="username"
-                rules={[
-                    { type: 'email', message: 'The input is not valid E-mail!' },
-                    { required: true, message: 'Please input your email!' }
-                ]}
-                initialValue={currentUser?.email}
-            >
-                <Input disabled />
-            </Form.Item>
-            <Form.Item
-                {...labelProps}
-                label={MLTextHelper("00021")}
-                name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
-                initialValue={hideUpdatePassword ? "********" : ""}
-            >
-                <Input.Password disabled={hideUpdatePassword} />
-            </Form.Item>
+                <Form.Item
+                    {...labelProps}
+                    label={MLTextHelper("00019")}
+                    name="username"
+                    rules={[
+                        { type: 'email', message: 'The input is not valid E-mail!' },
+                        { required: true, message: 'Please input your email!' }
+                    ]}
+                    initialValue={currentUser?.email}
+                >
+                    <Input disabled />
+                </Form.Item>
+                <Form.Item
+                    {...labelProps}
+                    label={MLTextHelper("00021")}
+                    name="password"
+                    rules={[{ required: true, message: 'Please input your password!' }]}
+                    initialValue={hideUpdatePassword ? "********" : ""}
+                >
+                    <Input.Password disabled={hideUpdatePassword} />
+                </Form.Item>
 
-            <Form.Item
-                {...labelProps}
-                label={MLTextHelper("00027")}
-                name="confirm"
-                dependencies={["password"]}
-                hasFeedback
-                hidden={hideUpdatePassword}
-                rules={!hideUpdatePassword ? [
-                    { required: true, message: 'Please confirm your password!' },
-                    ({ getFieldValue }) => ({
-                        validator(_, value) {
-                            if (!value || getFieldValue("password") === value) {
-                                return Promise.resolve();
-                            }
-                            return Promise.reject(
-                                new Error(
-                                    "The two passwords that you entered do not match!"
-                                )
-                            );
+                <Form.Item
+                    {...labelProps}
+                    label={MLTextHelper("00027")}
+                    name="confirm"
+                    dependencies={["password"]}
+                    hasFeedback
+                    hidden={hideUpdatePassword}
+                    rules={!hideUpdatePassword ? [
+                        { required: true, message: 'Please confirm your password!' },
+                        ({ getFieldValue }) => ({
+                            validator(_, value) {
+                                if (!value || getFieldValue("password") === value) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject(
+                                    new Error(
+                                        "The two passwords that you entered do not match!"
+                                    )
+                                );
+                            },
+                        }),
+                    ] : []}
+                >
+                    <Input.Password />
+                </Form.Item>
+
+                <Form.Item
+                    {...labelProps}
+                    name="nameSurname"
+                    label={MLTextHelper("00018")}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input your name and surname!",
+                            whitespace: true,
                         },
-                    }),
-                ] : []}
-            >
-                <Input.Password />
-            </Form.Item>
+                    ]}
+                    initialValue={currentUser?.name}
+                >
+                    <Input />
+                </Form.Item>
 
-            <Form.Item
-                {...labelProps}
-                name="nameSurname"
-                label={MLTextHelper("00018")}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input your name and surname!",
-                        whitespace: true,
-                    },
-                ]}
-                initialValue={currentUser?.name}
-            >
-                <Input />
-            </Form.Item>
+                <Form.Item
+                    {...labelProps}
+                    name="phone"
+                    label={MLTextHelper("00028")}
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input your phone number!",
+                        },
+                    ]}
+                >
+                    <Input
+                        style={{
+                            width: "100%",
+                        }}
+                    />
+                </Form.Item>
 
-            <Form.Item
-                {...labelProps}
-                name="phone"
-                label={MLTextHelper("00028")}
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input your phone number!",
-                    },
-                ]}
-            >
-                <Input
-                    style={{
-                        width: "100%",
-                    }}
-                />
-            </Form.Item>
+                <Form.Item
+                    {...labelProps}
+                    name="gender"
+                    label={MLTextHelper("00022")}
+                >
+                    <Select placeholder="select your gender">
+                        <Option value="male">Male</Option>
+                        <Option value="female">Female</Option>
+                        <Option value="other">Other</Option>
+                    </Select>
+                </Form.Item>
 
-            <Form.Item
-                {...labelProps}
-                name="gender"
-                label={MLTextHelper("00022")}
-            >
-                <Select placeholder="select your gender">
-                    <Option value="male">Male</Option>
-                    <Option value="female">Female</Option>
-                    <Option value="other">Other</Option>
-                </Select>
-            </Form.Item>
+                <Form.Item
+                    {...labelProps}
+                    label={MLTextHelper("00023")}
+                    extra="We must make sure that your are a human.">
+                    <div ref={reCaptchaContainer} >
+                    </div>
+                </Form.Item>
 
-            <Form.Item
-                {...labelProps}
-                label={MLTextHelper("00023")}
-                extra="We must make sure that your are a human.">
-                <div ref={reCaptchaContainer} >
-                </div>
-            </Form.Item>
+                <Form.Item wrapperCol={{ offset: 7, span: 16 }}>
+                    <Button style={{ marginRight: "100px" }} type="primary" htmlType="submit">
+                        Register
+                    </Button>
 
-            <Form.Item wrapperCol={{ offset: 7, span: 16 }}>
-                <Button style={{ marginRight: "100px" }} type="primary" htmlType="submit">
-                    Register
-                </Button>
-
-            </Form.Item>
+                </Form.Item>
             </Authenticated>);
     }
 

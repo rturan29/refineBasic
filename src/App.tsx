@@ -8,6 +8,7 @@ import { SessionCreate, SessionEdit, SessionList } from "pages/sessions";
 import { UserCreate, UsersList } from "pages/AdminPages/users";
 import { useEffect, useState } from "react";
 import { firebaseAuth, firestoreDatabase } from "helpers/firebase/firebaseConfig";
+import Dashboard from "pages/Dashboard";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const { auth, getAuthProvider, getPermissions } = firebaseAuth;
+  const { getDataProvider } = firestoreDatabase
 
   useEffect(() => {
 
@@ -28,12 +30,12 @@ function App() {
     });
   }, [auth, getPermissions]);
 
-
   return (
     <Refine
       LoginPage={Authentication}
+      DashboardPage={Dashboard}
       Sider={SiderMenu}
-      dataProvider={firestoreDatabase.getDataProvider()}
+      dataProvider={getDataProvider()}
       authProvider={getAuthProvider()}
       routes={[
         {
