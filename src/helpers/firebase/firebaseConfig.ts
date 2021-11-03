@@ -19,10 +19,6 @@ const payloadFactoryMethods = {
     responsePayloadFactory
 };
 
-console.log(firebaseApp)
-
 export const firebaseAuth = new FirebaseAuth();
-
-console.log(firebaseAuth)
 
 export const firestoreDatabase = new FirestoreDatabase(payloadFactoryMethods);

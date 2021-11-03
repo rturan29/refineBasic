@@ -78,7 +78,7 @@ export default function Register(props: IRegisterProps) {
 
             <Form.Item
                 {...labelProps}
-                name="nameSurname"
+                name="displayName"
                 label={MLTextHelper("00018")}
                 rules={[
                     {

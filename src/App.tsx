@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Refine, Resource } from "@pankod/refine";
 import "@pankod/refine/dist/styles.min.css";
 import Authentication from "./pages/login/Authentication";
@@ -18,21 +17,17 @@ function App() {
   const { auth, getAuthProvider, getPermissions } = firebaseAuth;
 
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      if (user?.uid) {
-        getUserStatus();
+
+    auth.onAuthStateChanged(async () => {
+      const claims = await getPermissions();
+      if (claims?.role === "admin") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
       }
     });
-  }, [auth]);
+  }, [auth, getPermissions]);
 
-  async function getUserStatus() {
-    const claims = await getPermissions();
-    if (claims?.role === "admin") {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
-    }
-  }
 
   return (
     <Refine
