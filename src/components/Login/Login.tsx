@@ -40,10 +40,10 @@ export default function Login(props: { setLocation: (location: LoginLocationType
             </Form.Item>
             <Row>
                 <Col span={7}>
-                    <Link to="/login" onClick={() => props.setLocation("forgotPassword")}>Forgot password</Link>
+                    <Link to="/login" onClick={() => props.setLocation("forgotPassword")}>{MLTextHelper("00042")}</Link>
                 </Col>
                 <Col offset={1}>
-                    <Link to="/login" onClick={() => props.setLocation("register")}>Register now</Link>
+                    <Link to="/login" onClick={() => props.setLocation("register")}>{MLTextHelper("00044")}</Link>
                 </Col>
             </Row>
         </>

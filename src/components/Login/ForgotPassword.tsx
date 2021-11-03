@@ -25,10 +25,10 @@ export default function ForgotPassword(props: { setLocation: (location: LoginLoc
             </Form.Item>
             <Row>
                 <Col span={7}>
-                    <Link to="/login" onClick={() => props.setLocation("login")}>Go back to Login</Link>
+                    <Link to="/login" onClick={() => props.setLocation("login")}>{MLTextHelper("00043")}</Link>
                 </Col>
                 <Col offset={1}>
-                    <Link to="/login" onClick={() => props.setLocation("register")}>Register now</Link>
+                    <Link to="/login" onClick={() => props.setLocation("register")}>{MLTextHelper("00044")}</Link>
                 </Col>
             </Row>
         </>

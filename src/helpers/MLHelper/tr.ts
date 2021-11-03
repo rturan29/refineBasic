@@ -40,6 +40,9 @@ const textListTR: { [key: string]: string; } = {
     "00039": "Cumartesi",
     "00040": "Pazar",
     "00041": "Çıkış Yap",
+    "00042": "Şifremi unuttum",
+    "00043": "Giriş sayfasına geri dön",
+    "00044": "Şimdi kayıt ol",
 };
 
 export default textListTR;

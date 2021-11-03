@@ -157,10 +157,10 @@ export default function Register(props: IRegisterProps) {
             </Form.Item>
             <Row>
                 <Col span={7}>
-                    <Link to="/login" onClick={() => props.setLocation("forgotPassword")}>Forgot password</Link>
+                    <Link to="/login" onClick={() => props.setLocation("forgotPassword")}>{MLTextHelper("00042")}</Link>
                 </Col>
                 <Col>
-                    <Link to="/login" onClick={() => props.setLocation("login")}>Go back to Login</Link>
+                    <Link to="/login" onClick={() => props.setLocation("login")}>{MLTextHelper("00043")}</Link>
                 </Col>
             </Row>
         </>

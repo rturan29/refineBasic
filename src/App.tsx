@@ -15,16 +15,19 @@ function App() {
 
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const { getAuthProvider, getPermissions } = firebaseAuth
+  const { auth, getAuthProvider, getPermissions } = firebaseAuth;
 
   useEffect(() => {
-
-    getUserStatus();
-  }, []);
+    auth.onAuthStateChanged(user => {
+      if (user?.uid) {
+        getUserStatus();
+      }
+    });
+  }, [auth]);
 
   async function getUserStatus() {
-    const role = await getPermissions();
-    if (role === "admin") {
+    const claims = await getPermissions();
+    if (claims?.role === "admin") {
       setIsAdmin(true);
     } else {
       setIsAdmin(false);
