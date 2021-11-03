@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Refine, Resource } from "@pankod/refine";
 import "@pankod/refine/dist/styles.min.css";
 import Authentication from "./pages/login/Authentication";
