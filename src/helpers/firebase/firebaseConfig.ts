@@ -12,6 +12,8 @@ export const firebaseConfig = {
     databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL
 };
 
+console.log(firebaseConfig)
+
 export const firebaseApp = initializeFirebase(firebaseConfig);
 
 const payloadFactoryMethods = {
