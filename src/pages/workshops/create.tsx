@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Form,
     Input,
     Select,
-    IResourceComponentsProps,
+    usePermissions,
 } from "@pankod/refine";
 
 import ReactMarkdown from "react-markdown";
@@ -12,8 +12,16 @@ import ReactMde from "react-mde";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
 
-export const WorkshopCreate: React.FC<IResourceComponentsProps> = () => {
+export const WorkshopCreate: React.FC<{ close?: () => void; }> = ({ close }) => {
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
+    const { data: permissionsData } = usePermissions();
+    const isAdmin = permissionsData?.role === "admin";
+
+    useEffect(() => {
+        if (!isAdmin) {
+            close?.();
+        }
+    }, [isAdmin, close]);
 
     return (
         <>

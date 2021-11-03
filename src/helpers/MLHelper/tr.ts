@@ -43,6 +43,7 @@ const textListTR: { [key: string]: string; } = {
     "00042": "Şifremi unuttum",
     "00043": "Giriş sayfasına geri dön",
     "00044": "Şimdi kayıt ol",
+    "00045": "Başvur",
 };
 
 export default textListTR;

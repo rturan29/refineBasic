@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Form,
     Input,
@@ -11,6 +11,8 @@ import {
     InputNumber,
     Row,
     Col,
+    useNavigation,
+    usePermissions,
 } from "@pankod/refine";
 
 
@@ -25,7 +27,16 @@ const { RangePicker: TimeRangePicker } = TimePicker;
 export const SessionCreate: React.FC<IResourceComponentsProps> = () => {
     const [selectedWorkshop, setSelectedWorkshop] = useState<string>();
     const { formProps, saveButtonProps } = useForm<IPost>({ redirect: "list" });
+    const { data: permissionsData } = usePermissions();
+    const isAdmin = permissionsData?.role === "admin";
 
+    const { push } = useNavigation();
+
+    useEffect(() => {
+        if (!isAdmin) {
+            push("/sessions");
+        }
+    }, [isAdmin, push]);
 
     const { selectProps: workshopSelectProps, queryResult } = useSelect<IWorkshop>({
         resource: "workshops", optionLabel: "title",

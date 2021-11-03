@@ -23,17 +23,16 @@ import { WorkshopCreate } from ".";
 
 export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
     const { tableProps, sorter } = useTable<IWorkshop>();
-    const { data: userRole } = usePermissions()
 
-    const { modalProps, formProps, show } = useModalForm<ISession>({ action: "create", redirect: "list" });
-
+    const { modalProps, formProps, show, close } = useModalForm<ISession>({ action: "create", redirect: "list" });
+    const { data: permissionsData } = usePermissions();
+    const isAdmin = permissionsData?.role === "admin";
 
     return (
         <>
-            <List createButtonProps={{
-                onClick: () => show(),
-            }}
-                canCreate={userRole === "admin"}
+            <List
+                createButtonProps={{ onClick: () => show(), }}
+                canCreate={isAdmin}
             >
                 <Table {...tableProps} rowKey="id">
                     <Table.Column
@@ -65,7 +64,8 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                             </FilterDropdown>
                         )}
                     />
-                    <Table.Column
+                    {isAdmin
+                        ? <Table.Column
                         dataIndex="status"
                         title={MLTextHelper("00009")}
                         render={(value: string) => <TagField value={value} />}
@@ -80,7 +80,7 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                                 </Radio.Group>
                             </FilterDropdown>
                         )}
-                    />
+                        /> : null}
                     <Table.Column
                         dataIndex="description"
                         title={MLTextHelper("00010")}
@@ -91,9 +91,12 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                         dataIndex="actions"
                         render={(_, record) => (
                             <Space>
-                                <EditButton hideText size="small" recordItemId={record.id} />
                                 <ShowButton hideText size="small" recordItemId={record.id} />
-                                <DeleteButton hideText size="small" recordItemId={record.id} />
+                                {isAdmin
+                                    ? <>
+                                        <EditButton hideText size="small" recordItemId={record.id} />
+                                        <DeleteButton hideText size="small" recordItemId={record.id} />
+                                    </> : null}
                             </Space>
                         )}
                     />
@@ -101,7 +104,7 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
             </List>
             <Modal {...modalProps}>
                 <Form {...formProps} layout="vertical">
-                    <WorkshopCreate />
+                    <WorkshopCreate close={close} />
                 </Form>
             </Modal>
         </>

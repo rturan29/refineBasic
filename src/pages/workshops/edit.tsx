@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Edit,
     Form,
@@ -6,6 +6,8 @@ import {
     Select,
     IResourceComponentsProps,
     useForm,
+    usePermissions,
+    useNavigation,
 } from "@pankod/refine";
 import ReactMarkdown from "react-markdown";
 import ReactMde from "react-mde";
@@ -16,9 +18,18 @@ import MLTextHelper from "helpers/MLHelper/MLHelper";
 export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
 
-    const { formProps, saveButtonProps, queryResult } = useForm<IWorkshop>();
+    const { formProps, saveButtonProps } = useForm<IWorkshop>();
+    const { data: permissionsData } = usePermissions();
+    const isAdmin = permissionsData?.role === "admin";
 
-    console.log(queryResult);
+    const { push } = useNavigation();
+
+    useEffect(() => {
+        if (!isAdmin) {
+            push("/workshops");
+        }
+    }, [isAdmin, push]);
+
 
     return (
         <Edit saveButtonProps={saveButtonProps}>

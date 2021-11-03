@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Edit,
     Form,
@@ -11,6 +11,8 @@ import {
     useSelect,
     Col,
     Row,
+    useNavigation,
+    usePermissions,
 } from "@pankod/refine";
 import { TimePicker } from "antd";
 import "react-mde/lib/styles/css/react-mde-all.css";
@@ -23,6 +25,17 @@ const { RangePicker: TimeRangePicker } = TimePicker;
 export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
 
     const { formProps, saveButtonProps } = useForm<ISession>();
+    const { data: permissionsData } = usePermissions();
+    const isAdmin = permissionsData?.role === "admin";
+
+    const { push } = useNavigation();
+
+    useEffect(() => {
+        if (!isAdmin) {
+            push("/sessions");
+        }
+    }, [isAdmin, push]);
+
 
     const { selectProps: workshopSelectProps } = useSelect<IWorkshop>({
         resource: "workshops", optionLabel: "title",

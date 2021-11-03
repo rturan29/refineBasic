@@ -5,7 +5,7 @@ import Authentication from "./pages/login/Authentication";
 import UpdateUserData from "pages/login/UpdateUserData";
 import { SiderMenu } from "components/SiderMenu";
 import { WorkshopList, WorkshopShow, WorkshopEdit } from "pages/workshops";
-import { SessionCreate, SessionEdit, SessionList, SessionShow } from "pages/sessions";
+import { SessionCreate, SessionEdit, SessionList } from "pages/sessions";
 import { UserCreate, UsersList } from "pages/AdminPages/users";
 import { useEffect, useState } from "react";
 import { firebaseAuth, firestoreDatabase } from "helpers/firebase/firebaseConfig";
@@ -57,7 +57,6 @@ function App() {
       <Resource
         name="sessions"
         list={SessionList}
-        show={SessionShow}
         edit={SessionEdit}
         create={SessionCreate}
       />{

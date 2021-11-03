@@ -22,6 +22,7 @@ import {
     useForm,
     useUpdate,
     RefreshButton,
+    usePermissions,
 } from "@pankod/refine";
 import AddUserToSession from "components/UserTable/AddUserToSession";
 import UserTable from "components/UserTable/UserTable";
@@ -31,7 +32,21 @@ import moment from "moment";
 import { useState } from "react";
 
 export const SessionList: React.FC<IResourceComponentsProps> = () => {
-    const { tableProps, tableQueryResult } = useTable<ISession>();
+    const { data: permissionsData } = usePermissions();
+    const isAdmin = permissionsData?.role === "admin";
+
+    const { tableProps, tableQueryResult } = useTable<ISession>({
+        permanentFilter: isAdmin ? [] : [{
+            field: "status",
+            operator: "eq",
+            value: "published"
+        }]
+    });
+
+    if (!isAdmin) {
+        tableProps.dataSource = tableProps?.dataSource?.filter(data => data.quota > data.participants?.length);
+    }
+
     const [currentRow, setCurrentRow] = useState<ISession | null>(null);
     const [modalRole, setModalRole] = useState<"show" | "create">("show");
 
@@ -86,20 +101,24 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
         }
     }
 
-    return (
-        <>
-            <List
-                pageHeaderProps={{ extra: <><RefreshButton /><CreateButton /></> }}
-            >
-                <Table {...tableProps} rowKey="id">
-                    <Table.Column
-                        dataIndex="workshopId"
-                        title={MLTextHelper("00012")}
-                        render={value => isLoading
-                            ? <TextField value="Loading..." />
-                            : <TextField value={workshopsData?.data?.find((item) => item.id === value)?.title} />}
-                        sorter
-                    />
+    function renderModal() {
+        if (isAdmin) {
+            return (
+                <Modal {...customModalprops} >
+                    {modalRole === "show"
+                        ? <UserTable participants={currentRow?.participants} isSessionUsers sessionId={currentRow?.id} resetSessionData={tableQueryResult.refetch} />
+                        : (<Form {...formProps}>
+                            <AddUserToSession participants={currentRow?.participants} />
+                        </Form>)
+                    }
+                </Modal>);
+        }
+    }
+
+    function getAdminColumns() {
+        if (isAdmin) {
+            return (
+                <>
                     <Table.Column
                         dataIndex="status"
                         title={MLTextHelper("00009")}
@@ -114,6 +133,69 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                                 </Radio.Group>
                             </FilterDropdown>
                         )}
+                    />
+                    <Table.Column
+                        dataIndex="quota"
+                        title={MLTextHelper("00016")}
+                        render={(value) => <NumberField value={value} />}
+                        sorter
+                    />
+                    <Table.Column<ISession>
+                        title={MLTextHelper("00004")}
+                        dataIndex="participants"
+                        render={(value, record) => (
+                            <Space>
+                                <NumberField value={value?.length || 0} />
+                                {value?.length ? <ShowButton hideText size="small" onClick={() => handleShowModal(record, "show")} /> : null}
+                                {value?.length < record.quota ? <CreateButton hideText size="small" onClick={() => handleShowModal(record, "create")} /> : null}
+                            </Space>
+                        )}
+                    />
+                    <Table.Column<ISession>
+                        title={MLTextHelper("00011")}
+                        dataIndex="actions"
+                        render={(_, record) => (
+                            <Space>
+                                <EditButton hideText size="small" recordItemId={record.id} />
+                                <DeleteButton hideText size="small" recordItemId={record.id} />
+                            </Space>
+                        )}
+                    />
+                </>
+            );
+        }
+    }
+
+    function getParticipantColumns() {
+        return (<Table.Column<ISession>
+            title={MLTextHelper("00011")}
+            dataIndex="actions"
+            render={(_, record) => (
+                <Space>
+                    <CreateButton size="small">{MLTextHelper("00045")}</CreateButton>
+                </Space>
+            )}
+        />);
+    }
+
+    function getListHeaderButtons() {
+        return (<><RefreshButton />{isAdmin ? <CreateButton /> : null}</>);
+    }
+
+    return (
+        <>
+            <List
+                pageHeaderProps={{ extra: getListHeaderButtons() }}
+                canCreate={isAdmin}
+            >
+                <Table {...tableProps} rowKey="id">
+                    <Table.Column
+                        dataIndex="workshopId"
+                        title={MLTextHelper("00012")}
+                        render={value => isLoading
+                            ? <TextField value="Loading..." />
+                            : <TextField value={workshopsData?.data?.find((item) => item.id === value)?.title} />}
+                        sorter
                     />
                     <Table.Column
                         dataIndex="teacher"
@@ -139,52 +221,17 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                             </>}
                         sorter
                     />
-
-                    <Table.Column
-                        dataIndex="quota"
-                        title={MLTextHelper("00016")}
-                        render={(value) => <NumberField value={value} />}
-                        sorter
-                    />
                     <Table.Column
                         dataIndex="paymentAmount"
                         title={MLTextHelper("00017")}
                         render={(value) => <NumberField locale="tr" options={{ style: 'currency', currency: 'TRY' }} value={value} />}
                         sorter
                     />
-
-                    <Table.Column<ISession>
-                        title={MLTextHelper("00004")}
-                        dataIndex="participants"
-                        render={(value, record) => (
-                            <Space>
-                                <NumberField value={value?.length || 0} />
-                                {value?.length ? <ShowButton hideText size="small" onClick={() => handleShowModal(record, "show")} /> : null}
-                                {value?.length < record.quota ? <CreateButton hideText size="small" onClick={() => handleShowModal(record, "create")} /> : null}
-                            </Space>
-                        )}
-                    />
-                    <Table.Column<ISession>
-                        title={MLTextHelper("00011")}
-                        dataIndex="actions"
-                        render={(_, record) => (
-                            <Space>
-                                <EditButton hideText size="small" recordItemId={record.id} />
-                                <ShowButton hideText size="small" recordItemId={record.id} />
-                                <DeleteButton hideText size="small" recordItemId={record.id} />
-                            </Space>
-                        )}
-                    />
+                    {getAdminColumns()}
+                    {getParticipantColumns()}
                 </Table>
             </List>
-            <Modal {...customModalprops} >
-                {modalRole === "show"
-                    ? <UserTable participants={currentRow?.participants} isSessionUsers sessionId={currentRow?.id} resetSessionData={tableQueryResult.refetch} />
-                    : (<Form {...formProps}>
-                        <AddUserToSession participants={currentRow?.participants} />
-                    </Form>)
-                }
-            </Modal>
+            {renderModal()}
         </>
     );
 };

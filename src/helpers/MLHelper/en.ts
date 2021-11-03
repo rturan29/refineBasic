@@ -43,6 +43,8 @@ const textListEN: { [key: string]: string; } = {
     "00042": "Forgot password",
     "00043": "Go back to login",
     "00044": "Register now",
+    "00045": "Apply",
+
 };
 
 export default textListEN;
