@@ -36,7 +36,8 @@ export default function UpdateUserData(props: IRegisterProps) {
     }
 
     function renderContent() {
-        return (<>
+        return (
+            <Authenticated>
             <Form.Item
                 {...labelProps}
                 label={MLTextHelper("00019")}
@@ -145,7 +146,7 @@ export default function UpdateUserData(props: IRegisterProps) {
                 </Button>
 
             </Form.Item>
-        </>);
+            </Authenticated>);
     }
 
     return (

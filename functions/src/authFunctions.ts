@@ -7,11 +7,8 @@ const onRegisterNewUser = functions.auth.user().onCreate(async user => {
 
     const adminUsers = adminsSnapshot.data();
 
-    functions.logger.debug(adminUsers)
-
     if (adminUsers?.adminList?.includes(email)) {
         await admin.auth().setCustomUserClaims(uid, { role: "admin" });
-        functions.logger.debug("setAsAdmin")
     } else {
         await admin.auth().setCustomUserClaims(uid, { role: "participant" });
     }

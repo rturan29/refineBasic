@@ -17,6 +17,7 @@ import {
     Form,
     Modal,
     usePermissions,
+    Authenticated,
 } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { WorkshopCreate } from ".";
@@ -29,7 +30,7 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
     const isAdmin = permissionsData?.role === "admin";
 
     return (
-        <>
+        <Authenticated>
             <List
                 createButtonProps={{ onClick: () => show(), }}
                 canCreate={isAdmin}
@@ -107,6 +108,6 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                     <WorkshopCreate close={close} />
                 </Form>
             </Modal>
-        </>
+        </Authenticated>
     );
 };

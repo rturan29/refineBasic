@@ -23,6 +23,7 @@ import {
     useUpdate,
     RefreshButton,
     usePermissions,
+    Authenticated,
 } from "@pankod/refine";
 import AddUserToSession from "components/UserTable/AddUserToSession";
 import UserTable from "components/UserTable/UserTable";
@@ -183,7 +184,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
     }
 
     return (
-        <>
+        <Authenticated>
             <List
                 pageHeaderProps={{ extra: getListHeaderButtons() }}
                 canCreate={isAdmin}
@@ -232,6 +233,6 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                 </Table>
             </List>
             {renderModal()}
-        </>
+        </Authenticated>
     );
 };

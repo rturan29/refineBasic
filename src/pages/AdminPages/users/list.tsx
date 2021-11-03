@@ -3,6 +3,7 @@ import {
     useModalForm,
     Modal,
     Form,
+    Authenticated,
 } from "@pankod/refine";
 import WorkshopsTable from "components/WorkshopsTable";
 import UserTable from "components/UserTable/UserTable";
@@ -16,14 +17,14 @@ export const UsersList: React.FC<IResourceComponentsProps> = () => {
 
 
     return (
-        <>
+        <Authenticated>
             {<UserTable showWorkshops={show} setUserCurrentRow={setCurrentRow} />}
             <Modal {...modalProps} title={MLTextHelper("00033")} footer={null}>
                 <Form {...formProps} layout="vertical">
                     <WorkshopsTable user={currentRow} />
                 </Form>
             </Modal>
-        </>
+        </Authenticated>
     );
 };
 
