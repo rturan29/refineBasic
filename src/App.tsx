@@ -42,6 +42,10 @@ function App() {
           exact: true,
           component: UpdateUserData,
           path: "/update-user-data",
+        }, {
+          exact: true,
+          component: Authentication,
+          path: "/login",
         },
       ]}
     >
