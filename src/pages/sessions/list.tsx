@@ -134,7 +134,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                     <Table.Column
                         dataIndex="status"
                         title={MLTextHelper("00009")}
-                        render={value => <TagField value={value} />}
+                        render={value => <TagField value={value}></TagField>}
                         sorter
                         filterDropdown={(props) => (
                             <FilterDropdown {...props}>
@@ -142,8 +142,11 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                                     <Radio value="published">Published</Radio>
                                     <Radio value="draft">Draft</Radio>
                                     <Radio value="rejected">Rejected</Radio>
-                                    <Radio value="past">Past</Radio>
-                                    <Radio value="quotaFull">Quota-Full</Radio>
+                                    {isAdmin ?
+                                        <>
+                                            <Radio value="past">Past</Radio>
+                                            <Radio value="quotaFull">Quota-Full</Radio>
+                                        </> : null}
                                 </Radio.Group>
                             </FilterDropdown>
                         )}
@@ -234,7 +237,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                                 </Col>
                                 <Col>
                                     <TextField value={moment(plan?.time?.[0])?.format("HH:mm")} />
-                                {" - "}
+                                    {" - "}
                                     <TextField value={moment(plan?.time?.[1])?.format("HH:mm")} />
                                 </Col>
                             </Row>

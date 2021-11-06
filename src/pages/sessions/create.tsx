@@ -20,7 +20,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import { Space, TimePicker } from "antd";
 import { weekDays } from "interfaces/lists";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
-import { IPost, IWorkshop } from "interfaces";
+import { ISession, IWorkshop } from "interfaces";
 
 const { RangePicker: DateRangePicker } = DatePicker;
 const { RangePicker: TimeRangePicker } = TimePicker;
@@ -28,7 +28,7 @@ const { RangePicker: TimeRangePicker } = TimePicker;
 export const SessionCreate: React.FC<IResourceComponentsProps> = () => {
     const [selectedWorkshop, setSelectedWorkshop] = useState<string>();
 
-    const { formProps, saveButtonProps } = useForm<IPost>({ redirect: "list" });
+    const { formProps, saveButtonProps } = useForm<ISession>({ redirect: "list" });
 
     const isAdmin = usePermissions().data?.role === "admin";
 

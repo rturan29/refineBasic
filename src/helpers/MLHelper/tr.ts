@@ -50,6 +50,8 @@ const textListTR: { [key: string]: string; } = {
     "00049": "Bitiş Tarihi",
     "00050": "Yeni bir plan ekleyin",
     "00051": "Planlama",
+    "00052": "Grup",
+    "00053": "Özel",
 };
 
 export default textListTR;

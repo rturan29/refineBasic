@@ -50,6 +50,8 @@ const textListEN: { [key: string]: string; } = {
     "00049": "End Date",
     "00050": "Add new plan",
     "00051": "Planning",
+    "00052": "Group",
+    "00053": "Private",
 };
 
 export default textListEN;

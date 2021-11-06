@@ -21,6 +21,7 @@ import {
     CrudFilter,
     useNavigation,
 } from "@pankod/refine";
+import getWorkshopType from "helpers/MLHelper/getWorkshopType";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { IWorkshop, ISession } from "interfaces";
 import { WorkshopCreate } from ".";
@@ -101,7 +102,7 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                     <Table.Column
                         dataIndex="type"
                         title={MLTextHelper("00008")}
-                        render={(value) => <TagField value={value} />}
+                        render={(value) => <TagField value={getWorkshopType(value)} />}
                         defaultSortOrder={getDefaultSortOrder("type", sorter)}
                         sorter
                         filterDropdown={(props) => (

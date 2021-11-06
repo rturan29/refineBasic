@@ -8,13 +8,13 @@ import {
     useForm
 } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
-import { IPost } from "interfaces";
+import { IUser } from "interfaces/ILogin";
 
 const { Option } = Select;
 
 export const UserCreate: React.FC<IResourceComponentsProps> = () => {
 
-    const { formProps, saveButtonProps } = useForm<IPost>({ redirect: "list" });
+    const { formProps, saveButtonProps } = useForm<IUser>({ redirect: "list" });
 
     return (
         <Create saveButtonProps={saveButtonProps}>

@@ -4,29 +4,26 @@ interface ICategory {
   id: string;
   title: string;
 }
-interface IPost {
-  id: string;
-  title: string;
-  content: string;
-  status: "published" | "draft" | "rejected" | "past" | "quotaFull";
-  createdAt: string;
-  category: ICategory;
-}
-
 interface ICustomComponentProperties {
   icon: React.ReactNode,
   label: string,
   route: string;
 }
 
+type workshopType = "private" | "group";
+
+type workshopStatus = "published" | "draft";
+
+type sessionStatus = workshopStatus | "rejected" | "past" | "quotaFull"
+
 interface IWorkshop {
   id: string;
   title: string;
   category: string;
   description: string;
-  status: "published" | "draft";
+  status: workshopStatus;
   sessions: Array<string>;
-  type: "private" | "group";
+  type: workshopType;
 }
 
 interface ICategory {
@@ -40,9 +37,9 @@ interface IParticipant {
 }
 interface ISession {
   id: string;
-  type: "private" | "group";
+  type?: workshopType;
   workshopId: string;
-  status: "published" | "draft";
+  status: sessionStatus;
   teacher: string;
   quota: number;
   participants: IParticipant[];
