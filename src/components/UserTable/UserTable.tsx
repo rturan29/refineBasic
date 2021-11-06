@@ -1,6 +1,7 @@
 import { Table, TextField, EmailField, Space, ShowButton, DeleteButton, List, useTable, BooleanField, useDelete, useUpdate, RefreshButton, CreateButton, NumberField } from '@pankod/refine';
 import { arrayRemove } from 'firebase/firestore';
 import { isNullOrUndefined } from 'helpers/Utils';
+import { IParticipant, IUser } from 'interfaces';
 import React from 'react';
 
 type UserTableProps = React.PropsWithChildren<{

@@ -1,5 +1,6 @@
 import { Table, TextField, List, useTable, RefreshButton, useMany, DateField } from '@pankod/refine';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
+import { IUser, ISession, IWorkshop } from 'interfaces';
 import { weekDays } from 'interfaces/lists';
 import moment from 'moment';
 import React from 'react';

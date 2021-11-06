@@ -1,5 +1,6 @@
 import { Form, Select, useSelect, Switch } from '@pankod/refine';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
+import { IParticipant, IUser } from 'interfaces';
 import React from 'react';
 
 type AddUserToSessionProps = React.PropsWithChildren<{ participants?: IParticipant[]; }>;
