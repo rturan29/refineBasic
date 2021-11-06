@@ -8,7 +8,6 @@ import { SessionCreate, SessionEdit, SessionList } from "pages/sessions";
 import { UserCreate, UsersList } from "pages/AdminPages/users";
 import { useEffect, useState } from "react";
 import { firebaseAuth, firestoreDatabase } from "helpers/firebase/firebaseConfig";
-import Dashboard from "pages/Dashboard";
 
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
   const { getDataProvider } = firestoreDatabase
 
   useEffect(() => {
-
     auth.onAuthStateChanged(async () => {
       const claims = await getPermissions();
       if (claims?.role === "admin") {
@@ -33,7 +31,6 @@ function App() {
   return (
     <Refine
       LoginPage={Authentication}
-      DashboardPage={Dashboard}
       Sider={SiderMenu}
       dataProvider={getDataProvider()}
       authProvider={getAuthProvider()}
@@ -46,6 +43,10 @@ function App() {
           exact: true,
           component: Authentication,
           path: "/login",
+        }, {
+          exact: true,
+          component: Authentication,
+          path: "/",
         },
       ]}
     >
@@ -60,8 +61,7 @@ function App() {
         list={SessionList}
         edit={SessionEdit}
         create={SessionCreate}
-      />{
-        isAdmin
+      />{isAdmin
           ? <Resource
             name="users"
             list={UsersList}

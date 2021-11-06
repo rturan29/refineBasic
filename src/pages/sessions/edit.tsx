@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Edit,
     Form,
@@ -9,27 +9,32 @@ import {
     DatePicker,
     InputNumber,
     useSelect,
-    Col,
-    Row,
     useNavigation,
     usePermissions,
     Authenticated,
+    CreateButton,
+    DeleteButton,
+    Space,
 } from "@pankod/refine";
 import { TimePicker } from "antd";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { weekDays } from "interfaces/lists";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
+import { ISession, IWorkshop } from "interfaces";
 const { RangePicker: DateRangePicker } = DatePicker;
 const { RangePicker: TimeRangePicker } = TimePicker;
 
 
 export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
+    const { formProps, saveButtonProps, queryResult } = useForm<ISession>();
+    const [selectedWorkshop, setSelectedWorkshop] = useState<string>();
 
-    const { formProps, saveButtonProps } = useForm<ISession>();
-    const { data: permissionsData } = usePermissions();
-    const isAdmin = permissionsData?.role === "admin";
+    const isAdmin = usePermissions().data?.role === "admin";
 
     const { push } = useNavigation();
+
+    const { selectProps: workshopSelectProps, queryResult: workshopQueryResult } = useSelect<IWorkshop>({ resource: "workshops", optionLabel: "title", optionValue: "id", });
+    const workshopType = workshopQueryResult.data?.data?.find(workshop => workshop.id === selectedWorkshop)?.type;
 
     useEffect(() => {
         if (!isAdmin) {
@@ -37,11 +42,10 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
         }
     }, [isAdmin, push]);
 
+    useEffect(() => {
+        setSelectedWorkshop(queryResult?.data?.data.workshopId);
+    }, [queryResult?.data?.data.workshopId]);
 
-    const { selectProps: workshopSelectProps } = useSelect<IWorkshop>({
-        resource: "workshops", optionLabel: "title",
-        optionValue: "id",
-    });
 
     return (
         <Authenticated>
@@ -56,7 +60,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                             },
                         ]}
                     >
-                        <Select {...workshopSelectProps} />
+                        <Select onChange={(value: unknown) => setSelectedWorkshop((value as string))}{...workshopSelectProps} />
                     </Form.Item>
 
                     <Form.Item
@@ -101,37 +105,59 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                             },
                         ]}
                     >
-                        <DateRangePicker format="DD-MM-YYYY" />
+                        <DateRangePicker placeholder={[MLTextHelper("00048"), MLTextHelper("00049")]} format="DD-MM-YYYY" />
                     </Form.Item>
-                    <Form.Item
-                        noStyle
-                    >
-                        <Row>
-                            <Col span="3">
-                                <Form.Item label={MLTextHelper("00025")} name={["dayTime", "day"]}>
-                                    <Select options={weekDays.map((label, value) => ({ label, value }))} />
+                    <Form.List name={"plans"} >
+                        {(fields, { add, remove }, { errors }) => (
+                            <>
+                                {fields.map(({ key, name, fieldKey, ...restField }) => (
+                                    <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'day']}
+                                            fieldKey={[fieldKey, 'day']}
+                                            rules={[{ required: true, message: 'Missing day' }]}
+                                            style={{ width: "150px" }}
+                                        >
+                                            <Select placeholder={MLTextHelper("00025")} options={weekDays.map((label, value) => ({ label, value }))} />
+                                        </Form.Item>
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'time']}
+                                            fieldKey={[fieldKey, 'time']}
+                                            rules={[{ required: true, message: 'Missing time' }]}
+                                        >
+                                            <TimeRangePicker
+                                                placeholder={[MLTextHelper("00046"), MLTextHelper("00047")]}
+                                                disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]}
+                                                hideDisabledOptions
+                                                minuteStep={30} format="HH:mm" />
+                                        </Form.Item>
+                                        <DeleteButton onClick={() => remove(name)} style={{ marginLeft: "15px" }} size="small" hideText />
+                                    </Space>
+                                ))}
+                                <Form.Item>
+                                    <CreateButton onClick={() => add()} size="small" >{MLTextHelper("00050")}</CreateButton>
+                                    <Form.ErrorList errors={errors} />
                                 </Form.Item>
-                            </Col>
-                            <Col offset={1} >
-                                <Form.Item label={MLTextHelper("00026")} name={["dayTime", "time"]}>
-                                    <TimeRangePicker format="HH:mm" />
-                                </Form.Item>
+                            </>
+                        )
+                        }
+                    </Form.List>
 
-                            </Col>
-                        </Row>
-                    </Form.Item>
-
-                    <Form.Item
-                        label={MLTextHelper("00016")}
-                        name="quota"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <InputNumber min={0} precision={0} />
-                    </Form.Item>
+                    {workshopType === "group"
+                        ? <Form.Item
+                            label={MLTextHelper("00016")}
+                            name="quota"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <InputNumber min={0} precision={0} />
+                        </Form.Item>
+                        : null}
 
                     <Form.Item
                         label={MLTextHelper("00017")}

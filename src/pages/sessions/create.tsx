@@ -9,27 +9,28 @@ import {
     useForm,
     DatePicker,
     InputNumber,
-    Row,
-    Col,
     useNavigation,
     usePermissions,
     Authenticated,
+    CreateButton,
+    DeleteButton,
 } from "@pankod/refine";
 
-
 import "react-mde/lib/styles/css/react-mde-all.css";
-import { TimePicker } from "antd";
+import { Space, TimePicker } from "antd";
 import { weekDays } from "interfaces/lists";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
+import { IPost, IWorkshop } from "interfaces";
 
 const { RangePicker: DateRangePicker } = DatePicker;
 const { RangePicker: TimeRangePicker } = TimePicker;
 
 export const SessionCreate: React.FC<IResourceComponentsProps> = () => {
     const [selectedWorkshop, setSelectedWorkshop] = useState<string>();
+
     const { formProps, saveButtonProps } = useForm<IPost>({ redirect: "list" });
-    const { data: permissionsData } = usePermissions();
-    const isAdmin = permissionsData?.role === "admin";
+
+    const isAdmin = usePermissions().data?.role === "admin";
 
     const { push } = useNavigation();
 
@@ -104,34 +105,46 @@ export const SessionCreate: React.FC<IResourceComponentsProps> = () => {
                             },
                         ]}
                     >
-                        <DateRangePicker format="DD-MM-YYYY" />
+                        <DateRangePicker placeholder={[MLTextHelper("00048"), MLTextHelper("00049")]} format="DD-MM-YYYY" />
                     </Form.Item>
-                    <Form.Item
-                        noStyle
-                    >
-                        {workshopType === "private"
-                            ? weekDays.map(day =>
-                                <Row key={day}>
-                                    <Col>
-                                        <Form.Item label={day} name={["dayTime", "time"]}>
-                                            <TimeRangePicker disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]} hideDisabledOptions minuteStep={30} format="HH:mm" />
+
+                    <Form.List name={"plans"} >
+                        {(fields, { add, remove }, { errors }) => (
+                            <>
+                                {fields.map(({ key, name, fieldKey, ...restField }) => (
+                                    <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'day']}
+                                            fieldKey={[fieldKey, 'day']}
+                                            rules={[{ required: true, message: 'Missing day' }]}
+                                            style={{ width: "150px" }}
+                                        >
+                                            <Select placeholder={MLTextHelper("00025")} options={weekDays.map((label, value) => ({ label, value }))} />
                                         </Form.Item>
-                                    </Col>
-                                </Row>)
-                            : <Row >
-                                <Col span={3}>
-                                    <Form.Item label={MLTextHelper("00025")} name={["dayTime", "day"]}>
-                                        <Select options={weekDays.map((label, value) => ({ label, value }))} />
-                                    </Form.Item>
-                                </Col>
-                                <Col offset={1} >
-                                    <Form.Item label={MLTextHelper("00026")} name={["dayTime", "time"]}>
-                                        <TimeRangePicker disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]} hideDisabledOptions minuteStep={30} format="HH:mm" />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'time']}
+                                            fieldKey={[fieldKey, 'time']}
+                                            rules={[{ required: true, message: 'Missing time' }]}
+                                        >
+                                            <TimeRangePicker
+                                                placeholder={[MLTextHelper("00046"), MLTextHelper("00047")]}
+                                                disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]}
+                                                hideDisabledOptions
+                                                minuteStep={30} format="HH:mm" />
+                                        </Form.Item>
+                                        <DeleteButton onClick={() => remove(name)} style={{ marginLeft: "15px" }} size="small" hideText />
+                                    </Space>
+                                ))}
+                                <Form.Item>
+                                    <CreateButton onClick={() => add()} size="small" >{MLTextHelper("00050")}</CreateButton>
+                                    <Form.ErrorList errors={errors} />
+                                </Form.Item>
+                            </>
+                        )
                         }
-                    </Form.Item>
+                    </Form.List>
 
                     {workshopType === "group"
                         ? <Form.Item

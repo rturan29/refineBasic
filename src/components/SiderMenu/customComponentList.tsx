@@ -8,7 +8,7 @@ export const customComponentList: IMenuItem[] = [
         key: "/update-user-data",
         icon: <Icons.UserAddOutlined />,
         route: "/update-user-data",
-        label: MLTextHelper("00005")
+        label: "Update User Data"
     }
 ];
 

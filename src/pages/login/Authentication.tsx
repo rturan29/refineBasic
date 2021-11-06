@@ -6,6 +6,7 @@ import Register from 'components/Login/Register';
 import ForgotPassword from 'components/Login/ForgotPassword';
 import { ILoginArgs, LoginLocationTypes, IRegisterArgs } from 'interfaces/ILogin';
 import { firebaseAuth } from 'helpers/firebase/firebaseConfig';
+import { IUser } from 'interfaces';
 
 export default function Authentication() {
     const { mutate: login } = useLogin<ILoginArgs>();
@@ -23,7 +24,6 @@ export default function Authentication() {
                 push("/workshops");
             }
         });
-
     }, [push, auth]);
 
     useEffect(() => {

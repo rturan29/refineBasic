@@ -100,7 +100,7 @@ export default function UserTable(props: UserTableProps) {
                     dataIndex="actions"
                     render={(_, record) => (
                         <Space>
-                            <DeleteButton size="small" onClick={() => handleDeleteUser(record)} resourceName="sessions" recordItemId={record.id} />
+                            <DeleteButton size="small" onSuccess={() => handleDeleteUser(record)} resourceName="sessions" recordItemId={record.id} />
                         </Space>
                     )}
                 />

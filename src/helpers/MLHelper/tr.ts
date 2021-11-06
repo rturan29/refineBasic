@@ -1,6 +1,6 @@
 const textListTR: { [key: string]: string; } = {
     "00001": "Workshoplar",
-    "00002": "Seanslar",
+    "00002": "Grup Seansları",
     "00003": "Kullanıcılar",
     "00004": "Katılımcılar",
     "00005": "Kullanıcı Bilgilerini Güncelle",
@@ -44,6 +44,12 @@ const textListTR: { [key: string]: string; } = {
     "00043": "Giriş sayfasına geri dön",
     "00044": "Şimdi kayıt ol",
     "00045": "Başvur",
+    "00046": "Başlangıç Zamanı",
+    "00047": "Bitiş Zamanı",
+    "00048": "Başlangıç Tarihi",
+    "00049": "Bitiş Tarihi",
+    "00050": "Yeni bir plan ekleyin",
+    "00051": "Planlama",
 };
 
 export default textListTR;

@@ -9,14 +9,14 @@ import {
     Authenticated,
 } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
+import { IWorkshop } from "interfaces";
 
 
 const { Title, Text } = Typography;
 
 export const WorkshopShow: React.FC<IResourceComponentsProps> = () => {
     const { queryResult } = useShow<IWorkshop>();
-    const { data: permissionsData } = usePermissions();
-    const isAdmin = permissionsData?.role === "admin";
+    const isAdmin = usePermissions().data?.role === "admin";
 
     const { data, isLoading } = queryResult;
     const record = data?.data;

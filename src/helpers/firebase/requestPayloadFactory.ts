@@ -1,4 +1,5 @@
 import moment from "moment";
+import { IUser, IWorkshop, ISession } from "interfaces";
 
 export function requestPayloadFactory(resource: string, payload: any) {
     switch (resource) {
@@ -17,47 +18,54 @@ export function requestPayloadFactory(resource: string, payload: any) {
 }
 
 export function createUserDataFactory(data: IUser) {
+    const { nameSurname, email, phone, gender, workshops } = data;
+    let result: any = {};
+    if (nameSurname) {
+        result.nameSurname = nameSurname;
+    }
+
+    if (email) {
+        result.email = email;
+    }
+
+    if (phone) {
+        result.phone = phone;
+    }
+
+    if (gender) {
+        result.gender = gender;
+    }
+
+    if (workshops) {
+        result.workshops = workshops;
+    }
 
     return {
-        nameSurname: data.nameSurname,
-        email: data.email,
-        phone: data.phone || "",
-        gender: data.gender || "other",
-        workshops: data.workshops || []
+        ...result
     };
 }
 
 export function createWorkshopDataFactory(data: IWorkshop) {
 
     return {
-        ...data,
-        sessions: data.sessions || []
+        ...data
     };
 }
 
 export function createSessionDataFactory(data: ISession) {
-    let result: any = {};
 
-    if (data.participants?.length) {
-        result.participants = {};
-        data.participants.forEach(user => result.participants[user.participantId] = user);
+    if (data.period?.length) {
+        data.period = data.period.map(date => (date as any).toDate()) as any;
     }
 
-    console.log(data)
-
-    if (data.period) {
-        result.period = data.period.map(date => typeof date == "object" ? date.toISOString() : date)
-    }
-    if (data.dayTime) {
-        result.dayTime = {
-            day: data.dayTime.day,
-            time: data.dayTime.time?.map(time => moment(time).format("HH:mm"))
-        }
+    if (data.plans?.length) {
+        data.plans = data.plans.map(plan => ({
+            day: plan.day,
+            time: plan.time?.map(time => moment(time).format("HH:mm")) as [string, string]
+        }));
     }
 
     return {
-        ...data,
-        ...result,
-        participants: data.participants || [],
+        ...data
     };
 }

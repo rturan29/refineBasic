@@ -14,8 +14,7 @@ import MLTextHelper from "helpers/MLHelper/MLHelper";
 
 export const WorkshopCreate: React.FC<{ close?: () => void; }> = ({ close }) => {
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
-    const { data: permissionsData } = usePermissions();
-    const isAdmin = permissionsData?.role === "admin";
+    const isAdmin = usePermissions().data?.role === "admin";
 
     useEffect(() => {
         if (!isAdmin) {

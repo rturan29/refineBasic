@@ -8,6 +8,7 @@ import {
     useForm
 } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
+import { IPost } from "interfaces";
 
 const { Option } = Select;
 

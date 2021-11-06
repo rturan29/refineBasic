@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-
 interface ICategory {
   id: string;
   title: string;
@@ -48,7 +46,7 @@ interface ISession {
   participants: IParticipant[];
   paymentAmount: number;
   description?: string;
-  period: [string, string] | [dayjs.Dayjs, dayjs.Dayjs] | [Date, Date];
+  period: [Date, | Date];
   plans?: { day: number, time: [any, any]; }[];
 }
 

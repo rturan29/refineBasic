@@ -24,25 +24,36 @@ import {
     RefreshButton,
     usePermissions,
     Authenticated,
+    Col,
+    Row,
 } from "@pankod/refine";
 import AddUserToSession from "components/UserTable/AddUserToSession";
 import UserTable from "components/UserTable/UserTable";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
+import { ISession, IWorkshop, IParticipant } from "interfaces";
 import { weekDays } from "interfaces/lists";
 import moment from "moment";
 import { useState } from "react";
+import { CrudFilter } from "refine-firebase/lib/interfaces/IDataContext";
 
 export const SessionList: React.FC<IResourceComponentsProps> = () => {
-    const { data: permissionsData } = usePermissions();
-    const isAdmin = permissionsData?.role === "admin";
+    const isAdmin = usePermissions().data?.role === "admin";
 
-    const { tableProps, tableQueryResult } = useTable<ISession>({
-        permanentFilter: isAdmin ? [] : [{
+    const permanentFilter: CrudFilter[] = [{
+        field: "type",
+        operator: "eq",
+        value: "group"
+    }];
+
+    if (!isAdmin) {
+        permanentFilter.push({
             field: "status",
             operator: "eq",
             value: "published"
-        }]
-    });
+        });
+    }
+
+    const { tableProps, tableQueryResult } = useTable<ISession>({ permanentFilter });
 
     if (!isAdmin) {
         tableProps.dataSource = tableProps?.dataSource?.filter(data => data.quota > data.participants?.length);
@@ -131,6 +142,8 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                                     <Radio value="published">Published</Radio>
                                     <Radio value="draft">Draft</Radio>
                                     <Radio value="rejected">Rejected</Radio>
+                                    <Radio value="past">Past</Radio>
+                                    <Radio value="quotaFull">Quota-Full</Radio>
                                 </Radio.Group>
                             </FilterDropdown>
                         )}
@@ -210,16 +223,23 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
                         render={(value) => <> <DateField format="DD-MM-YYYY" value={value?.[0]} /> - <DateField format="DD-MM-YYYY" value={value?.[1]} /></>}
                         sorter
                     />
+
                     <Table.Column
-                        dataIndex="dayTime"
-                        title={MLTextHelper("00015")}
-                        render={(value) =>
-                            <>
-                                <TextField value={`${weekDays[value.day as number]}  `} />
-                                <TextField value={moment(value?.time?.[0])?.format("HH:mm")} />
+                        dataIndex="plans"
+                        title={MLTextHelper("00051")}
+                        render={(value: ISession["plans"]) => value?.map(plan => (
+                            <Row>
+                                <Col span="10">
+                                    <TextField value={`${weekDays[plan.day]}  `} />
+                                </Col>
+                                <Col>
+                                    <TextField value={moment(plan?.time?.[0])?.format("HH:mm")} />
                                 {" - "}
-                                <TextField value={moment(value?.time?.[1])?.format("HH:mm")} />
-                            </>}
+                                    <TextField value={moment(plan?.time?.[1])?.format("HH:mm")} />
+                                </Col>
+                            </Row>
+                        ))
+                        }
                         sorter
                     />
                     <Table.Column

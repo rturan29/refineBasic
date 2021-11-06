@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
-import moment from "moment";
+import { IUser, IWorkshop, ISession } from "interfaces";
+import moment, { Moment } from "moment";
 
 export function responsePayloadFactory(resource: string, payload: any) {
     switch (resource) {
@@ -39,16 +40,26 @@ export function getWorkshopDataFactory(data: IWorkshop) {
 }
 
 export function getSessionDataFactory(data: ISession) {
-    const time = data.dayTime?.time?.map(time => {
-        let timeList = time.split(":");
-        return moment().hour(timeList?.[0])?.minutes(timeList?.[1]);
-    });
+    data.plans = data.plans?.map(plan => ({
+        day: plan.day,
+        time: getTimeFromString(plan.time)
+    })) || [];
+
+    data.period = data.period?.map(date => {
+        const dateObj = typeof date == "string" ? date : (date as any).toDate?.();
+        return dayjs(dateObj);
+    }) as any;
 
     return {
         ...data,
-        period: data.period?.map(date => dayjs(date)),
-        dayTime: { day: data.dayTime?.day, time },
         participants: data.participants || [],
         description: data.description || "",
     };
+}
+
+function getTimeFromString(timeList: [string, string]): [Moment, Moment] {
+    return timeList?.map((time) => {
+        let times = time.split(":");
+        return moment().hour(Number(times?.[0]))?.minutes(Number(times?.[1]));
+    }) as [Moment, Moment];
 }

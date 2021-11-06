@@ -9,6 +9,7 @@ import WorkshopsTable from "components/WorkshopsTable";
 import UserTable from "components/UserTable/UserTable";
 import { useState } from "react";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
+import { IUser } from "interfaces";
 
 export const UsersList: React.FC<IResourceComponentsProps> = () => {
     const [currentRow, setCurrentRow] = useState<IUser>();

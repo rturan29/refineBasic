@@ -15,13 +15,13 @@ import ReactMde from "react-mde";
 
 import "react-mde/lib/styles/css/react-mde-all.css";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
+import { IWorkshop } from "interfaces";
 
 export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
 
     const { formProps, saveButtonProps } = useForm<IWorkshop>();
-    const { data: permissionsData } = usePermissions();
-    const isAdmin = permissionsData?.role === "admin";
+    const isAdmin = usePermissions().data?.role === "admin";
 
     const { push } = useNavigation();
 

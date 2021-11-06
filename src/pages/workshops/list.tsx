@@ -18,16 +18,64 @@ import {
     Modal,
     usePermissions,
     Authenticated,
+    CrudFilter,
+    useNavigation,
 } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
+import { IWorkshop, ISession } from "interfaces";
 import { WorkshopCreate } from ".";
 
 export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
-    const { tableProps, sorter } = useTable<IWorkshop>();
-
-    const { modalProps, formProps, show, close } = useModalForm<ISession>({ action: "create", redirect: "list" });
+    const { show: showWorkshop } = useNavigation();
     const { data: permissionsData } = usePermissions();
     const isAdmin = permissionsData?.role === "admin";
+
+    const permanentFilter: CrudFilter[] = [];
+    if (!isAdmin) {
+        permanentFilter.push({
+            field: "status",
+            operator: "eq",
+            value: "published"
+        });
+    }
+
+    const { tableProps, sorter } = useTable<IWorkshop>({ permanentFilter });
+
+    const { modalProps, formProps, show, close } = useModalForm<ISession>({ action: "create", redirect: "list" });
+
+    function renderAdminColumns() {
+        return (
+            <>
+                <Table.Column
+                    dataIndex="status"
+                    title={MLTextHelper("00009")}
+                    render={(value: string) => <TagField value={value} />}
+                    defaultSortOrder={getDefaultSortOrder("status", sorter)}
+                    sorter
+                    filterDropdown={(props) => (
+                        <FilterDropdown {...props}>
+                            <Radio.Group>
+                                <Radio value="published">Published</Radio>
+                                <Radio value="draft">Draft</Radio>
+                                <Radio value="rejected">Rejected</Radio>
+                            </Radio.Group>
+                        </FilterDropdown>
+                    )}
+                />
+                <Table.Column<IWorkshop>
+                    title={MLTextHelper("00011")}
+                    dataIndex="actions"
+                    render={(_, record) => (
+                        <Space>
+                            <ShowButton hideText size="small" recordItemId={record.id} />
+                            <EditButton hideText size="small" recordItemId={record.id} />
+                            <DeleteButton hideText size="small" recordItemId={record.id} />
+
+                        </Space>
+                    )}
+                />
+            </>);
+    }
 
     return (
         <Authenticated>
@@ -36,10 +84,10 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                 canCreate={isAdmin}
             >
                 <Table {...tableProps} rowKey="id">
-                    <Table.Column
+                    <Table.Column<IWorkshop>
                         dataIndex="title"
                         title={MLTextHelper("00006")}
-                        render={(value) => <TextField value={value} />}
+                        render={(value, record) => <TextField style={{ cursor: "pointer" }} onClick={() => showWorkshop("workshops", record.id)} value={value} />}
                         defaultSortOrder={getDefaultSortOrder("title", sorter)}
                         sorter
                     />
@@ -65,42 +113,13 @@ export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
                             </FilterDropdown>
                         )}
                     />
-                    {isAdmin
-                        ? <Table.Column
-                        dataIndex="status"
-                        title={MLTextHelper("00009")}
-                        render={(value: string) => <TagField value={value} />}
-                        defaultSortOrder={getDefaultSortOrder("status", sorter)}
-                        sorter
-                        filterDropdown={(props) => (
-                            <FilterDropdown {...props}>
-                                <Radio.Group>
-                                    <Radio value="published">Published</Radio>
-                                    <Radio value="draft">Draft</Radio>
-                                    <Radio value="rejected">Rejected</Radio>
-                                </Radio.Group>
-                            </FilterDropdown>
-                        )}
-                        /> : null}
                     <Table.Column
                         dataIndex="description"
                         title={MLTextHelper("00010")}
                         render={(value) => <MarkdownField value={value} />}
                     />
-                    <Table.Column<IPost>
-                        title={MLTextHelper("00011")}
-                        dataIndex="actions"
-                        render={(_, record) => (
-                            <Space>
-                                <ShowButton hideText size="small" recordItemId={record.id} />
-                                {isAdmin
-                                    ? <>
-                                        <EditButton hideText size="small" recordItemId={record.id} />
-                                        <DeleteButton hideText size="small" recordItemId={record.id} />
-                                    </> : null}
-                            </Space>
-                        )}
-                    />
+                    {isAdmin ? renderAdminColumns() : null}
+
                 </Table>
             </List>
             <Modal {...modalProps}>

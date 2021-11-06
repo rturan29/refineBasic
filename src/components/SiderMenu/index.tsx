@@ -62,9 +62,24 @@ export const SiderMenu: React.FC = () => {
 function getMenuItem({ icon, route, label }: IMenuItem) {
     return (
         <Menu.Item key={route} icon={icon}>
-            <Link to={route}>{label}</Link>
+            <Link to={route}>{getLabel(label)}</Link>
         </Menu.Item>
     );
+}
+
+function getLabel(label?: string) {
+    switch (label) {
+        case "Workshops":
+            return MLTextHelper("00001");
+        case "Sessions":
+            return MLTextHelper("00002");
+        case "Users":
+            return MLTextHelper("00003");
+        case "Update User Data":
+            return MLTextHelper("00005");
+        default:
+            return "";
+    }
 }
 
 const antLayoutSider: CSSProperties = {

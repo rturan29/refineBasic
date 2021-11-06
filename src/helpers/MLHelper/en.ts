@@ -1,6 +1,6 @@
 const textListEN: { [key: string]: string; } = {
     "00001": "Workshops",
-    "00002": "Sessions",
+    "00002": "Group Sessions",
     "00003": "Users",
     "00004": "Participants",
     "00005": "Update User Data",
@@ -44,7 +44,12 @@ const textListEN: { [key: string]: string; } = {
     "00043": "Go back to login",
     "00044": "Register now",
     "00045": "Apply",
-
+    "00046": "Start Time",
+    "00047": "End Time",
+    "00048": "Start Date",
+    "00049": "End Date",
+    "00050": "Add new plan",
+    "00051": "Planning",
 };
 
 export default textListEN;

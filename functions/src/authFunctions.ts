@@ -20,7 +20,6 @@ const onDeleteUser = functions.firestore.document("users/{userId}").onDelete(asy
 
     const authId = context.auth?.uid;
 
-
     if (authId) {
         const contextUserRecord = await admin.auth().getUser(authId);
         if (contextUserRecord.customClaims?.isAdmin) {
