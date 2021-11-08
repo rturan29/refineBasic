@@ -8,8 +8,7 @@ import { SessionCreate, SessionEdit, SessionList } from "pages/sessions";
 import { UserCreate, UsersList } from "pages/AdminPages/users";
 import { useEffect, useState } from "react";
 import { firebaseAuth, firestoreDatabase } from "helpers/firebase/firebaseConfig";
-import { getCurrentCulture } from "helpers/MLHelper/MLHelper";
-require(`moment/locale/${getCurrentCulture()}`);
+require(`moment/locale/${window.navigator.language.split("-")[0] || "tr"}`);
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
