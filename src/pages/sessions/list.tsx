@@ -22,7 +22,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
     const { modalProps, show, close } = useModal();
     const { tableProps, tableQueryResult } = useTable<ISession>({ permanentFilter });
 
-    if (!isAdmin) {
+    if (!isAdmin && activeWorkshopType !== "private") {
         tableProps.dataSource = tableProps?.dataSource?.filter(data => data.quota > data.participants?.length);
     }
 
