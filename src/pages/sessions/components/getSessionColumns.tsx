@@ -100,20 +100,18 @@ export default function getSessionColumns({ isLoading, workshops, isAdmin, activ
                     <DeleteButton hideText size="small" recordItemId={record.id} />
                 </Space>
             ),
-        },
-
-            {
-                title: MLTextHelper("00011"),
-                dataIndex: "actions",
-                render: (_: any, record: ISession) => (
-                    <Space>
-                        <CreateButton onClick={() => handleShowModal(record, "apply")} size="small">{MLTextHelper("00045")}</CreateButton>
-                    </Space>
-                )
-            });
+        });
 
     } else {
-        sessionColumns.push();
+        sessionColumns.push({
+            title: MLTextHelper("00011"),
+            dataIndex: "actions",
+            render: (_: any, record: ISession) => (
+                <Space>
+                    <CreateButton onClick={() => handleShowModal(record, "apply")} size="small">{MLTextHelper("00045")}</CreateButton>
+                </Space>
+            )
+        });
     }
 
     return sessionColumns;
