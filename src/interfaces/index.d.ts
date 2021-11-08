@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { Moment } from "moment";
 
 interface ICategory {
   id: string;
@@ -14,7 +15,9 @@ type workshopType = "private" | "group";
 
 type workshopStatus = "published" | "draft";
 
-type sessionStatus = workshopStatus | "rejected" | "past" | "quotaFull"
+type sessionStatus = workshopStatus | "rejected" | "past" | "quotaFull";
+
+type sessionModalRole = "show" | "create" | "apply";
 
 interface IWorkshop {
   id: string;
@@ -34,6 +37,7 @@ interface ICategory {
 interface IParticipant {
   participantId: string;
   isPaymentCompleted: boolean;
+  selectedPlan?: ISelectedPlan
 }
 interface ISession {
   id: string;
@@ -46,7 +50,22 @@ interface ISession {
   paymentAmount: number;
   description?: string;
   period: [string, string] | [dayjs.Dayjs, dayjs.Dayjs] | [Date, Date];
-  plans?: { day: number, time: [any, any]; }[];
+  plans?: IPlan[];
+  availablePlans?: IAvailablePlan[];
+}
+interface IPlan {
+  day: number,
+  time: [Moment, Moment] | [string, string];
+}
+
+interface IAvailablePlan {
+  day: number,
+  time: Array<number>;
+}
+
+interface ISelectedPlan {
+  day: number,
+  time: number
 }
 
 interface IUser {

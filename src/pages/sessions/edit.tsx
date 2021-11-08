@@ -18,9 +18,9 @@ import {
 } from "@pankod/refine";
 import { TimePicker } from "antd";
 import "react-mde/lib/styles/css/react-mde-all.css";
-import { weekDays } from "interfaces/lists";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { ISession, IWorkshop } from "interfaces";
+import { weekdays } from "moment";
 const { RangePicker: DateRangePicker } = DatePicker;
 const { RangePicker: TimeRangePicker } = TimePicker;
 
@@ -54,11 +54,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                     <Form.Item
                         label={MLTextHelper("00012")}
                         name="workshopId"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                        rules={[{ required: true }]}
                     >
                         <Select onChange={(value: unknown) => setSelectedWorkshop((value as string))}{...workshopSelectProps} />
                     </Form.Item>
@@ -66,26 +62,13 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                     <Form.Item
                         label={MLTextHelper("00009")}
                         name="status"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                        rules={[{ required: true }]}
                     >
                         <Select
                             options={[
-                                {
-                                    label: "Published",
-                                    value: "published",
-                                },
-                                {
-                                    label: "Draft",
-                                    value: "draft",
-                                },
-                                {
-                                    label: "Canceled",
-                                    value: "canceled",
-                                }
+                                { label: "Published", value: "published", },
+                                { label: "Draft", value: "draft", },
+                                { label: "Canceled", value: "canceled", }
                             ]}
                         />
                     </Form.Item>
@@ -99,11 +82,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                     <Form.Item
                         label={MLTextHelper("00014")}
                         name="period"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                        rules={[{ required: workshopType === "group" }]}
                     >
                         <DateRangePicker placeholder={[MLTextHelper("00048"), MLTextHelper("00049")]} format="DD-MM-YYYY" />
                     </Form.Item>
@@ -119,7 +98,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                                             rules={[{ required: true, message: 'Missing day' }]}
                                             style={{ width: "150px" }}
                                         >
-                                            <Select placeholder={MLTextHelper("00025")} options={weekDays.map((label, value) => ({ label, value }))} />
+                                            <Select placeholder={MLTextHelper("00025")} options={weekdays().map((label, value) => ({ label, value }))} />
                                         </Form.Item>
                                         <Form.Item
                                             {...restField}
@@ -149,11 +128,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                         ? <Form.Item
                             label={MLTextHelper("00016")}
                             name="quota"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
+                            rules={[{ required: true }]}
                         >
                             <InputNumber min={0} precision={0} />
                         </Form.Item>
@@ -162,11 +137,7 @@ export const SessionEdit: React.FC<IResourceComponentsProps> = () => {
                     <Form.Item
                         label={MLTextHelper("00017")}
                         name="paymentAmount"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                        rules={[{ required: true }]}
                     >
                         <Input addonBefore={<>&#8378;</>} type="number" min="0" step="0.01" data-type="currency" />
                     </Form.Item>

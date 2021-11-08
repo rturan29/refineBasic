@@ -42,13 +42,13 @@ export function getWorkshopDataFactory(data: IWorkshop) {
 export function getSessionDataFactory(data: ISession) {
     data.plans = data.plans?.map(plan => ({
         day: plan.day,
-        time: getTimeFromString(plan.time)
+        time: getTimeFromString(plan.time as [string, string])
     })) || [];
 
     data.period = data.period?.map(date => {
         const dateObj = typeof date == "string" ? date : (date as any).toDate?.();
         return dayjs(dateObj);
-    }) as any;
+    }) as any || [];
 
     return {
         ...data,

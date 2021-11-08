@@ -8,10 +8,7 @@ type AddUserToSessionProps = React.PropsWithChildren<{ participants?: IParticipa
 
 export default function AddUserToSession(props: AddUserToSessionProps) {
 
-    const { selectProps } = useSelect<IUser>({
-        resource: "users", optionLabel: "nameSurname",
-        optionValue: "id",
-    });
+    const { selectProps } = useSelect<IUser>({ resource: "users", optionLabel: "nameSurname", optionValue: "id", });
 
     selectProps.options = selectProps.options?.filter(option => !props.participants?.find(participant => participant.participantId === option.value)) || [];
 
@@ -20,11 +17,7 @@ export default function AddUserToSession(props: AddUserToSessionProps) {
             <Form.Item
                 label={MLTextHelper("00029")}
                 name="participantId"
-                rules={[
-                    {
-                        required: true,
-                    },
-                ]}
+                rules={[{ required: true }]}
             >
                 <Select {...selectProps} placeholder="Select a user to add" />
             </Form.Item>
@@ -32,11 +25,7 @@ export default function AddUserToSession(props: AddUserToSessionProps) {
             <Form.Item
                 label={MLTextHelper("00024")}
                 name="paymentCompleted"
-                rules={[
-                    {
-                        required: true,
-                    },
-                ]}
+                rules={[{ required: true }]}
                 initialValue={false}
             >
                 <Switch />

@@ -1,5 +1,5 @@
 import moment from "moment";
-import { IUser, IWorkshop, ISession } from "interfaces";
+import { IUser, IWorkshop, ISession, IPlan } from "interfaces";
 
 export function requestPayloadFactory(resource: string, payload: any) {
     switch (resource) {
@@ -54,12 +54,10 @@ export function createWorkshopDataFactory(data: IWorkshop) {
 
 export function createSessionDataFactory(data: ISession) {
 
-    if (data.period?.length) {
-        data.period = data.period.map(date => (date as any).toDate()) as any;
-    }
+    data.period = data.period?.map(date => (date as any).toDate()) as any || []
 
     if (data.plans?.length) {
-        data.plans = data.plans.map(plan => ({
+        data.plans = data.plans.map((plan): IPlan => ({
             day: plan.day,
             time: plan.time?.map(time => moment(time).format("HH:mm")) as [string, string]
         }));

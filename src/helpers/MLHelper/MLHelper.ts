@@ -1,8 +1,11 @@
 import textListTR from "./tr";
 import textListEN from "./en";
 
+export function getCurrentCulture() {
+    return window.navigator.language.split("-")[0] || "tr";
+}
+
 export default function MLTextHelper(key: string) {
-    // const locale = localStorage.getItem("locale") || "tr";
     const locale = window.navigator.language || "tr";
 
     switch (locale) {

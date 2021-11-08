@@ -2,9 +2,11 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as dayjs from 'dayjs';
 import { firestore } from "firebase-admin";
+import { ISession } from "./interfaces";
+import { getAvailablePlans } from "./helpers";
 
 const onAppendNewSession = functions.firestore.document("sessions/{sessionId}").onCreate(async (snapshot, context) => {
-    const { workshopId } = snapshot.data() as ISession;
+    const { workshopId, plans } = snapshot.data() as ISession;
 
     await admin.firestore().collection("workshops").doc(workshopId).update({
         sessions: firestore.FieldValue.arrayUnion(snapshot.id)
@@ -12,7 +14,10 @@ const onAppendNewSession = functions.firestore.document("sessions/{sessionId}").
 
     const workshopSnapshot = await admin.firestore().collection("workshops").doc(workshopId).get();
 
-    await admin.firestore().collection("sessions").doc(snapshot.id).update({ type: workshopSnapshot.data()?.type });
+    await admin.firestore().collection("sessions").doc(snapshot.id).update({
+        type: workshopSnapshot.data()?.type,
+        availablePlans: plans ? getAvailablePlans(plans) : null
+    });
 });
 
 const onDeleteSession = functions.firestore.document("sessions/{sessionId}").onDelete(async (snapshot, context) => {
@@ -36,7 +41,11 @@ const scheduleSessionStatus = functions.pubsub.schedule('0 0 * * *').timeZone('T
     sessionCollection.docs.forEach(async sessionSnapshot => {
         const session = sessionSnapshot.data() as ISession;
 
-        const isPast = dayjs().diff(session.period[0], "day") == 0;
+        let sessionStart: any = session.period?.[0];
+
+        sessionStart = typeof sessionStart == "string" ? sessionStart : sessionStart.toDate?.();
+
+        const isPast = dayjs().diff(sessionStart, "day") == 0;
 
         if (isPast) {
             await admin.firestore().collection("sessions").doc(sessionSnapshot.id).update({ status: "past" });

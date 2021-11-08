@@ -1,13 +1,12 @@
 import { Table, TextField, List, useTable, RefreshButton, useMany, DateField } from '@pankod/refine';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
 import { IUser, ISession, IWorkshop } from 'interfaces';
-import { weekDays } from 'interfaces/lists';
-import moment from 'moment';
+import moment, { weekdays } from 'moment';
 import React from 'react';
 
 type UserTableProps = React.PropsWithChildren<{ user?: IUser; }>;
 
-export default function UserTable(props: UserTableProps) {
+export default function WorkshopsTable(props: UserTableProps) {
 
 
     const { tableProps } = useTable<ISession>(
@@ -63,7 +62,7 @@ export default function UserTable(props: UserTableProps) {
                     title={MLTextHelper("00015")}
                     render={(value) =>
                         <>
-                            <TextField value={`${weekDays[value.day as number]} `} />
+                            <TextField value={`${weekdays(value.day)} `} />
                             <TextField value={moment(value?.time?.[0])?.format("HH:mm")} />
                             {" - "}
                             <TextField value={moment(value?.time?.[1])?.format("HH:mm")} />

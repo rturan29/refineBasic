@@ -1,30 +1,32 @@
+import * as dayjs from "dayjs";
+import { Moment } from "moment";
+
 interface ICategory {
   id: string;
   title: string;
 }
-interface IPost {
-  id: string;
-  title: string;
-  content: string;
-  status: "published" | "draft" | "rejected" | "past" | "quotaFull";
-  createdAt: string;
-  category: ICategory;
-}
-
 interface ICustomComponentProperties {
   icon: React.ReactNode,
   label: string,
   route: string;
 }
 
+type workshopType = "private" | "group";
+
+type workshopStatus = "published" | "draft";
+
+type sessionStatus = workshopStatus | "rejected" | "past" | "quotaFull";
+
+type sessionModalRole = "show" | "create" | "apply";
+
 interface IWorkshop {
   id: string;
   title: string;
   category: string;
   description: string;
-  status: "published" | "draft";
+  status: workshopStatus;
   sessions: Array<string>;
-  type: "private" | "group";
+  type: workshopType;
 }
 
 interface ICategory {
@@ -35,19 +37,30 @@ interface ICategory {
 interface IParticipant {
   participantId: string;
   isPaymentCompleted: boolean;
+  selectedPlan?: string
 }
 interface ISession {
   id: string;
-  type: "private" | "group";
+  type?: workshopType;
   workshopId: string;
-  status: "published" | "draft";
+  status: sessionStatus;
   teacher: string;
   quota: number;
   participants: IParticipant[];
   paymentAmount: number;
   description?: string;
-  period: [Date, | Date];
-  plans?: { day: number, time: [any, any]; }[];
+  period: [string, string] | [dayjs.Dayjs, dayjs.Dayjs] | [Date, Date];
+  plans?: IPlan[];
+  availablePlans?: IAvailablePlan[];
+}
+interface IPlan {
+  day: number,
+  time: [Moment, Moment] | [string, string];
+}
+
+interface IAvailablePlan {
+  day: number,
+  time: Array<number>;
 }
 
 interface IUser {

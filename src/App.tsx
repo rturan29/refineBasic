@@ -8,10 +8,10 @@ import { SessionCreate, SessionEdit, SessionList } from "pages/sessions";
 import { UserCreate, UsersList } from "pages/AdminPages/users";
 import { useEffect, useState } from "react";
 import { firebaseAuth, firestoreDatabase } from "helpers/firebase/firebaseConfig";
-
+import { getCurrentCulture } from "helpers/MLHelper/MLHelper";
+require(`moment/locale/${getCurrentCulture()}`);
 
 function App() {
-
   const [isAdmin, setIsAdmin] = useState(false);
 
   const { auth, getAuthProvider, getPermissions } = firebaseAuth;
@@ -20,11 +20,7 @@ function App() {
   useEffect(() => {
     auth.onAuthStateChanged(async () => {
       const claims = await getPermissions();
-      if (claims?.role === "admin") {
-        setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
-      }
+      setIsAdmin(claims?.role === "admin")
     });
   }, [auth, getPermissions]);
 
