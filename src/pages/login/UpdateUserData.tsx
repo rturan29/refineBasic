@@ -142,7 +142,7 @@ export default function UpdateUserData(props: IRegisterProps) {
 
                 <Form.Item wrapperCol={{ offset: 7, span: 16 }}>
                     <Button style={{ marginRight: "100px" }} type="primary" htmlType="submit">
-                        Register
+                        {MLTextHelper("00036")}
                     </Button>
 
                 </Form.Item>

@@ -19,31 +19,54 @@ export default function AddUserToSession({ currentSession }: AddUserToSessionPro
         return currentSession.availablePlans?.find(plan => plan.day == selectedDay)?.time.map(time => ({ label: `${time}:00`, value: time })) || [];
     }
 
+    function getPrivateWorkshopItems() {
+        return (
+            <>
+                <Form.Item
+                    label={MLTextHelper("00025")}
+                    name="day"
+                    rules={[{ required: true }]}
+                >
+                    <Select
+                        options={dayOptions}
+                        value={selectedDay}
+                        onChange={value => setSelectedDay(value)}
+                        placeholder={MLTextHelper("00034")}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    label={MLTextHelper("00051")}
+                    name="time"
+                    rules={[{ required: true }]}
+                >
+                    <Select
+                        options={getTimeOptions()}
+                        placeholder={MLTextHelper("00035")}
+                    />
+                </Form.Item>
+            </>
+        );
+    }
+
+    function getGroupWorkshopItems() {
+        return (
+            <>
+                <span>Lütfen iletişime geçiniz...</span>
+            </>
+        );
+    }
+
+    function getContent() {
+        return currentSession.type == "private"
+            ? getPrivateWorkshopItems()
+            : getGroupWorkshopItems();
+
+    }
+
     return (
         <>
-            <Form.Item
-                label={MLTextHelper("00025")}
-                name="day"
-                rules={[{ required: true }]}
-            >
-                <Select
-                    options={dayOptions}
-                    value={selectedDay}
-                    onChange={value => setSelectedDay(value)}
-                    placeholder={MLTextHelper("00034")}
-                />
-            </Form.Item>
-
-            <Form.Item
-                label={MLTextHelper("00051")}
-                name="time"
-                rules={[{ required: true }]}
-            >
-                <Select
-                    options={getTimeOptions()}
-                    placeholder={MLTextHelper("00035")}
-                />
-            </Form.Item>
+            {getContent()}
         </>
     );
 }

@@ -16,7 +16,7 @@ const onAppendNewSession = functions.firestore.document("sessions/{sessionId}").
 
     await admin.firestore().collection("sessions").doc(snapshot.id).update({
         type: workshopSnapshot.data()?.type,
-        availablePlans: plans ? getAvailablePlans(plans) : null
+        availablePlans: plans && workshopSnapshot.data()?.type == "private" ? getAvailablePlans(plans) : []
     });
 });
 

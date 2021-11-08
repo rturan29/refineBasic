@@ -17,7 +17,8 @@ function getAvailablePlans(plans: IPlan[]): IAvailablePlan[] {
             day: plan.day,
             time: _.flatten(plans
                 .filter(({ day }) => day == plan.day)
-                .map(({ time }) => getPlanTimes(time as [string, string])))
+                .map(({ time }) => getPlanTimes(time as [string, string]))
+            ).sort((x, y) => x - y)
         }));
 }
 

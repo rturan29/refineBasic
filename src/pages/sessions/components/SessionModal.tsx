@@ -1,9 +1,9 @@
 /* eslint-disable eqeqeq */
+import React from 'react';
 import { CrudFilter, Form, GetListResponse, Modal, useForm, useGetIdentity, useUpdate } from '@pankod/refine';
 import Admin from 'components/Admin';
 import UserTable from 'components/UserTable/UserTable';
 import { IParticipant, ISelectedPlan, ISession, IUser, sessionModalRole, sessionStatus } from 'interfaces';
-import React from 'react';
 import ApplySession from './ApplySession';
 import AddUserToSession from './AddUserToSession';
 import { firestoreDatabase } from 'helpers/firebase/firebaseConfig';
@@ -69,9 +69,7 @@ export default function SessionModal({ modalRole, currentRow, modalProps, refetc
         }));
 
         mutate({ resource: "sessions", id: currentRow?.id, values: { participants: [...currentRow.participants, participantData], availablePlans } });
-
         mutate({ resource: "users", id: userData.data?.[0]?.id, values: { workshops: [...userData.data[0].workshops, currentRow.id] } });
-
     }
 
     function getModalContent() {

@@ -34,7 +34,7 @@ const textListTR: { [key: string]: string; } = {
     "00033": "Workshopları Gör",
     "00034": "Lütfen bir gün seçiniz.",
     "00035": "Lütfen bir plan seçiniz",
-    "00036": "",
+    "00036": "Güncelle",
     "00037": "",
     "00038": "",
     "00039": "",

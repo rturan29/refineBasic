@@ -34,7 +34,7 @@ const textListEN: { [key: string]: string; } = {
     "00033": "Show Workshops",
     "00034": "Please select a day.",
     "00035": "Please select a plan",
-    "00036": "",
+    "00036": "Update",
     "00037": "",
     "00038": "",
     "00039": "",
