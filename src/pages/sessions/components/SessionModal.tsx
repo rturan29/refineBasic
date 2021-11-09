@@ -8,6 +8,7 @@ import ApplySession from './ApplySession';
 import AddUserToSession from './AddUserToSession';
 import { firestoreDatabase } from 'helpers/firebase/firebaseConfig';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
+import _ from "lodash";
 
 type SessionModalProps = React.PropsWithChildren<{
     modalRole: sessionModalRole;
@@ -41,8 +42,8 @@ export default function SessionModal({ modalRole, currentRow, modalProps, refetc
 
             const userData: IUser = await firestoreDatabase.getOne({ resource: "users", id: formContent.participantId });
 
-            mutate({ resource: `sessions`, id: currentRow?.id, values: { participants: [...currentRow.participants, formContent], status } });
-            mutate({ resource: "users", id: formContent.participantId, values: { workshops: [...userData.workshops, currentRow.id] } });
+            mutate({ resource: `sessions`, id: currentRow?.id, values: { participants: _.unionBy(currentRow.participants, [formContent], "participantId"), status } });
+            mutate({ resource: "users", id: formContent.participantId, values: { workshops: _.union(userData.workshops, [currentRow.id]) } });
 
             form.resetFields();
             setTimeout(() => {

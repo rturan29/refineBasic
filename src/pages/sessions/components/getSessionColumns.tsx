@@ -1,10 +1,10 @@
 /* eslint-disable eqeqeq */
 import { Col, CreateButton, DateField, DeleteButton, EditButton, FilterDropdown, NumberField, Radio, Row, ShowButton, Space, TagField, TextField } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
-import { IParticipant, ISession, IWorkshop, sessionModalRole, workshopType } from "interfaces";
+import { Colors, IParticipant, ISession, IWorkshop, sessionModalRole, StatusType, workshopType } from "interfaces";
 import moment, { weekdays } from "moment";
 
-interface ColumnProps {
+interface SessionColumns {
     isLoading: boolean;
     workshops?: IWorkshop[];
     isAdmin: boolean;
@@ -12,7 +12,7 @@ interface ColumnProps {
     handleShowModal: (record: ISession, newModalRole: sessionModalRole) => void;
 }
 
-export default function getSessionColumns({ isLoading, workshops, isAdmin, activeWorkshopType, handleShowModal }: ColumnProps) {
+export default function getSessionColumns({ isLoading, workshops, isAdmin, activeWorkshopType, handleShowModal }: SessionColumns) {
 
     let sessionColumns: any[] = [{
         dataIndex: "workshopId",
@@ -79,13 +79,13 @@ export default function getSessionColumns({ isLoading, workshops, isAdmin, activ
             dataIndex: "status",
             title: MLTextHelper("00009"),
             sorter: true,
-            render: (value: string) => <TagField value={value}></TagField>,
+            render: (value: StatusType) => <TagField color={getStatusColor(value)} value={value}></TagField>,
             filterDropdown: (props: any) => (
                 <FilterDropdown {...props}>
                     <Radio.Group>
                         <Radio value="published">Published</Radio>
                         <Radio value="draft">Draft</Radio>
-                        <Radio value="rejected">Rejected</Radio>
+                        <Radio value="canceled">Canceled</Radio>
                         <Radio value="past">Past</Radio>
                         <Radio value="quotaFull">Quota-Full</Radio>
                     </Radio.Group>
@@ -116,4 +116,21 @@ export default function getSessionColumns({ isLoading, workshops, isAdmin, activ
 
     return sessionColumns;
 
+}
+
+
+function getStatusColor(status: StatusType): Colors {
+    switch (status) {
+        case "published":
+            return "success";
+        case "canceled":
+            return "error";
+        case "past":
+            return "orange";
+        case "quotaFull":
+            return "volcano";
+        case "draft":
+        default:
+            return "default";
+    }
 }

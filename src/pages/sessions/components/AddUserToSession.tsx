@@ -24,7 +24,7 @@ export default function AddUserToSession(props: AddUserToSessionProps) {
 
             <Form.Item
                 label={MLTextHelper("00024")}
-                name="paymentCompleted"
+                name="isPaymentCompleted"
                 rules={[{ required: true }]}
                 initialValue={false}
             >

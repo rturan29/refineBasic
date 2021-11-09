@@ -1,8 +1,9 @@
-import { Table, TextField, EmailField, Space, ShowButton, DeleteButton, List, useTable, BooleanField, useDelete, useUpdate, RefreshButton, CreateButton, NumberField } from '@pankod/refine';
-import { arrayRemove } from 'firebase/firestore';
-import { isNullOrUndefined } from 'helpers/Utils';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Table, List, useEditableTable, useDelete, useUpdate, RefreshButton, CreateButton, Form, } from '@pankod/refine';
 import { IParticipant, IUser } from 'interfaces';
-import React from 'react';
+import getUserTableColumns from "./getUserTableColumns";
+import React, { useEffect, useState } from 'react';
+import _ from "lodash";
 
 type UserTableProps = React.PropsWithChildren<{
     participants?: IParticipant[];
@@ -13,29 +14,40 @@ type UserTableProps = React.PropsWithChildren<{
     resetSessionData?: () => void;
 }>;
 
-export default function UserTable(props: UserTableProps) {
+export default function UserTable({ participants: _participants, isSessionUsers, sessionId, showWorkshops, setUserCurrentRow, resetSessionData }: UserTableProps) {
 
+    const [participants, setParticipants] = useState<IParticipant[]>([]);
 
-    const { tableProps, tableQueryResult } = useTable<IUser>(
-        {
-            resource: "users",
-            permanentFilter: [{
-                field: "id",
-                operator: "in",
-                value: props.participants?.map(participants => participants.participantId)?.filter(id => !isNullOrUndefined(id))
-            }]
-        });
+    const participantList = _participants?.map(({ participantId }) => participantId) || [];
+
+    const { tableProps, tableQueryResult, formProps, isEditing, saveButtonProps, cancelButtonProps, editButtonProps, } = useEditableTable<IUser>({ resource: "users", });
+
+    useEffect(() => {
+        if (_participants) {
+            setParticipants(_participants);
+        }
+    }, []);
+
+    if (isSessionUsers) {
+        tableProps.dataSource = tableProps.dataSource?.filter(user => participantList?.includes(user.id));
+    }
 
     const { mutate: deleteData } = useDelete();
-    const { mutate: updateData } = useUpdate();
+    const { mutate: updateData, isLoading } = useUpdate();
 
-    function handleDeleteUser(record: any) {
-        if (props.isSessionUsers && props.sessionId && props.participants) {
-            const participants = props.participants.filter(participant => participant.participantId !== record.id);
-            updateData({ resource: `sessions`, id: props.sessionId, values: { participants } });
-            updateData({ resource: `users`, id: record.id, values: { workshops: arrayRemove(props.sessionId) } });
+    function handleShowModal(record: IUser) {
+        setUserCurrentRow?.(record);
+        showWorkshops?.();
+    }
+
+    function handleDeleteUser(record: IUser) {
+        if (isSessionUsers && sessionId && participants) {
+
+            updateData({ resource: `sessions`, id: sessionId, values: { participants: _.pullAllBy(participants, [{ participantId: record.id }], "participantId") } });
+            updateData({ resource: `users`, id: record.id, values: { workshops: _.pull(record.workshops, sessionId) } });
+
             setTimeout(() => {
-                props.resetSessionData?.();
+                resetSessionData?.();
             }, 1000);
 
         } else {
@@ -46,66 +58,47 @@ export default function UserTable(props: UserTableProps) {
         }
     }
 
-    function handleShowModal(record: IUser, modalRole: "show" | "create") {
-        props.setUserCurrentRow?.(record);
-        props.showWorkshops?.();
+    function handlePaymentStatusChange(id: string, newStatus: boolean) {
+        if (sessionId && _participants) {
+            _participants = _.unionBy([{ participantId: id, isPaymentCompleted: newStatus }], _participants, "participantId");
+
+            updateData({ resource: "sessions", id: sessionId, values: { participants: _participants } });
+
+            setParticipants(_participants);
+
+            setTimeout(() => {
+                tableQueryResult.refetch();
+            }, 1000);
+        }
     }
 
     return (
         <List
-            canCreate={!props.isSessionUsers}
+            canCreate={!isSessionUsers}
             title={"Users"}
             pageHeaderProps={{ extra: <><RefreshButton /><CreateButton /></> }}
         >
-            <Table {...tableProps} rowKey="id">
-                <Table.Column
-                    dataIndex="nameSurname"
-                    title="Name Surname"
-                    render={(value) => <TextField value={value} />}
-                    sorter
-                />
-                <Table.Column
-                    dataIndex="email"
-                    title="Email"
-                    render={value => <EmailField value={value} />}
-                    sorter
-                />
-                <Table.Column
-                    dataIndex="phone"
-                    title="Phone"
-                    render={(value) => <TextField value={value} />}
-                    sorter
-                />
-                {props.isSessionUsers
-                    ? <Table.Column<IUser>
-                        dataIndex="paymentCompleted"
-                        title="Payment Completed"
-                        render={(_, record) => <BooleanField value={props.participants?.find(user => user.participantId === record.id)?.isPaymentCompleted} />}
-                        sorter
-                    />
-                    : <Table.Column<IUser>
-                        dataIndex="workshops"
-                        title="Workshops"
-                        render={(value, record) => (
-                            <Space>
-                                <NumberField value={value?.length || 0} />
-                                {value?.length ? <ShowButton hideText size="small" onClick={() => handleShowModal(record, "show")} /> : null}
-                            </Space>
-                        )}
-                        sorter
-                    />
-                }
+            <Form {...formProps}>
 
-                <Table.Column<IUser>
-                    title="Actions"
-                    dataIndex="actions"
-                    render={(_, record) => (
-                        <Space>
-                            <DeleteButton size="small" onSuccess={() => handleDeleteUser(record)} resourceName="sessions" recordItemId={record.id} />
-                        </Space>
-                    )}
-                />
-            </Table>
+                <Table
+                    columns={getUserTableColumns({
+                        participants,
+                        isSessionUsers,
+                        isEditing,
+                        saveButtonProps,
+                        cancelButtonProps,
+                        editButtonProps,
+                        handleDeleteUser,
+                        handleShowModal,
+                        handlePaymentStatusChange,
+                        paymentStatusLoading: isLoading
+                    })}
+                    {...tableProps} rowKey="id">
+
+
+                </Table>
+
+            </Form>
         </List>
     );
 }

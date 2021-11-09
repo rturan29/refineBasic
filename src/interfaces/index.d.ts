@@ -37,7 +37,7 @@ interface ICategory {
 interface IParticipant {
   participantId: string;
   isPaymentCompleted: boolean;
-  selectedPlan?: ISelectedPlan
+  selectedPlan?: ISelectedPlan;
 }
 interface ISession {
   id: string;
@@ -65,7 +65,7 @@ interface IAvailablePlan {
 
 interface ISelectedPlan {
   day: number,
-  time: number
+  time: number;
 }
 
 interface IUser {
@@ -76,3 +76,9 @@ interface IUser {
   workshops: Array<string>;
   gender: "male" | "female" | "other";
 }
+
+type StatusType = "published" | "draft" | "canceled" | "past" | "quotaFull";
+
+type Colors = "success" | "error" | "default" | "pink" | "red" | "yellow" | "orange"
+  | "cyan" | "green" | "blue" | "purple" | "geekblue" | "magenta" | "volcano" | "gold"
+  | "lime" | "processing" | "warning";
