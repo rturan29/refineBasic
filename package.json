@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "@pankod/refine": "^1.0.92",
-    "@pankod/refine-simple-rest": "^0.1.7",
-    "@pankod/refine-strapi-graphql": "^0.1.3",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
