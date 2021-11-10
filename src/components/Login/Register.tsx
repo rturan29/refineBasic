@@ -1,8 +1,10 @@
 import React from 'react';
-import { Form, Input, Checkbox, Button, Select, Col, Link, Row } from "@pankod/refine";
+import { Form, Input, Checkbox, Button, Select, Col, Row } from "@pankod/refine";
 import { IRegisterProps } from 'interfaces/ILogin';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
+import routerProvider from '@pankod/refine-react-router';
 
+const { Link } = routerProvider;
 const { Option } = Select;
 
 

@@ -1,8 +1,10 @@
 import React from 'react';
-import { Form, Input, Checkbox, Button, Col, Row, Link } from "@pankod/refine";
+import { Form, Input, Checkbox, Button, Col, Row } from "@pankod/refine";
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
 import { LoginLocationTypes } from 'interfaces/ILogin';
+import routerProvider from '@pankod/refine-react-router';
 
+const { Link } = routerProvider;
 
 
 export default function Login(props: { setLocation: (location: LoginLocationTypes) => void; }) {

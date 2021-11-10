@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import {
     List, Table, useTable, IResourceComponentsProps, useMany, useModal, CreateButton,
-    RefreshButton, usePermissions, Authenticated, Tabs,
+    RefreshButton, usePermissions, Tabs, Authenticated
 } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { ISession, IWorkshop, sessionModalRole, workshopType } from "interfaces";

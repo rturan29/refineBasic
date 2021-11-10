@@ -1,8 +1,10 @@
 import React from 'react';
-import { Form, Input, Button, Row, Col, Link } from "@pankod/refine";
+import { Form, Input, Button, Row, Col } from "@pankod/refine";
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
 import { LoginLocationTypes } from 'interfaces/ILogin';
+import routerProvider from '@pankod/refine-react-router';
 
+const { Link } = routerProvider;
 
 
 export default function ForgotPassword(props: { setLocation: (location: LoginLocationTypes) => void; }) {

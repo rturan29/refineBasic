@@ -1,6 +1,6 @@
 import {
     List, Table, useTable, IResourceComponentsProps, useModalForm,
-    Form, Modal, usePermissions, Authenticated, CrudFilter, useNavigation,
+    Form, Modal, usePermissions, CrudFilter, useNavigation, Authenticated
 } from "@pankod/refine";
 import { IWorkshop, ISession } from "interfaces";
 import { WorkshopCreate } from ".";

@@ -1,15 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-    Edit,
-    Form,
-    Input,
-    Select,
-    IResourceComponentsProps,
-    useForm,
-    usePermissions,
-    useNavigation,
-    Authenticated,
-} from "@pankod/refine";
+import { Edit, Form, Input, Select, IResourceComponentsProps, useForm, usePermissions, useNavigation, Authenticated, } from "@pankod/refine";
 import ReactMarkdown from "react-markdown";
 import ReactMde from "react-mde";
 
@@ -39,11 +29,7 @@ export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
                     <Form.Item
                         label={MLTextHelper("00006")}
                         name="title"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                        rules={[{ required: true, },]}
                     >
                         <Input />
                     </Form.Item>
@@ -51,26 +37,13 @@ export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
                     <Form.Item
                         label={MLTextHelper("00007")}
                         name="category"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                        rules={[{ required: true, },]}
                     >
                         <Select
                             options={[
-                                {
-                                    label: "Art",
-                                    value: "art",
-                                },
-                                {
-                                    label: "Music",
-                                    value: "music",
-                                },
-                                {
-                                    label: "Foreign Language",
-                                    value: "foreign-language",
-                                },
+                                { label: "Art", value: "art", },
+                                { label: "Music", value: "music", },
+                                { label: "Foreign Language", value: "foreign-language", },
                             ]}
                         />
                     </Form.Item>
@@ -78,22 +51,12 @@ export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
                     <Form.Item
                         label={MLTextHelper("00008")}
                         name="type"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                        rules={[{ required: true, },]}
                     >
                         <Select
                             options={[
-                                {
-                                    label: "Private",
-                                    value: "private",
-                                },
-                                {
-                                    label: "Group",
-                                    value: "group",
-                                }
+                                { label: "Private", value: "private", },
+                                { label: "Group", value: "group", }
                             ]}
                         />
                     </Form.Item>
@@ -101,22 +64,13 @@ export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
                     <Form.Item
                         label={MLTextHelper("00009")}
                         name="status"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                        rules={[{ required: true, }]}
                     >
                         <Select
                             options={[
-                                {
-                                    label: "published",
-                                    value: "published",
-                                },
-                                {
-                                    label: "draft",
-                                    value: "draft",
-                                }
+                                { label: "Published", value: "published", },
+                                { label: "Draft", value: "draft", },
+                                { label: "Canceled", value: "canceled", }
                             ]}
                         />
                     </Form.Item>
@@ -124,11 +78,7 @@ export const WorkshopEdit: React.FC<IResourceComponentsProps> = () => {
                     <Form.Item
                         label={MLTextHelper("00010")}
                         name="description"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
+                        rules={[{ required: true, }]}
                     >
                         <ReactMde
                             selectedTab={selectedTab}

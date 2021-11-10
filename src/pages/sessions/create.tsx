@@ -1,21 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-    Form,
-    Input,
-    Select,
-    IResourceComponentsProps,
-    useSelect,
-    Create,
-    useForm,
-    DatePicker,
-    InputNumber,
-    useNavigation,
-    usePermissions,
-    Authenticated,
-    CreateButton,
-    DeleteButton,
+    Form, Input, Select, IResourceComponentsProps, useSelect, Create, useForm, DatePicker,
+    InputNumber, useNavigation, usePermissions, CreateButton, DeleteButton, Authenticated
 } from "@pankod/refine";
-
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { Space, TimePicker } from "antd";
 import MLTextHelper from "helpers/MLHelper/MLHelper";

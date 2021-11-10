@@ -1,16 +1,6 @@
-import {
-    Show,
-    useShow,
-    Typography,
-    Tag,
-    IResourceComponentsProps,
-    MarkdownField,
-    usePermissions,
-    Authenticated,
-} from "@pankod/refine";
+import { Show, useShow, Typography, Tag, IResourceComponentsProps, MarkdownField, usePermissions, Authenticated, } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
 import { IWorkshop } from "interfaces";
-
 
 const { Title, Text } = Typography;
 

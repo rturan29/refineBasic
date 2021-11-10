@@ -4,16 +4,17 @@ import {
     AntdLayout,
     Menu,
     Grid,
-    Link,
     useMenu,
     useTitle,
     Icons,
     useNavigation,
     useLogout,
 } from "@pankod/refine";
-import { customComponentList } from './customComponentList';
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
 import { IMenuItem } from '@pankod/refine/dist/interfaces';
+import routerProvider from '@pankod/refine-react-router';
+
+const { Link } = routerProvider;
 
 export const SiderMenu: React.FC = () => {
     const Title = useTitle();
@@ -90,3 +91,14 @@ const antLayoutSiderMobile: CSSProperties = {
     height: "100vh",
     zIndex: 999,
 };
+
+export const customComponentList: IMenuItem[] = [
+    {
+        name: MLTextHelper("00005"),
+        key: "/update-user-data",
+        icon: <Icons.UserAddOutlined />,
+        route: "/update-user-data",
+        label: "Update User Data"
+    }
+];
+
