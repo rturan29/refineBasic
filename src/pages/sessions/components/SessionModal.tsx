@@ -64,10 +64,9 @@ export default function SessionModal({ modalRole, currentRow, modalProps, refetc
             selectedPlan: { ...formContent }
         };
 
-        const availablePlans = currentRow.availablePlans?.map(({ day, time }) => ({
-            day,
-            time: day == formContent.day ? time.filter(t => t != formContent.time) : time
-        }));
+        const availablePlans = currentRow.availablePlans
+            ?.map(({ day, time }) => ({ day, time: day == formContent.day ? time.filter(t => t != formContent.time) : time }))
+            ?.filter(({ time }) => time?.length);
 
         mutate({ resource: "sessions", id: currentRow?.id, values: { participants: [...currentRow.participants, participantData], availablePlans } });
         mutate({ resource: "users", id: userData.data?.[0]?.id, values: { workshops: [...userData.data[0].workshops, currentRow.id] } });

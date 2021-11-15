@@ -68,6 +68,11 @@ interface ISelectedPlan {
   time: number;
 }
 
+interface IWorkshopCategory {
+  name: string;
+  description: string;
+}
+
 interface IUser {
   id: string;
   nameSurname: string;

@@ -9,6 +9,7 @@ import {
     Icons,
     useNavigation,
     useLogout,
+    usePermissions,
 } from "@pankod/refine";
 import MLTextHelper from 'helpers/MLHelper/MLHelper';
 import { IMenuItem } from '@pankod/refine/dist/interfaces';
@@ -18,6 +19,7 @@ const { Link } = routerProvider;
 
 export const SiderMenu: React.FC = () => {
     const Title = useTitle();
+    const isAdmin = usePermissions().data?.role === "admin";
     const { menuItems, selectedKey } = useMenu();
 
     const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -27,6 +29,11 @@ export const SiderMenu: React.FC = () => {
 
     const { mutate: logout } = useLogout();
     const { push } = useNavigation();
+
+
+    function filterAdminMenuItems(item: IMenuItem) {
+        return isAdmin ? true : !adminPages.includes(item.name);
+    }
 
     function onLogOut() {
         logout();
@@ -47,7 +54,7 @@ export const SiderMenu: React.FC = () => {
                 selectedKeys={[selectedKey]}
                 mode="inline"
             >
-                {menuItems.map(getMenuItem)}
+                {menuItems.filter(filterAdminMenuItems).map(getMenuItem)}
 
                 {customComponentList.map(getMenuItem)}
 
@@ -82,6 +89,8 @@ function getLabel(label?: string) {
             return "";
     }
 }
+
+const adminPages = ["users"]
 
 const antLayoutSider: CSSProperties = {
     position: "relative",
