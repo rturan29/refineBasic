@@ -71,6 +71,12 @@ interface ISelectedPlan {
 interface IWorkshopCategory {
   name: string;
   description: string;
+  order: number;
+  caption: IMultiLanguage;
+}
+
+interface IMultiLanguage {
+  [key: string]: string;
 }
 
 interface IUser {
@@ -81,6 +87,8 @@ interface IUser {
   workshops: Array<string>;
   gender: "male" | "female" | "other";
 }
+
+type culture = "tr" | "en"
 
 type StatusType = "published" | "draft" | "canceled" | "past" | "quotaFull";
 

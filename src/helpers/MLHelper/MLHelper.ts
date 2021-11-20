@@ -1,8 +1,9 @@
 import textListTR from "./tr";
 import textListEN from "./en";
+import { culture, IMultiLanguage } from "interfaces";
 
-export function getCurrentCulture() {
-    return window.navigator.language.split("-")[0] || "tr";
+export function getCurrentCulture(): culture {
+    return window.navigator.language.split("-")[0] as culture || "tr";
 }
 
 export default function MLTextHelper(key: string) {
@@ -19,4 +20,9 @@ export default function MLTextHelper(key: string) {
             return textListTR[key];
     }
 
+}
+
+export function getMLText(multilanguage: IMultiLanguage) {
+    const currentCulture = getCurrentCulture();
+    return multilanguage[currentCulture];
 }

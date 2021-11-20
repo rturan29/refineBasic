@@ -57,6 +57,9 @@ const textListTR: { [key: string]: string; } = {
     "00056": "Seansa Kayıt Ol",
     "00057": "Grup Seansları",
     "00058": "Bire bir Seanslar",
+    "00059": "Yayımlandı",
+    "00060": "Draft",
+    "00061": "İptal Edildi",
 };
 
 export default textListTR;

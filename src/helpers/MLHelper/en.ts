@@ -57,6 +57,9 @@ const textListEN: { [key: string]: string; } = {
     "00056": "Apply Session",
     "00057": "Group Sessions",
     "00058": "Private Sessions",
+    "00059": "Published",
+    "00060": "Draft",
+    "00061": "Canceled",
 };
 
 export default textListEN;
