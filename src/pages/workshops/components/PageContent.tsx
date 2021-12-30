@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
-import { HistoryType, List, Table, Typography, usePermissions, useTable, useUpdate, } from '@pankod/refine';
+import { List, Table, Typography, usePermissions, useTable, useUpdate, } from '@pankod/refine';
 import { getCurrentCulture, getMLText } from 'helpers/MLHelper/MLHelper';
-import { IWorkshop, IWorkshopCategory } from 'interfaces';
+import { ISession, IWorkshop, IWorkshopCategory, TModalRole } from 'interfaces';
 import React, { useEffect, useState } from 'react';
 import { getPermanentFilter } from '../helpers';
 import getWorkshopColumns from './getWorkshopColumns';
@@ -11,12 +11,11 @@ import Styles from "../assets/style.module.scss";
 const { Title } = Typography;
 
 type PageContentProps = React.PropsWithChildren<{
-    showWorkshop: (resource: string, id: string, type?: HistoryType | undefined) => void;
-    showCreate: () => void;
+    showModal: (args: { role: TModalRole, record?: IWorkshop, plan?: ISession; }) => void;
     category: IWorkshopCategory;
 }>;
 
-export default function PageContent({ showWorkshop, showCreate, category }: PageContentProps) {
+export default function PageContent({ showModal, category }: PageContentProps) {
 
     const isAdmin = usePermissions().data?.role === "admin";
     const [title, setTitle] = useState("");
@@ -26,7 +25,7 @@ export default function PageContent({ showWorkshop, showCreate, category }: Page
 
     const { mutate, isLoading } = useUpdate();
 
-    const workshopColumns = getWorkshopColumns({ isAdmin, showWorkshop, tableStatusList: statusList, handleStatusChange, isLoading });
+    const workshopColumns = getWorkshopColumns({ isAdmin, showModal, tableStatusList: statusList, handleStatusChange, isLoading });
     const { tableProps } = useTable<IWorkshop>({ permanentFilter: getPermanentFilter(isAdmin, category.name) });
 
 
@@ -83,7 +82,7 @@ export default function PageContent({ showWorkshop, showCreate, category }: Page
 
     return (
         <List
-            createButtonProps={{ onClick: () => showCreate(), }}
+            createButtonProps={{ onClick: () => showModal({ role: "create" }), }}
             canCreate={isAdmin}
             title={renderListTitle()}
         >

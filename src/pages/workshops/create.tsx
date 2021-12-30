@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Form, Input, Select, useOne, usePermissions, } from "@pankod/refine";
+import { useState } from "react";
+import { Form, Input, Select, useOne, } from "@pankod/refine";
 
 import ReactMarkdown from "react-markdown";
 import ReactMde from "react-mde";
@@ -9,19 +9,13 @@ import MLTextHelper, { getMLText } from "helpers/MLHelper/MLHelper";
 import { IWorkshopCategory } from "interfaces";
 import { getCategoryList } from "./helpers";
 
-export const WorkshopCreate: React.FC<{ close?: () => void; }> = ({ close }) => {
+export const WorkshopCreate: React.FC<{}> = () => {
     const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
-    const isAdmin = usePermissions().data?.role === "admin";
 
     const categoryQueryResult = useOne<{ categories: { [key: string]: IWorkshopCategory; }; }>({ resource: "categories", id: "category", });
 
     const categoryList = getCategoryList(categoryQueryResult);
 
-    useEffect(() => {
-        if (!isAdmin) {
-            close?.();
-        }
-    }, [isAdmin, close]);
 
     return (
         <>
@@ -38,9 +32,7 @@ export const WorkshopCreate: React.FC<{ close?: () => void; }> = ({ close }) => 
                 name="category"
                 rules={[{ required: true, },]}
             >
-                <Select
-                    options={categoryList.map(category => ({ label: getMLText(category.caption), value: category.name }))}
-                />
+                <Select options={categoryList.map(category => ({ label: getMLText(category.caption), value: category.name }))} />
             </Form.Item>
 
             <Form.Item

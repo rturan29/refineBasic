@@ -60,6 +60,10 @@ const textListEN: { [key: string]: string; } = {
     "00059": "Published",
     "00060": "Draft",
     "00061": "Canceled",
+    "00062": "Workshops Details",
+    "00063": "Create Workshops",
+    "00064": "Add Plan",
+    "00065": "Show Plans",
 };
 
 export default textListEN;

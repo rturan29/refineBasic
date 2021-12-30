@@ -60,6 +60,10 @@ const textListTR: { [key: string]: string; } = {
     "00059": "Yayımlandı",
     "00060": "Draft",
     "00061": "İptal Edildi",
+    "00062": "Atölye Detayları",
+    "00063": "Atölye Oluştur",
+    "00064": "Planlama Ekle",
+    "00065": "Planlamaları Gör",
 };
 
 export default textListTR;

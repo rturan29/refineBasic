@@ -5,7 +5,7 @@ import {
     RefreshButton, usePermissions, Tabs, Authenticated
 } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
-import { ISession, IWorkshop, sessionModalRole, workshopType } from "interfaces";
+import { ISession, IWorkshop, TModalRole, workshopType } from "interfaces";
 import { CrudFilter } from "refine-firebase/lib/interfaces/IDataContext";
 import SessionModal from "./components/SessionModal";
 import getSessionColumns from "./components/getSessionColumns";
@@ -13,7 +13,7 @@ const { TabPane } = Tabs;
 
 export const SessionList: React.FC<IResourceComponentsProps> = () => {
     const [currentRow, setCurrentRow] = useState<ISession | null>(null);
-    const [modalRole, setModalRole] = useState<sessionModalRole>("show");
+    const [modalRole, setModalRole] = useState<TModalRole>("show");
 
     const [activeWorkshopType, setWorkshopType] = useState<workshopType>("group");
     const isAdmin = usePermissions().data?.role === "admin";
@@ -48,7 +48,7 @@ export const SessionList: React.FC<IResourceComponentsProps> = () => {
         setWorkshopType(activeKey as workshopType);
     }
 
-    function handleShowModal(record: ISession, newModalRole: sessionModalRole) {
+    function handleShowModal(record: ISession, newModalRole: TModalRole) {
         setCurrentRow(record);
         setModalRole(newModalRole);
         show();

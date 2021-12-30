@@ -1,32 +1,58 @@
-import { IResourceComponentsProps, useModalForm, Form, Modal, useNavigation, Authenticated, useOne, Typography } from "@pankod/refine";
+/* eslint-disable eqeqeq */
+import React, { useState } from "react";
+import { IResourceComponentsProps, Authenticated, useOne, Typography, useModal } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
-import { ISession, IWorkshopCategory } from "interfaces";
-import { WorkshopCreate } from ".";
+import { ISession, IWorkshop, IWorkshopCategory, TModalRole } from "interfaces";
+import WorkshopModal from "./components/modal";
 import PageContent from "./components/PageContent";
 import { getCategoryList } from "./helpers";
 const { Title } = Typography;
 
 export const WorkshopList: React.FC<IResourceComponentsProps> = () => {
-    const { show: showWorkshop } = useNavigation();
 
-    const { modalProps, formProps, show: showCreate, close } = useModalForm<ISession>({ action: "create", redirect: "list" });
+    const [modalRole, setModalRole] = useState("");
+    const [currentRecord, setCurrentRecord] = useState<IWorkshop>();
+    const [currentPlan, setCurrentPlan] = useState<ISession>();
+
+    const { modalProps, show, close } = useModal();
 
     const categoryQueryResult = useOne<{ categories: { [key: string]: IWorkshopCategory; }; }>({ resource: "categories", id: "category", });
 
     const categoryList = getCategoryList(categoryQueryResult);
 
+    function showModal({ role, record, plan }: { role: TModalRole, record?: IWorkshop, plan?: ISession; }) {
+        setModalRole(role);
+        if (record) {
+            setCurrentRecord(record);
+        }
+
+        if (plan) {
+            setCurrentPlan(plan);
+        }
+
+        setTimeout(() => {
+            show();
+        }, 500);
+    }
+
+    function renderPageContent(category: IWorkshopCategory) {
+        return (<PageContent key={category.name} category={category} showModal={showModal} />);
+    }
+
     return (
         <Authenticated>
             <Title level={2} >{MLTextHelper("00040")}</Title>
-            {
-                categoryList.map(category => (<PageContent key={category.name} category={category} showCreate={showCreate} showWorkshop={showWorkshop} />))
-            }
+            {categoryList.map(renderPageContent)}
 
-            <Modal {...modalProps}>
-                <Form {...formProps} layout="vertical">
-                    <WorkshopCreate close={close} />
-                </Form>
-            </Modal>
+            <WorkshopModal
+                currentPlan={currentPlan}
+                setCurrentPlan={setCurrentPlan}
+                setModalRole={setModalRole}
+                showModal={showModal}
+                modalProps={modalProps}
+                modalRole={modalRole}
+                close={close}
+                currentRecord={currentRecord} />
         </Authenticated>
     );
 };

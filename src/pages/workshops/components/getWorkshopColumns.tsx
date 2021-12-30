@@ -1,22 +1,22 @@
 /* eslint-disable eqeqeq */
 import {
     Radio, Space, TextField, FilterDropdownProps, FilterDropdown,
-    MarkdownField, EditButton, DeleteButton, HistoryType, Select
+    MarkdownField, EditButton, DeleteButton, Select, CreateButton
 } from "@pankod/refine";
 import { statusList } from "helpers/MLHelper";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
-import { IWorkshop } from "interfaces";
+import { ISession, IWorkshop, TModalRole } from "interfaces";
 
 interface WorkshopColumnProps {
     isAdmin: boolean;
     isLoading: boolean;
     tableStatusList: Array<{ id: string, status: string; }>;
-    showWorkshop: (resource: string, id: string, type?: HistoryType | undefined) => void;
-    handleStatusChange: (id: string, newStatus: string) => void
+    handleStatusChange: (id: string, newStatus: string) => void;
+    showModal: (args: { role: TModalRole, record?: IWorkshop, plan?: ISession; }) => void;
 }
 
 
-export default function getWorkshopColumns({ isAdmin, showWorkshop, tableStatusList, handleStatusChange, isLoading }: WorkshopColumnProps) {
+export default function getWorkshopColumns({ isAdmin, tableStatusList, handleStatusChange, isLoading, showModal }: WorkshopColumnProps) {
 
 
     const workshopColumns: Array<any> = [{
@@ -26,7 +26,7 @@ export default function getWorkshopColumns({ isAdmin, showWorkshop, tableStatusL
         render: (value: string, record: IWorkshop) =>
             <TextField
                 style={{ cursor: "pointer" }}
-                onClick={() => showWorkshop("workshops", record.id)}
+                onClick={() => showModal({ role: "show", record })}
                 value={value}
             />,
 
@@ -35,7 +35,7 @@ export default function getWorkshopColumns({ isAdmin, showWorkshop, tableStatusL
         title: MLTextHelper("00010"),
         sorter: true,
         render: (value: string, record: IWorkshop) =>
-            <div style={{ cursor: "pointer" }} onClick={() => showWorkshop("workshops", record.id)} >
+            <div style={{ cursor: "pointer" }} onClick={() => showModal({ role: "show", record })} >
                 <MarkdownField
                     value={value}
                 />
@@ -69,14 +69,23 @@ export default function getWorkshopColumns({ isAdmin, showWorkshop, tableStatusL
                 title: "",
             render: (_: any, record: IWorkshop) => (
                 <Space>
-                    <EditButton hideText size="small" recordItemId={record.id} />
+                    <CreateButton onClick={() => showModal({ role: "showPlans", record })} size="small">{MLTextHelper("00065")}</CreateButton>
+                    <EditButton onClick={() => showModal({ role: "edit", record })} size="small" recordItemId={record.id} />
                     <DeleteButton hideText size="small" recordItemId={record.id} />
                 </Space>
             )
         }
         );
     } else {
-        workshopColumns.push();
+        workshopColumns.push({
+            title: MLTextHelper("00011"),
+            dataIndex: "actions",
+            render: (_: any, record: IWorkshop) => (
+                <Space>
+                    <CreateButton onClick={() => showModal({ role: "showPlans", record })} size="small">{MLTextHelper("00065")}</CreateButton>
+                </Space>
+            )
+        });
     }
 
     return workshopColumns;

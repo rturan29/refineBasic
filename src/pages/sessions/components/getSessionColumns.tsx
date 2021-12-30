@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import { Col, CreateButton, DateField, DeleteButton, EditButton, FilterDropdown, NumberField, Radio, Row, ShowButton, Space, TagField, TextField } from "@pankod/refine";
 import MLTextHelper from "helpers/MLHelper/MLHelper";
-import { Colors, IParticipant, ISession, IWorkshop, sessionModalRole, StatusType, workshopType } from "interfaces";
+import { Colors, IParticipant, ISession, IWorkshop, TModalRole, StatusType, workshopType } from "interfaces";
 import moment, { weekdays } from "moment";
 
 interface SessionColumns {
@@ -9,7 +9,7 @@ interface SessionColumns {
     workshops?: IWorkshop[];
     isAdmin: boolean;
     activeWorkshopType: workshopType;
-    handleShowModal: (record: ISession, newModalRole: sessionModalRole) => void;
+    handleShowModal: (record: ISession, newModalRole: TModalRole) => void;
 }
 
 export default function getSessionColumns({ isLoading, workshops, isAdmin, activeWorkshopType, handleShowModal }: SessionColumns) {

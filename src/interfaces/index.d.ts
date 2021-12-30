@@ -13,11 +13,11 @@ interface ICustomComponentProperties {
 
 type workshopType = "private" | "group";
 
-type workshopStatus = "published" | "draft";
+type workshopStatus = "published" | "draft" | "canceled";
 
-type sessionStatus = workshopStatus | "rejected" | "past" | "quotaFull";
+type sessionStatus = workshopStatus | "past" | "quotaFull";
 
-type sessionModalRole = "show" | "create" | "apply";
+type TModalRole = "show" | "create" | "apply" | "addPlan" | "edit" | "editPlan" | "showPlans" | "showParticipants";
 
 interface IWorkshop {
   id: string;
@@ -39,6 +39,7 @@ interface IParticipant {
   isPaymentCompleted: boolean;
   selectedPlan?: ISelectedPlan;
 }
+
 interface ISession {
   id: string;
   type?: workshopType;
@@ -88,7 +89,7 @@ interface IUser {
   gender: "male" | "female" | "other";
 }
 
-type culture = "tr" | "en"
+type culture = "tr" | "en";
 
 type StatusType = "published" | "draft" | "canceled" | "past" | "quotaFull";
 

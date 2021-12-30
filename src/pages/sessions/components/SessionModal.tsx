@@ -3,7 +3,7 @@ import React from 'react';
 import { CrudFilter, Form, GetListResponse, Modal, useForm, useGetIdentity, useUpdate } from '@pankod/refine';
 import Admin from 'components/Admin';
 import UserTable from 'components/UserTable/UserTable';
-import { IParticipant, ISelectedPlan, ISession, IUser, sessionModalRole, sessionStatus } from 'interfaces';
+import { IParticipant, ISelectedPlan, ISession, IUser, TModalRole, sessionStatus } from 'interfaces';
 import ApplySession from './ApplySession';
 import AddUserToSession from './AddUserToSession';
 import { firestoreDatabase } from 'helpers/firebase/firebaseConfig';
@@ -11,7 +11,7 @@ import MLTextHelper from 'helpers/MLHelper/MLHelper';
 import _ from "lodash";
 
 type SessionModalProps = React.PropsWithChildren<{
-    modalRole: sessionModalRole;
+    modalRole: TModalRole;
     currentRow: ISession;
     refetch: () => void;
     modalProps: any;
@@ -114,7 +114,7 @@ export default function SessionModal({ modalRole, currentRow, modalProps, refetc
 }
 
 
-function getModalTitle(modalRole: sessionModalRole) {
+function getModalTitle(modalRole: TModalRole) {
     switch (modalRole) {
         case "show":
             return MLTextHelper("00054");
